@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Swiftclaim OS</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Huvudnavigering">
+        <div class="brand">
+          <div class="brand-mark">SC</div>
+          <div>
+            <strong>Swiftclaim OS</strong>
+            <span>Egendomsskador</span>
+          </div>
+        </div>
+
+        <nav class="nav-list">
+          <button class="nav-item active" data-view="overview" type="button">
+            <span aria-hidden="true">01</span> Översikt
+          </button>
+          <button class="nav-item" data-view="cases" type="button">
+            <span aria-hidden="true">02</span> Ärenden
+          </button>
+          <button class="nav-item" data-view="pipeline" type="button">
+            <span aria-hidden="true">03</span> Flöde
+          </button>
+          <button class="nav-item" data-view="intake" type="button">
+            <span aria-hidden="true">04</span> Intag
+          </button>
+          <button class="nav-item" data-view="knowledge" type="button">
+            <span aria-hidden="true">05</span> Kunskap
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <button class="secondary full" id="exportJsonBtn" type="button">Exportera data</button>
+          <label class="secondary full file-import">
+            Importera data
+            <input id="importJsonInput" type="file" accept="application/json" />
+          </label>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Internt ärendecenter</p>
+            <h1 id="viewTitle">Översikt</h1>
+          </div>
+          <div class="topbar-actions">
+            <div class="search-box">
+              <span aria-hidden="true">/</span>
+              <input id="globalSearch" type="search" placeholder="Sök ärenden, anteckningar, bolag" />
+            </div>
+            <button class="primary" id="newCaseTopBtn" type="button">Nytt ärende</button>
+          </div>
+        </header>
+
+        <section class="view active" id="overviewView" aria-labelledby="viewTitle">
+          <div class="metric-grid" id="metricGrid"></div>
+
+          <div class="split-layout">
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Kö</p>
+                  <h2>Aktiv arbetskö</h2>
+                </div>
+                <button class="ghost" data-view-link="cases" type="button">Öppna ärenden</button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Ärende</th>
+                      <th>Kund</th>
+                      <th>Status</th>
+                      <th>Ansvarig</th>
+                      <th>Risk</th>
+                    </tr>
+                  </thead>
+                  <tbody id="overviewCaseRows"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Åtgärder</p>
+                  <h2>Nästa steg</h2>
+                </div>
+              </div>
+              <div class="action-list" id="overviewActions"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="casesView" aria-labelledby="viewTitle">
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Ärenderegister</p>
+                <h2>Alla ärenden</h2>
+              </div>
+              <button class="primary" data-view-link="intake" type="button">Skapa från intag</button>
+            </div>
+
+            <div class="filters">
+              <select id="statusFilter" aria-label="Filtrera på status"></select>
+              <select id="ownerFilter" aria-label="Filtrera på ansvarig"></select>
+              <select id="companyFilter" aria-label="Filtrera på försäkringsbolag"></select>
+              <select id="categoryFilter" aria-label="Filtrera på kategori"></select>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                  <th>Ärende</th>
+                  <th>Kund</th>
+                  <th>Kategori</th>
+                  <th>Försäkringsbolag</th>
+                  <th>Värde</th>
+                  <th>Svårighet</th>
+                  <th>Status</th>
+                  <th>Ansvarig</th>
+                  </tr>
+                </thead>
+                <tbody id="caseRows"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel case-detail hidden" id="caseDetail"></section>
+        </section>
+
+        <section class="view" id="pipelineView" aria-labelledby="viewTitle">
+          <div class="pipeline-board" id="pipelineBoard"></div>
+        </section>
+
+        <section class="view" id="intakeView" aria-labelledby="viewTitle">
+          <form class="panel intake-form" id="intakeForm">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Exempelintag från Swiftclaim.se</p>
+                <h2>Skapa egendomsskadeärende</h2>
+              </div>
+              <button class="secondary" id="fillSampleBtn" type="button">Använd exempel</button>
+            </div>
+
+            <div class="form-grid">
+              <label>
+                Kundnamn
+                <input name="customerName" required placeholder="Alex Andersson" />
+              </label>
+              <label>
+                E-post
+                <input name="email" required type="email" placeholder="alex@example.com" />
+              </label>
+              <label>
+                Telefon
+                <input name="phone" placeholder="+46..." />
+              </label>
+              <label>
+                Stad
+                <input name="city" placeholder="Stockholm" />
+              </label>
+              <label>
+                Bostadstyp
+                <select name="propertyType">
+                  <option>Villa</option>
+                  <option>Bostadsrätt</option>
+                  <option>Hyresrätt</option>
+                  <option>Fritidshus</option>
+                </select>
+              </label>
+              <label>
+                Försäkringsbolag
+                <select name="insuranceCompany" id="intakeCompany"></select>
+              </label>
+              <label>
+                Skadekategori
+                <select name="damageCategory" id="intakeCategory"></select>
+              </label>
+              <label>
+                Skadedatum
+                <input name="incidentDate" type="date" />
+              </label>
+              <label>
+                Begärt belopp, SEK
+                <input name="claimedAmount" type="number" min="0" step="1000" placeholder="150000" />
+              </label>
+              <label>
+                Försäkringsbolagets erbjudande, SEK
+                <input name="offeredAmount" type="number" min="0" step="1000" placeholder="45000" />
+              </label>
+              <label>
+                Senaste beslutsdatum från försäkringsbolaget
+                <input name="decisionDate" type="date" />
+              </label>
+              <label>
+                Nuvarande läge
+                <select name="currentStage">
+                  <option>Ej inskickat</option>
+                  <option>Inskickat till försäkringsbolag</option>
+                  <option>Beslut mottaget</option>
+                  <option>Avslaget</option>
+                  <option>Underbetalt</option>
+                  <option>Överklagan pågår</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              Kundens beskrivning
+              <textarea name="description" required rows="6" placeholder="Beskriv vad som hänt, vad försäkringsbolaget har sagt och vad kunden vill ha hjälp med."></textarea>
+            </label>
+
+            <fieldset class="check-grid">
+              <legend>Tillgänglig bevisning</legend>
+              <label><input type="checkbox" name="evidence" value="Foton" /> Foton</label>
+              <label><input type="checkbox" name="evidence" value="Försäkringsbeslut" /> Försäkringsbeslut</label>
+              <label><input type="checkbox" name="evidence" value="Försäkringsvillkor" /> Försäkringsvillkor</label>
+              <label><input type="checkbox" name="evidence" value="Kvitton" /> Kvitton</label>
+              <label><input type="checkbox" name="evidence" value="Offert från entreprenör" /> Offert från entreprenör</label>
+              <label><input type="checkbox" name="evidence" value="Skaderapport" /> Skaderapport</label>
+            </fieldset>
+
+            <div class="form-actions">
+              <button class="secondary" id="previewScoreBtn" type="button">Förhandsvisa bedömningskort</button>
+              <button class="primary" type="submit">Skapa ärende</button>
+            </div>
+          </form>
+
+          <section class="panel score-preview hidden" id="scorePreview"></section>
+        </section>
+
+        <section class="view" id="knowledgeView" aria-labelledby="viewTitle">
+          <div class="split-layout knowledge-layout">
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">LLM-wiki-kompatibelt lager</p>
+                  <h2>Kunskapsexport för ärenden</h2>
+                </div>
+              </div>
+              <div class="knowledge-controls">
+                <label>
+                  Ärende
+                  <select id="knowledgeCaseSelect"></select>
+                </label>
+                <button class="secondary" id="downloadMarkdownBtn" type="button">Ladda ned markdown</button>
+                <button class="secondary" id="copyMarkdownBtn" type="button">Kopiera markdown</button>
+              </div>
+              <textarea class="markdown-output" id="markdownOutput" spellcheck="false"></textarea>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Schemanoteringar</p>
+                  <h2>Byggt för framtida AI-användning</h2>
+                </div>
+              </div>
+              <div class="schema-list">
+                <div>
+                  <strong>Råkällor</strong>
+                  <span>Intag som JSON, dokumentfiler, anteckningar, statushändelser och utfall sparas som oföränderliga källor.</span>
+                </div>
+                <div>
+                  <strong>Wiki-sidor</strong>
+                  <span>Varje ärende kan kompileras till markdown med YAML-frontmatter och källreferenser.</span>
+                </div>
+                <div>
+                  <strong>Spårbarhet</strong>
+                  <span>AI-bedömningskort refererar till intagsfält, uppladdade filer, mänskliga anteckningar och slutliga utfall.</span>
+                </div>
+                <div>
+                  <strong>Lärandeloop</strong>
+                  <span>Reglerade och förlorade ärenden blir referensexempel för bolagsbeteenden och nästa steg.</span>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <template id="scorecardTemplate">
+      <div class="scorecard"></div>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>

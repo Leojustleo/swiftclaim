@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Om oss – Swiftclaim</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: Inter, system-ui, sans-serif; background: #EFECE3; color: #000; overflow-x: hidden; }
+
+    /* ── NAV (transparent, same as landing) ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      background: rgba(239,236,227,0.95);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 0.5px solid rgba(0,0,0,0.1);
+    }
+    nav {
+      margin: 0 auto; max-width: 960px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px; padding: 0 1.25rem;
+    }
+    .nav-brand { text-decoration: none; }
+    .nav-brand-name { font-size: 1.15rem; font-weight: 600; color: #4A70A9; letter-spacing: -0.5px; }
+    .nav-brand-name span { font-weight: 400; color: #888; }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-links a { font-size: 14px; font-weight: 500; color: #000; text-decoration: none; padding: 6px 12px; border-radius: 6px; transition: background 0.15s; }
+    .nav-links a:hover { background: rgba(0,0,0,0.06); }
+    .nav-links a.active { color: #4A70A9; background: rgba(74,112,169,0.08); }
+    .btn-solid { font-size: 14px; font-weight: 600; color: #EFECE3; padding: 6px 16px; border-radius: 6px; border: none; background: #4A70A9; cursor: pointer; text-decoration: none; transition: background 0.15s; }
+    .btn-solid:hover { background: #3a5a8f; }
+    .menu-toggle-btn { display: none; width: 36px; height: 36px; align-items: center; justify-content: center; border: 0.5px solid rgba(0,0,0,0.18); border-radius: 6px; background: transparent; cursor: pointer; flex-shrink: 0; }
+    .menu-toggle-btn svg { width: 18px; height: 18px; overflow: visible; }
+    .toggle-line { stroke: #000; stroke-width: 2.5; stroke-linecap: round; transition: transform 0.3s, opacity 0.25s; transform-origin: center; }
+    .menu-toggle-btn.open .line-top    { transform: translate(0, 5px) rotate(45deg); }
+    .menu-toggle-btn.open .line-mid    { opacity: 0; }
+    .menu-toggle-btn.open .line-bottom { transform: translate(0, -5px) rotate(-45deg); }
+    @media (max-width: 767px) { .nav-links { display: none; } .menu-toggle-btn { display: flex; } }
+
+    /* Sheet */
+    .sheet-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0); pointer-events: none; transition: background 0.3s; }
+    .sheet-overlay.open { background: rgba(0,0,0,0.3); pointer-events: all; }
+    .sheet { position: fixed; top: 0; left: 0; bottom: 0; z-index: 400; width: min(300px, 82vw); background: rgba(239,236,227,0.97); backdrop-filter: blur(12px); border-right: 0.5px solid rgba(0,0,0,0.1); transform: translateX(-100%); transition: transform 0.32s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; }
+    .sheet.open { transform: translateX(0); }
+    .sheet-body { flex: 1; overflow-y: auto; padding: 3rem 1rem 1.25rem; display: grid; align-content: start; gap: 4px; }
+    .sheet-body a { display: flex; align-items: center; font-size: 15px; font-weight: 500; color: #000; text-decoration: none; padding: 10px 12px; border-radius: 6px; transition: background 0.15s; }
+    .sheet-body a:hover { background: rgba(0,0,0,0.06); }
+    .sheet-body a.active { color: #4A70A9; }
+    .sheet-divider { height: 0.5px; background: rgba(0,0,0,0.1); margin: 6px 12px; }
+    .sheet-footer { padding: 1rem; border-top: 0.5px solid rgba(0,0,0,0.1); }
+    .sheet-footer .btn-solid { width: 100%; text-align: center; padding: 10px 16px; border-radius: 8px; display: block; }
+
+    /* ── HERO STRIP (full-width, accent bg) ── */
+    .page-hero {
+      margin-top: 56px;
+      background: #4A70A9;
+      padding: clamp(3.5rem, 8vw, 6rem) 1.25rem;
+      text-align: center;
+    }
+    .page-eyebrow {
+      display: inline-block;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(239,236,227,0.65); margin-bottom: 1.25rem;
+    }
+    .page-hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 600;
+      color: #EFECE3; line-height: 1.1; letter-spacing: -0.5px;
+      max-width: 640px; margin: 0 auto 1.5rem;
+    }
+    .page-hero h1 em { font-style: normal; opacity: 0.55; }
+    .page-hero p {
+      font-size: clamp(14px, 2vw, 16px); color: rgba(239,236,227,0.75);
+      max-width: 480px; margin: 0 auto; line-height: 1.7;
+    }
+
+    /* ── CONTENT WRAPPER ── */
+    .content { max-width: 960px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* Stats */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border: 0.5px solid rgba(0,0,0,0.1); border-radius: 12px;
+      overflow: hidden; margin: 3rem 0;
+    }
+    .stat {
+      padding: 2rem 1.75rem;
+      border-right: 0.5px solid rgba(0,0,0,0.1);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-number { font-size: 2.5rem; font-weight: 600; color: #4A70A9; line-height: 1; margin-bottom: 0.5rem; letter-spacing: -1px; }
+    .stat-label { font-size: 13px; color: #555; line-height: 1.5; }
+
+    /* Section blocks */
+    .section { padding: 3rem 0; border-top: 0.5px solid rgba(0,0,0,0.1); }
+    .section-grid { display: grid; grid-template-columns: 180px 1fr; gap: 3rem; align-items: start; }
+    .section-label { font-size: 12px; font-weight: 500; color: #4A70A9; letter-spacing: 0.08em; text-transform: uppercase; padding-top: 5px; }
+    .section-body h2 { font-size: clamp(1.4rem, 2.5vw, 1.9rem); font-weight: 600; line-height: 1.2; margin-bottom: 1.25rem; letter-spacing: -0.3px; }
+    .section-body p { font-size: 15px; line-height: 1.8; color: #333; margin-bottom: 1rem; }
+    .section-body p:last-child { margin-bottom: 0; }
+
+    /* Team */
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1rem; margin-top: 2rem; }
+    .team-card { background: #E5E1D6; border-radius: 10px; padding: 1.5rem 1.25rem; }
+    .team-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: #4A70A9; color: #EFECE3;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 600; margin-bottom: 1rem;
+    }
+    .team-name { font-size: 14px; font-weight: 500; color: #000; margin-bottom: 3px; }
+    .team-title { font-size: 12px; color: #777; }
+
+    /* Values */
+    .values-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1px; background: rgba(0,0,0,0.08); border-radius: 12px; overflow: hidden; margin-top: 2rem; }
+    .value-card { background: #EFECE3; padding: 1.5rem; }
+    .value-icon { font-size: 1.25rem; margin-bottom: 0.75rem; }
+    .value-title { font-size: 14px; font-weight: 500; color: #000; margin-bottom: 0.4rem; }
+    .value-text { font-size: 13px; color: #555; line-height: 1.6; }
+
+    /* CTA strip */
+    .cta-strip { background: #4A70A9; text-align: center; padding: 4rem 1.25rem; margin-top: 4rem; }
+    .cta-strip h2 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 600; color: #EFECE3; margin-bottom: 0.75rem; }
+    .cta-strip p { font-size: 15px; color: rgba(239,236,227,0.75); margin-bottom: 2rem; }
+    .btn-cta { display: inline-block; background: #EFECE3; color: #4A70A9; font-size: 15px; font-weight: 600; padding: 13px 32px; border-radius: 999px; text-decoration: none; transition: opacity 0.15s, transform 0.1s; }
+    .btn-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .stats-row { grid-template-columns: 1fr; }
+      .stat { border-right: none; border-bottom: 0.5px solid rgba(0,0,0,0.1); }
+      .stat:last-child { border-bottom: none; }
+      .section-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+    }
+
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <a class="nav-brand" href="swiftclaim_testimonials_page.html">
+        <span class="nav-brand-name">Swiftclaim<span>.se</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="om-oss.html" class="active">Om oss</a>
+        <a href="#">Priser</a>
+        <a href="#">Blogg</a>
+        <a href="#">Vanliga frågor</a>
+        <a href="#">Kontakt</a>
+        <a class="btn-solid" href="swiftclaim_testimonials_page.html">Anmäl skada</a>
+      </div>
+      <button class="menu-toggle-btn" id="menuToggle" onclick="toggleSheet()" aria-label="Öppna meny">
+        <svg viewBox="0 0 18 18" fill="none">
+          <line class="toggle-line line-top"    x1="2" y1="4"  x2="16" y2="4"/>
+          <line class="toggle-line line-mid"    x1="2" y1="9"  x2="16" y2="9"/>
+          <line class="toggle-line line-bottom" x1="2" y1="14" x2="16" y2="14"/>
+        </svg>
+      </button>
+    </nav>
+  </header>
+
+  <div class="sheet-overlay" id="sheetOverlay" onclick="closeSheet()"></div>
+  <div class="sheet" id="sheet">
+    <div class="sheet-body">
+      <a href="om-oss.html" class="active">Om oss</a>
+      <a href="#">Priser</a>
+      <a href="#">Blogg & kundberättelser</a>
+      <a href="#">Vanliga frågor</a>
+      <div class="sheet-divider"></div>
+      <a href="#">Kontakta oss</a>
+      <a href="#">Dataskydd</a>
+      <a href="#">Användarvillkor</a>
+    </div>
+    <div class="sheet-footer">
+      <a class="btn-solid" href="swiftclaim_testimonials_page.html">Anmäl skada</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <div class="page-eyebrow">Om oss</div>
+    <h1>Vi kämpar för att du ska få <em>varje krona</em> du har rätt till</h1>
+    <p>[Platshållare] Swiftclaim grundades med en enkel övertygelse — att vanliga svenska husägare förtjänar lika stark representation som försäkringsbolagen.</p>
+  </div>
+
+  <div class="content">
+
+    <!-- Stats -->
+    <div class="stats-row reveal">
+      <div class="stat">
+        <div class="stat-number">10 000+</div>
+        <div class="stat-label">Ärenden framgångsrikt hanterade</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">4,9 ★</div>
+        <div class="stat-label">Genomsnittligt kundbetyg</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">94%</div>
+        <div class="stat-label">Av kunder fick mer än ursprungserbjudandet</div>
+      </div>
+    </div>
+
+    <!-- Historia -->
+    <div class="section reveal">
+      <div class="section-grid">
+        <div class="section-label">Vår historia</div>
+        <div class="section-body">
+          <h2>Grundat av frustrerade husägare, för husägare</h2>
+          <p>[Platshållare] År 20XX drabbades grundarna av Swiftclaim av egna erfarenheter av orättvisa försäkringsutbetalningar. Efter månader av kamp mot systemet insåg de att problemet var utbrett — och att lösningen saknades på marknaden.</p>
+          <p>[Platshållare] Idag är vi ett team på XX personer med experter inom försäkringsrätt, skadehantering och kundservice. Vår mission är enkel: att säkerställa att du får varje krona du har rätt till.</p>
+          <p>[Platshållare] Vi tar ingen betalning om vi inte lyckas. Det är hur övertygade vi är om det vi gör.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team -->
+    <div class="section reveal">
+      <div class="section-grid">
+        <div class="section-label">Teamet</div>
+        <div class="section-body">
+          <h2>Personerna bakom Swiftclaim</h2>
+          <div class="team-grid">
+            <div class="team-card">
+              <div class="team-avatar">A</div>
+              <div class="team-name">Anna Placeholder</div>
+              <div class="team-title">VD & Grundare</div>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar">M</div>
+              <div class="team-name">Marcus Placeholder</div>
+              <div class="team-title">Försäkringsjurist</div>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar">L</div>
+              <div class="team-name">Lisa Placeholder</div>
+              <div class="team-title">Kundansvarig</div>
+            </div>
+            <div class="team-card">
+              <div class="team-avatar">E</div>
+              <div class="team-name">Erik Placeholder</div>
+              <div class="team-title">Skadespecialist</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Values -->
+    <div class="section reveal">
+      <div class="section-grid">
+        <div class="section-label">Våra värderingar</div>
+        <div class="section-body">
+          <h2>Det vi tror på</h2>
+          <div class="values-grid">
+            <div class="value-card">
+              <div class="value-icon">⚖</div>
+              <div class="value-title">Rättvisa alltid</div>
+              <div class="value-text">[Platshållare] Varje kund förtjänar full ersättning för sin skada.</div>
+            </div>
+            <div class="value-card">
+              <div class="value-icon">◎</div>
+              <div class="value-title">Ingen risk för dig</div>
+              <div class="value-text">[Platshållare] Ingen betalning om vi inte lyckas. Din ekonomiska risk är noll.</div>
+            </div>
+            <div class="value-card">
+              <div class="value-icon">⚡</div>
+              <div class="value-title">Snabbhet</div>
+              <div class="value-text">[Platshållare] Vi rör oss snabbt och håller dig uppdaterad hela vägen.</div>
+            </div>
+            <div class="value-card">
+              <div class="value-icon">✦</div>
+              <div class="value-title">Transparens</div>
+              <div class="value-text">[Platshållare] Inga överraskningar. Du vet alltid exakt vad som händer.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="cta-strip reveal">
+    <h2>Redo att få det du har rätt till?</h2>
+    <p>[Platshållare] Anmäl din skada idag — helt kostnadsfritt tills vi vinner.</p>
+    <a class="btn-cta" href="swiftclaim_testimonials_page.html">Anmäl skada kostnadsfritt ↗</a>
+  </div>
+
+<script>
+function toggleSheet() {
+  const open = document.getElementById('sheet').classList.toggle('open');
+  document.getElementById('sheetOverlay').classList.toggle('open', open);
+  document.getElementById('menuToggle').classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeSheet() {
+  document.getElementById('sheet').classList.remove('open');
+  document.getElementById('sheetOverlay').classList.remove('open');
+  document.getElementById('menuToggle').classList.remove('open');
+  document.body.style.overflow = '';
+}
+const observer = new IntersectionObserver(
+  entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+  { threshold: 0.1 }
+);
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
