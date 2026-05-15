@@ -17,3 +17,17 @@ yarn-error.log*
 .env
 .env.local
 *.local
+
+# Local tooling (kept out of repo)
+.mcp.json
+.playwright-mcp/
+.scraper-inspect/
+
+# Research / scratch artifacts (kept in ../Swiftclaim-research)
+dapper-*.jpeg
+dapper-*.json
+dapper-snapshot.md
+dapper-clone/
+local-*.jpeg
+sc-*.jpeg
+scraper.zip

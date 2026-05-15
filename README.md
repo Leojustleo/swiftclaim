@@ -9,19 +9,15 @@ This repo contains two surfaces and a shared design contract.
 ```
 .
 ├── site/                 Public marketing site (Swedish, static HTML)
-│   ├── swiftclaim_testimonials_page.html   Landing page with hero + testimonials
+│   ├── landing_v2.html                     Current landing page
+│   ├── swiftclaim_testimonials_page.html   Earlier landing page with testimonials
 │   └── om-oss.html                         About-us page
 │
-├── os/                   Internal claims-handling dashboard prototype
-│   ├── index.html
-│   ├── styles.css
-│   ├── app.js
-│   └── README.md         Details on the OS prototype
-│
-├── DESIGN_SYSTEM.md      Locked design tokens — palette, type, spacing, radii.
-│                         Every surface must follow this.
-│
-└── scraper.zip           ARN scraper (to be integrated later)
+└── os/                   Internal claims-handling dashboard prototype
+    ├── index.html
+    ├── styles.css
+    ├── app.js
+    └── README.md         Details on the OS prototype
 ```
 
 ## Run locally
@@ -29,7 +25,3 @@ This repo contains two surfaces and a shared design contract.
 **Public site** — open `site/swiftclaim_testimonials_page.html` in a browser. The "Om oss" nav link reaches the about page; both pages link back to each other.
 
 **OS dashboard** — open `os/index.html` in a browser, or serve the `os/` folder with any static server. State is persisted locally via IndexedDB; data can be exported as JSON or per-case Markdown. See `os/README.md` for the full feature list.
-
-## Design system
-
-`DESIGN_SYSTEM.md` is the source of truth for visual tokens: background `#EFECE3`, accent `#4A70A9`, Inter typeface, 8px spacing scale. Both `site/` and `os/` follow it.
