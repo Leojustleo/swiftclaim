@@ -139,9 +139,12 @@ def retrieve(query: str, k: int = DEFAULT_TOP_K, notes: Optional[List[NoteDict]]
     return scored[:k]
 
 
+SEARCH_DIRS = ("Lagstiftning/", "ARN/", "Praxis/", "Villkor/", "Förarbeten/", "Vägledning/")
+
+
 def search_law(query: str, k: int = 5) -> List[NoteDict]:
     notes = load_vault_notes(filter_paths=None)
-    law_notes = [n for n in notes if n["path"].startswith("Lagstiftning/") or n["path"].startswith("ARN/")]
+    law_notes = [n for n in notes if n["path"].startswith(SEARCH_DIRS)]
     hits = retrieve(query, k=k, notes=law_notes)
     return [{"score": round(s, 4), "title": n["title"], "path": n["path"], "text": n["text"][:2000]} for s, n in hits]
 
