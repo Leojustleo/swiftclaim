@@ -1,313 +1,323 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Om oss – Swiftclaim</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: Inter, system-ui, sans-serif; background: #EFECE3; color: #000; overflow-x: hidden; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Om oss – Swiftclaim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500&display=swap">
+<style>
+  :root {
+    --bg: #F9F7F7;
+    --bg-card: #DBE2EF;
+    --bg-deep: #CDD6E8;
+    --bg-dark: #112D4E;
+    --bg-dark-2: #0F2642;
+    --ink: #0A0A0A;
+    --ink-2: #2C2C2C;
+    --muted: #6F6F6F;
+    --line: rgba(0,0,0,0.10);
+    --line-strong: rgba(0,0,0,0.18);
+    --line-on-dark: rgba(249,247,247,0.14);
+    --brand: #3F72AF;
+    --brand-dark: #2E5B9E;
+    --lime: #112D4E;
+    --lime-soft: #3F72AF;
+    --lime-deep: #0A1E36;
+    --cta: #f7d154;
+    --cta-hover: #e6c44d;
+    --r-card: 14px;
+    --r-pill: 999px;
+    --shadow-soft: 0 1px 2px rgba(0,0,0,0.04), 0 8px 28px rgba(0,0,0,0.06);
+    --serif: "Fraunces", "Times New Roman", serif;
+    --sans: "Inter", system-ui, -apple-system, sans-serif;
+    --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.5; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--lime); color: var(--bg); }
 
-    /* ── NAV (transparent, same as landing) ── */
-    header {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      background: rgba(239,236,227,0.95);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      border-bottom: 0.5px solid rgba(0,0,0,0.1);
-    }
-    nav {
-      margin: 0 auto; max-width: 960px;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 56px; padding: 0 1.25rem;
-    }
-    .nav-brand { text-decoration: none; }
-    .nav-brand-name { font-size: 1.15rem; font-weight: 600; color: #4A70A9; letter-spacing: -0.5px; }
-    .nav-brand-name span { font-weight: 400; color: #888; }
-    .nav-links { display: flex; align-items: center; gap: 4px; }
-    .nav-links a { font-size: 14px; font-weight: 500; color: #000; text-decoration: none; padding: 6px 12px; border-radius: 6px; transition: background 0.15s; }
-    .nav-links a:hover { background: rgba(0,0,0,0.06); }
-    .nav-links a.active { color: #4A70A9; background: rgba(74,112,169,0.08); }
-    .btn-solid { font-size: 14px; font-weight: 600; color: #EFECE3; padding: 6px 16px; border-radius: 6px; border: none; background: #4A70A9; cursor: pointer; text-decoration: none; transition: background 0.15s; }
-    .btn-solid:hover { background: #3a5a8f; }
-    .menu-toggle-btn { display: none; width: 36px; height: 36px; align-items: center; justify-content: center; border: 0.5px solid rgba(0,0,0,0.18); border-radius: 6px; background: transparent; cursor: pointer; flex-shrink: 0; }
-    .menu-toggle-btn svg { width: 18px; height: 18px; overflow: visible; }
-    .toggle-line { stroke: #000; stroke-width: 2.5; stroke-linecap: round; transition: transform 0.3s, opacity 0.25s; transform-origin: center; }
-    .menu-toggle-btn.open .line-top    { transform: translate(0, 5px) rotate(45deg); }
-    .menu-toggle-btn.open .line-mid    { opacity: 0; }
-    .menu-toggle-btn.open .line-bottom { transform: translate(0, -5px) rotate(-45deg); }
-    @media (max-width: 767px) { .nav-links { display: none; } .menu-toggle-btn { display: flex; } }
+  .topnav { position: fixed; top: 16px; left: 0; right: 0; z-index: 90; display: flex; justify-content: center; pointer-events: none; }
+  .topnav__bar { pointer-events: auto; display: flex; align-items: center; gap: 0; background: rgba(17,45,78,0.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 0.5px solid rgba(249,247,247,0.08); border-radius: var(--r-pill); padding: 7px 8px 7px 22px; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.35); color: var(--bg); }
+  .topnav__logo { font-weight: 600; font-size: 1rem; letter-spacing: -0.5px; color: var(--bg); margin-right: 1.25rem; display: inline-flex; align-items: center; gap: 6px; }
+  .topnav__logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); }
+  .topnav__links { display: flex; align-items: center; }
+  .topnav__links > * { position: relative; font-size: 14px; font-weight: 500; color: rgba(249,247,247,0.78); padding: 9px 14px; border-radius: var(--r-pill); cursor: pointer; transition: color 0.15s, background 0.15s; display: inline-flex; align-items: center; gap: 4px; }
+  .topnav__links > *:hover { color: var(--bg); background: rgba(249,247,247,0.06); }
+  .topnav__links .active { color: var(--bg); background: rgba(249,247,247,0.1); }
+  .topnav__cta { background: var(--cta); color: var(--ink) !important; font-weight: 600; margin-left: 8px; padding: 9px 18px !important; }
+  .topnav__cta:hover { background: var(--cta-hover) !important; color: var(--ink) !important; }
+  @media (max-width: 880px) { .topnav__links { display: none; } }
 
-    /* Sheet */
-    .sheet-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0); pointer-events: none; transition: background 0.3s; }
-    .sheet-overlay.open { background: rgba(0,0,0,0.3); pointer-events: all; }
-    .sheet { position: fixed; top: 0; left: 0; bottom: 0; z-index: 400; width: min(300px, 82vw); background: rgba(239,236,227,0.97); backdrop-filter: blur(12px); border-right: 0.5px solid rgba(0,0,0,0.1); transform: translateX(-100%); transition: transform 0.32s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; }
-    .sheet.open { transform: translateX(0); }
-    .sheet-body { flex: 1; overflow-y: auto; padding: 3rem 1rem 1.25rem; display: grid; align-content: start; gap: 4px; }
-    .sheet-body a { display: flex; align-items: center; font-size: 15px; font-weight: 500; color: #000; text-decoration: none; padding: 10px 12px; border-radius: 6px; transition: background 0.15s; }
-    .sheet-body a:hover { background: rgba(0,0,0,0.06); }
-    .sheet-body a.active { color: #4A70A9; }
-    .sheet-divider { height: 0.5px; background: rgba(0,0,0,0.1); margin: 6px 12px; }
-    .sheet-footer { padding: 1rem; border-top: 0.5px solid rgba(0,0,0,0.1); }
-    .sheet-footer .btn-solid { width: 100%; text-align: center; padding: 10px 16px; border-radius: 8px; display: block; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; }
+  .eyebrow::before { content: ""; display: inline-block; width: 14px; height: 14px; background: var(--lime); border-radius: 2px; }
 
-    /* ── HERO STRIP (full-width, accent bg) ── */
-    .page-hero {
-      margin-top: 56px;
-      background: #4A70A9;
-      padding: clamp(3.5rem, 8vw, 6rem) 1.25rem;
-      text-align: center;
-    }
-    .page-eyebrow {
-      display: inline-block;
-      font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
-      color: rgba(239,236,227,0.65); margin-bottom: 1.25rem;
-    }
-    .page-hero h1 {
-      font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 600;
-      color: #EFECE3; line-height: 1.1; letter-spacing: -0.5px;
-      max-width: 640px; margin: 0 auto 1.5rem;
-    }
-    .page-hero h1 em { font-style: normal; opacity: 0.55; }
-    .page-hero p {
-      font-size: clamp(14px, 2vw, 16px); color: rgba(239,236,227,0.75);
-      max-width: 480px; margin: 0 auto; line-height: 1.7;
-    }
+  .serif-em { font-family: var(--serif); font-weight: 400; font-style: italic; letter-spacing: -0.02em; }
 
-    /* ── CONTENT WRAPPER ── */
-    .content { max-width: 960px; margin: 0 auto; padding: 0 1.25rem; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+  .wrap-tight { max-width: 1080px; margin: 0 auto; padding: 0 2rem; }
+  @media (max-width: 720px) { .wrap, .wrap-tight { padding: 0 1.25rem; } }
 
-    /* Stats */
-    .stats-row {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      border: 0.5px solid rgba(0,0,0,0.1); border-radius: 12px;
-      overflow: hidden; margin: 3rem 0;
-    }
-    .stat {
-      padding: 2rem 1.75rem;
-      border-right: 0.5px solid rgba(0,0,0,0.1);
-    }
-    .stat:last-child { border-right: none; }
-    .stat-number { font-size: 2.5rem; font-weight: 600; color: #4A70A9; line-height: 1; margin-bottom: 0.5rem; letter-spacing: -1px; }
-    .stat-label { font-size: 13px; color: #555; line-height: 1.5; }
+  section { padding: 7rem 0; position: relative; }
+  @media (max-width: 720px) { section { padding: 4rem 0; } }
 
-    /* Section blocks */
-    .section { padding: 3rem 0; border-top: 0.5px solid rgba(0,0,0,0.1); }
-    .section-grid { display: grid; grid-template-columns: 180px 1fr; gap: 3rem; align-items: start; }
-    .section-label { font-size: 12px; font-weight: 500; color: #4A70A9; letter-spacing: 0.08em; text-transform: uppercase; padding-top: 5px; }
-    .section-body h2 { font-size: clamp(1.4rem, 2.5vw, 1.9rem); font-weight: 600; line-height: 1.2; margin-bottom: 1.25rem; letter-spacing: -0.3px; }
-    .section-body p { font-size: 15px; line-height: 1.8; color: #333; margin-bottom: 1rem; }
-    .section-body p:last-child { margin-bottom: 0; }
+  .page-hero { background: var(--lime); text-align: center; padding: 10rem 1.25rem 5rem; }
+  .page-hero .eyebrow { color: rgba(249,247,247,0.65); margin-bottom: 1.25rem; }
+  .page-hero .eyebrow::before { background: rgba(249,247,247,0.3); }
+  .page-hero h1 { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 600; color: var(--bg); line-height: 1.05; letter-spacing: -0.04em; max-width: 640px; margin: 0 auto 1rem; }
+  .page-hero p { font-size: 16px; color: rgba(249,247,247,0.7); max-width: 520px; margin: 0 auto; line-height: 1.7; }
 
-    /* Team */
-    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1rem; margin-top: 2rem; }
-    .team-card { background: #E5E1D6; border-radius: 10px; padding: 1.5rem 1.25rem; }
-    .team-avatar {
-      width: 44px; height: 44px; border-radius: 50%;
-      background: #4A70A9; color: #EFECE3;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px; font-weight: 600; margin-bottom: 1rem;
-    }
-    .team-name { font-size: 14px; font-weight: 500; color: #000; margin-bottom: 3px; }
-    .team-title { font-size: 12px; color: #777; }
+  .sec-head { display: grid; grid-template-columns: 200px 1fr 320px; gap: 3rem; align-items: end; margin-bottom: 4rem; }
+  .sec-head__label { align-self: start; position: sticky; top: 100px; }
+  .sec-head__title h2 { font-family: var(--sans); font-size: clamp(2rem, 5vw, 4rem); font-weight: 600; letter-spacing: -0.04em; line-height: 1; max-width: 14ch; }
+  .sec-head__title h2 .serif-em { font-size: 1.05em; }
+  .sec-head__meta { font-size: 15px; color: var(--ink-2); line-height: 1.65; max-width: 30ch; }
+  @media (max-width: 880px) { .sec-head { grid-template-columns: 1fr; gap: 1.25rem; margin-bottom: 2.5rem; } .sec-head__label { position: static; } }
 
-    /* Values */
-    .values-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1px; background: rgba(0,0,0,0.08); border-radius: 12px; overflow: hidden; margin-top: 2rem; }
-    .value-card { background: #EFECE3; padding: 1.5rem; }
-    .value-icon { font-size: 1.25rem; margin-bottom: 0.75rem; }
-    .value-title { font-size: 14px; font-weight: 500; color: #000; margin-bottom: 0.4rem; }
-    .value-text { font-size: 13px; color: #555; line-height: 1.6; }
+  .mission-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .mission-card { background: var(--bg-card); border: 0.5px solid var(--line); border-radius: var(--r-card); padding: 2rem; transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out); }
+  .mission-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); }
+  .mission-card__icon { width: 44px; height: 44px; border-radius: 10px; background: var(--lime); color: var(--bg); display: grid; place-items: center; font-size: 13px; font-weight: 700; margin-bottom: 1.25rem; }
+  .mission-card h3 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+  .mission-card p { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+  @media (max-width: 720px) { .mission-grid { grid-template-columns: 1fr; } }
 
-    /* CTA strip */
-    .cta-strip { background: #4A70A9; text-align: center; padding: 4rem 1.25rem; margin-top: 4rem; }
-    .cta-strip h2 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 600; color: #EFECE3; margin-bottom: 0.75rem; }
-    .cta-strip p { font-size: 15px; color: rgba(239,236,227,0.75); margin-bottom: 2rem; }
-    .btn-cta { display: inline-block; background: #EFECE3; color: #4A70A9; font-size: 15px; font-weight: 600; padding: 13px 32px; border-radius: 999px; text-decoration: none; transition: opacity 0.15s, transform 0.1s; }
-    .btn-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+  .story { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  .story__visual {
+    background: var(--lime); border-radius: var(--r-card);
+    padding: 2.5rem; color: var(--bg);
+    position: relative; overflow: hidden;
+    min-height: 320px; display: flex; flex-direction: column; justify-content: center;
+  }
+  .story__visual blockquote { font-size: 1.25rem; line-height: 1.5; font-style: italic; margin-bottom: 1.5rem; opacity: 0.9; }
+  .story__visual .attribution { font-size: 14px; color: rgba(249,247,247,0.7); }
+  .story__visual .attribution strong { color: var(--bg); display: block; }
+  .story__text h2 { font-size: 2.25rem; font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 1.5rem; }
+  .story__text h2 .serif-em { font-size: 1.05em; }
+  .story__text p { font-size: 15px; color: var(--ink-2); line-height: 1.7; margin-bottom: 1rem; }
+  @media (max-width: 880px) { .story { grid-template-columns: 1fr; } }
 
-    /* Responsive */
-    @media (max-width: 640px) {
-      .stats-row { grid-template-columns: 1fr; }
-      .stat { border-right: none; border-bottom: 0.5px solid rgba(0,0,0,0.1); }
-      .stat:last-child { border-bottom: none; }
-      .section-grid { grid-template-columns: 1fr; gap: 0.75rem; }
-    }
+  .knowledge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .knowledge-card {
+    background: var(--bg-card); border: 0.5px solid var(--line);
+    border-radius: var(--r-card); padding: 2rem;
+    display: flex; flex-direction: column; gap: 1rem;
+    transition: transform 0.3s var(--ease-out), background 0.25s, color 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .knowledge-card:hover { transform: translateY(-4px); background: var(--lime); }
+  .knowledge-card:hover * { color: var(--bg); }
+  .knowledge-card:hover .knowledge-card__arrow { background: var(--cta); color: var(--ink); border-color: var(--cta); }
+  .knowledge-card h3 { font-size: 1.125rem; font-weight: 600; letter-spacing: -0.02em; transition: color 0.25s; }
+  .knowledge-card p { font-size: 14px; color: var(--ink-2); line-height: 1.55; transition: color 0.25s; }
+  .knowledge-card__arrow {
+    align-self: flex-start; margin-top: auto;
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    display: grid; place-items: center;
+    transition: background 0.25s, color 0.25s, border-color 0.25s;
+    font-size: 14px;
+  }
+  @media (max-width: 720px) { .knowledge-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 480px) { .knowledge-grid { grid-template-columns: 1fr; } }
 
-    /* Reveal */
-    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-  </style>
+  .full-text { max-width: 38rem; }
+  .full-text h2 { font-size: 2.25rem; font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 1.5rem; }
+  .full-text h2 .serif-em { font-size: 1.05em; }
+  .full-text p { font-size: 15px; color: var(--ink-2); line-height: 1.7; margin-bottom: 1rem; }
+  .full-text p strong { color: var(--ink); font-weight: 600; }
+
+  footer { background: var(--bg-dark); color: var(--bg); padding: 4rem 0 2rem; }
+  .footer__grid { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 2rem; padding-bottom: 3rem; border-bottom: 0.5px solid var(--line-on-dark); }
+  .footer__col h4 { font-size: 13px; font-weight: 600; color: rgba(249,247,247,0.55); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1.25rem; }
+  .footer__col ul { list-style: none; }
+  .footer__col li { margin-bottom: 12px; }
+  .footer__col a { font-size: 14px; color: rgba(249,247,247,0.85); transition: color 0.15s; }
+  .footer__col a:hover { color: var(--lime); }
+  .footer__brand p { font-size: 14px; color: rgba(249,247,247,0.65); margin-top: 12px; max-width: 22rem; line-height: 1.6; }
+  .footer__brand .logo { font-weight: 600; font-size: 1.25rem; letter-spacing: -0.5px; display: inline-flex; align-items: center; gap: 8px; }
+  .footer__brand .logo .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--lime); }
+  .footer__bottom { padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 13px; color: rgba(249,247,247,0.55); }
+  .footer__bottom a { color: inherit; margin-left: 1rem; }
+  .footer__bottom a:hover { color: var(--lime); }
+  @media (max-width: 720px) { .footer__grid { grid-template-columns: 1fr 1fr; } .footer__brand { grid-column: 1 / -1; } }
+
+  .btn-pill { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px 14px 28px; border-radius: var(--r-pill); font-weight: 600; font-size: 15px; transition: transform 0.2s var(--ease-out), background 0.18s; cursor: pointer; border: none; }
+  .btn-pill .arrow { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; transition: transform 0.25s var(--ease-out); }
+  .btn-pill:hover .arrow { transform: translateX(4px) rotate(-15deg); }
+  .btn-pill--cta { background: var(--cta); color: var(--ink); }
+  .btn-pill--cta:hover { background: var(--cta-hover); }
+  .btn-pill--cta .arrow { background: var(--ink); color: var(--bg); }
+
+  .jobs-banner { background: var(--cta); border-radius: var(--r-card); padding: 2.5rem; text-align: center; margin-top: 2rem; }
+  .jobs-banner h3 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+  .jobs-banner p { font-size: 15px; color: var(--ink-2); margin-bottom: 1.5rem; }
+  .jobs-banner .arrow-link { font-size: 15px; font-weight: 600; color: var(--ink); display: inline-flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--ink); padding-bottom: 2px; transition: color 0.15s; }
+  .jobs-banner .arrow-link:hover { color: var(--lime); border-color: var(--lime); }
+
+  .reveal-pending { opacity: 0; transform: translateY(28px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
+  .reveal-pending.is-visible { opacity: 1; transform: translateY(0); }
+</style>
 </head>
 <body>
 
-  <header>
-    <nav>
-      <a class="nav-brand" href="swiftclaim_testimonials_page.html">
-        <span class="nav-brand-name">Swiftclaim<span>.se</span></span>
-      </a>
-      <div class="nav-links">
-        <a href="om-oss.html" class="active">Om oss</a>
-        <a href="#">Priser</a>
-        <a href="#">Blogg</a>
-        <a href="#">Vanliga frågor</a>
-        <a href="#">Kontakt</a>
-        <a class="btn-solid" href="swiftclaim_testimonials_page.html">Anmäl skada</a>
-      </div>
-      <button class="menu-toggle-btn" id="menuToggle" onclick="toggleSheet()" aria-label="Öppna meny">
-        <svg viewBox="0 0 18 18" fill="none">
-          <line class="toggle-line line-top"    x1="2" y1="4"  x2="16" y2="4"/>
-          <line class="toggle-line line-mid"    x1="2" y1="9"  x2="16" y2="9"/>
-          <line class="toggle-line line-bottom" x1="2" y1="14" x2="16" y2="14"/>
-        </svg>
-      </button>
-    </nav>
-  </header>
-
-  <div class="sheet-overlay" id="sheetOverlay" onclick="closeSheet()"></div>
-  <div class="sheet" id="sheet">
-    <div class="sheet-body">
+<nav class="topnav">
+  <div class="topnav__bar">
+    <a href="landing_v2.html" class="topnav__logo"><span class="dot"></span> Swiftclaim</a>
+    <div class="topnav__links">
+      <a href="landing_v2.html">Hem</a>
+      <a href="landing_v2.html#hur">Tjänster</a>
+      <a href="landing_v2.html#kunder">Resultat</a>
+      <a href="landing_v2.html#faq">FAQ</a>
+      <a href="blogg.html">Blogg</a>
+      <a href="priser.html">Priser</a>
       <a href="om-oss.html" class="active">Om oss</a>
-      <a href="#">Priser</a>
-      <a href="#">Blogg & kundberättelser</a>
-      <a href="#">Vanliga frågor</a>
-      <div class="sheet-divider"></div>
-      <a href="#">Kontakta oss</a>
-      <a href="#">Dataskydd</a>
-      <a href="#">Användarvillkor</a>
-    </div>
-    <div class="sheet-footer">
-      <a class="btn-solid" href="swiftclaim_testimonials_page.html">Anmäl skada</a>
+      <a href="kontakt.html">Kontakt</a>
+      <a href="landing_v2.html#anmal" class="topnav__cta">Anmäl skada</a>
     </div>
   </div>
+</nav>
 
-  <!-- HERO -->
-  <div class="page-hero">
-    <div class="page-eyebrow">Om oss</div>
-    <h1>Vi kämpar för att du ska få <em>varje krona</em> du har rätt till</h1>
-    <p>[Platshållare] Swiftclaim grundades med en enkel övertygelse — att vanliga svenska husägare förtjänar lika stark representation som försäkringsbolagen.</p>
+<section class="page-hero">
+  <div class="eyebrow">Vårt uppdrag</div>
+  <h1>Vi ser till att försäkringsbolagen gör <span class="serif-em">sitt jobb</span></h1>
+  <p>Det ska vara en självklarhet att få rätt ersättning vid sakskador.</p>
+</section>
+
+<section>
+  <div class="wrap-tight">
+    <div class="mission-grid">
+      <div class="mission-card reveal-pending">
+        <div class="mission-card__icon">01</div>
+        <h3>Vi säkerställer rätt ersättning</h3>
+        <p>Vi granskar dina försäkringar och ser till att försäkringsbolaget fattar ett korrekt beslut — oavsett om det gäller din bostad, bil, mobil eller andra värdesaker.</p>
+      </div>
+      <div class="mission-card reveal-pending">
+        <div class="mission-card__icon">02</div>
+        <h3>Vi sköter pappersarbetet</h3>
+        <p>Vi hanterar all kontakt med försäkringsbolagen, formulerar ersättningskrav och ordnar med dokumentationen så att du kan fokusera på annat.</p>
+      </div>
+      <div class="mission-card reveal-pending">
+        <div class="mission-card__icon">03</div>
+        <h3>Vi driver ditt ärende</h3>
+        <p>Vi bevakar tidsfrister, överklagar felaktiga beslut och driver ärendet tills du fått den ersättning du har rätt till.</p>
+      </div>
+    </div>
   </div>
+</section>
 
-  <div class="content">
-
-    <!-- Stats -->
-    <div class="stats-row reveal">
-      <div class="stat">
-        <div class="stat-number">10 000+</div>
-        <div class="stat-label">Ärenden framgångsrikt hanterade</div>
-      </div>
-      <div class="stat">
-        <div class="stat-number">4,9 ★</div>
-        <div class="stat-label">Genomsnittligt kundbetyg</div>
-      </div>
-      <div class="stat">
-        <div class="stat-number">94%</div>
-        <div class="stat-label">Av kunder fick mer än ursprungserbjudandet</div>
-      </div>
+<section>
+  <div class="wrap-tight">
+    <div class="sec-head reveal-pending">
+      <div class="sec-head__label"><div class="eyebrow">Swiftclaim</div></div>
+      <div class="sec-head__title"><h2>Rätt ersättning för <span class="serif-em">alla</span> sakskador</h2></div>
+      <div class="sec-head__meta">Nöjda kunder som fått sin ersättning</div>
     </div>
 
-    <!-- Historia -->
-    <div class="section reveal">
-      <div class="section-grid">
-        <div class="section-label">Vår historia</div>
-        <div class="section-body">
-          <h2>Grundat av frustrerade husägare, för husägare</h2>
-          <p>[Platshållare] År 20XX drabbades grundarna av Swiftclaim av egna erfarenheter av orättvisa försäkringsutbetalningar. Efter månader av kamp mot systemet insåg de att problemet var utbrett — och att lösningen saknades på marknaden.</p>
-          <p>[Platshållare] Idag är vi ett team på XX personer med experter inom försäkringsrätt, skadehantering och kundservice. Vår mission är enkel: att säkerställa att du får varje krona du har rätt till.</p>
-          <p>[Platshållare] Vi tar ingen betalning om vi inte lyckas. Det är hur övertygade vi är om det vi gör.</p>
-        </div>
-      </div>
+    <div class="full-text reveal-pending">
+      <p>När din egendom skadas — vare sig det gäller din bostad, bil, mobil eller andra värdesaker — ska du inte behöva kämpa mot försäkringsbolagen för att få den ersättning du har rätt till. Ändå missar tusentals svenskar varje år att få full ersättning för sina sakskador.</p>
+      <p>Det vill vi ändra på. Med Swiftclaim får du tillgång till juridisk expertis som navigerar försäkringsvillkoren åt dig och ser till att ingen ersättning faller mellan stolarna.</p>
+      <p><strong>Vi är inte ett försäkringsbolag</strong> — vi är experter på att säkerställa att försäkringsbolagen fattar korrekta beslut. Vi granskar dina försäkringar, dokumenterar skadan och driver ärendet tills du fått det du har rätt till. Att starta ett ärende är kostnadsfritt — vi tar bara betalt om vi lyckas.</p>
     </div>
-
-    <!-- Team -->
-    <div class="section reveal">
-      <div class="section-grid">
-        <div class="section-label">Teamet</div>
-        <div class="section-body">
-          <h2>Personerna bakom Swiftclaim</h2>
-          <div class="team-grid">
-            <div class="team-card">
-              <div class="team-avatar">A</div>
-              <div class="team-name">Anna Placeholder</div>
-              <div class="team-title">VD & Grundare</div>
-            </div>
-            <div class="team-card">
-              <div class="team-avatar">M</div>
-              <div class="team-name">Marcus Placeholder</div>
-              <div class="team-title">Försäkringsjurist</div>
-            </div>
-            <div class="team-card">
-              <div class="team-avatar">L</div>
-              <div class="team-name">Lisa Placeholder</div>
-              <div class="team-title">Kundansvarig</div>
-            </div>
-            <div class="team-card">
-              <div class="team-avatar">E</div>
-              <div class="team-name">Erik Placeholder</div>
-              <div class="team-title">Skadespecialist</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Values -->
-    <div class="section reveal">
-      <div class="section-grid">
-        <div class="section-label">Våra värderingar</div>
-        <div class="section-body">
-          <h2>Det vi tror på</h2>
-          <div class="values-grid">
-            <div class="value-card">
-              <div class="value-icon">⚖</div>
-              <div class="value-title">Rättvisa alltid</div>
-              <div class="value-text">[Platshållare] Varje kund förtjänar full ersättning för sin skada.</div>
-            </div>
-            <div class="value-card">
-              <div class="value-icon">◎</div>
-              <div class="value-title">Ingen risk för dig</div>
-              <div class="value-text">[Platshållare] Ingen betalning om vi inte lyckas. Din ekonomiska risk är noll.</div>
-            </div>
-            <div class="value-card">
-              <div class="value-icon">⚡</div>
-              <div class="value-title">Snabbhet</div>
-              <div class="value-text">[Platshållare] Vi rör oss snabbt och håller dig uppdaterad hela vägen.</div>
-            </div>
-            <div class="value-card">
-              <div class="value-icon">✦</div>
-              <div class="value-title">Transparens</div>
-              <div class="value-text">[Platshållare] Inga överraskningar. Du vet alltid exakt vad som händer.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
+</section>
 
-  <div class="cta-strip reveal">
-    <h2>Redo att få det du har rätt till?</h2>
-    <p>[Platshållare] Anmäl din skada idag — helt kostnadsfritt tills vi vinner.</p>
-    <a class="btn-cta" href="swiftclaim_testimonials_page.html">Anmäl skada kostnadsfritt ↗</a>
+<section style="background: var(--bg-card);">
+  <div class="wrap-tight">
+    <div class="sec-head reveal-pending">
+      <div class="sec-head__label"><div class="eyebrow">Vår idé</div></div>
+      <div class="sec-head__title"><h2>Vi ser till att försäkringsbolagen gör <span class="serif-em">sitt jobb</span></h2></div>
+      <div class="sec-head__meta"></div>
+    </div>
+
+    <div class="story reveal-pending">
+      <div class="story__visual">
+        <blockquote>"Det blev tydligt att rätten till ersättning inte alltid avgjordes av försäkringsvillkoren — utan av vem som hanterade ärendet."</blockquote>
+        <div class="attribution"><strong>Grundaren av Swiftclaim</strong>F.d. skadereglerare & juriststudent</div>
+      </div>
+      <div class="story__text">
+        <p>Under sin tid som juriststudent arbetade vår grundare som skadereglerare på ett försäkringsbolag. Där blev det snabbt tydligt att rätten till ersättning inte alltid avgjordes av försäkringsvillkoren eller omständigheterna i det enskilda fallet. I stället påverkades utfallet ofta av faktorer som vilken skadereglerare som hanterade ärendet, hur kunden formulerade sitt ersättningskrav och dennes tidigare erfarenhet av försäkringsprocesser.</p>
+        <p>Detta innebar att aspekter som egentligen inte borde vara avgörande fick oproportionerligt stor betydelse — något som ofta drabbade konsumenten både i form av lägre eller utebliven ersättning och längre handläggningstider.</p>
+        <p>Under samma period började förfrågningar komma in från vänner och bekanta som upplevde svårigheter med att navigera komplexa och utdragna processer med försäkringsbolag. Det var här idén till Swiftclaim föddes.</p>
+        <p>Swiftclaim finns för att göra processen tryggare och smidigare. Genom juridisk expertis och erfarenhet säkerställer vi att försäkringsbolag fattar korrekta beslut — och att våra kunder får den ersättning de har rätt till.</p>
+      </div>
+    </div>
   </div>
+</section>
+
+<section>
+  <div class="wrap-tight">
+    <div class="sec-head reveal-pending">
+      <div class="sec-head__label"><div class="eyebrow">Vi kan sakskador</div></div>
+      <div class="sec-head__title"><h2>Ta del av vår <span class="serif-em">samlade</span> kunskap</h2></div>
+      <div class="sec-head__meta">Om försäkringsersättning vid sakskador — bostad, bil, mobil och mer.</div>
+    </div>
+
+    <div class="knowledge-grid">
+      <a href="om-oss.html" class="knowledge-card reveal-pending">
+        <h3>Våra kunder</h3>
+        <p>Tusentals nöjda kunder har fått ut ersättning med vår hjälp. Läs deras berättelser.</p>
+        <span class="knowledge-card__arrow">↗</span>
+      </a>
+      <a href="blogg.html" class="knowledge-card reveal-pending">
+        <h3>Vår blogg</h3>
+        <p>Tips och råd om sakskador, försäkringsvillkor och hur du säkerställer rätt ersättning.</p>
+        <span class="knowledge-card__arrow">↗</span>
+      </a>
+      <a href="landing_v2.html#faq" class="knowledge-card reveal-pending">
+        <h3>Skadeskolan</h3>
+        <p>Lär dig allt om vattenskador, brandskador, stöld av mobil och hur du lyckas med ditt ärende.</p>
+        <span class="knowledge-card__arrow">↗</span>
+      </a>
+    </div>
+
+    <div class="jobs-banner reveal-pending">
+      <h3>Var med på resan!</h3>
+      <p>Vi växer snabbt! Vill du hjälpa fler svenskar att få rätt ersättning för sina sakskador?</p>
+      <a href="kontakt.html" class="arrow-link">Lediga tjänster <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<section style="background: var(--lime); padding: 5rem 0;">
+  <div class="wrap" style="text-align: center;">
+    <h2 style="font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 600; color: var(--bg); letter-spacing: -0.04em; line-height: 1.05; max-width: 14ch; margin: 0 auto 1.5rem;">Redo att få det <span class="serif-em" style="color: var(--cta);">du</span> har rätt till?</h2>
+    <p style="font-size: 16px; color: rgba(249,247,247,0.7); max-width: 420px; margin: 0 auto 2rem; line-height: 1.7;">Starta ett ärende kostnadsfritt — du betalar bara om vi lyckas.</p>
+    <a href="landing_v2.html#anmal" class="btn-pill btn-pill--cta">
+      Anmäl din skada
+      <span class="arrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer__grid">
+      <div class="footer__brand footer__col">
+        <div class="logo"><span class="dot"></span> Swiftclaim</div>
+        <p>Skadeombud för svenska privatpersoner. Vi argumenterar, förhandlar och driver ditt försäkringsärende — så att du får ut det du har rätt till.</p>
+      </div>
+      <div class="footer__col"><h4>Tjänster</h4><ul><li><a href="landing_v2.html#hur">Skadeanalys</a></li><li><a href="landing_v2.html#hur">Förhandling</a></li><li><a href="landing_v2.html#hur">Omprövning</a></li><li><a href="landing_v2.html#hur">ARN-anmälan</a></li></ul></div>
+      <div class="footer__col"><h4>Skadetyper</h4><ul><li><a href="landing_v2.html#kunder">Vattenskada</a></li><li><a href="landing_v2.html#kunder">Brandskada</a></li><li><a href="landing_v2.html#kunder">Inbrott</a></li><li><a href="landing_v2.html#kunder">Stormskada</a></li></ul></div>
+      <div class="footer__col"><h4>Resurser</h4><ul><li><a href="blogg.html">Blogg</a></li><li><a href="landing_v2.html#faq">Vanliga frågor</a></li><li><a href="priser.html">Priser</a></li></ul></div>
+      <div class="footer__col"><h4>Företaget</h4><ul><li><a href="om-oss.html">Om oss</a></li><li><a href="kontakt.html">Kontakt</a></li><li><a href="dataskydd.html">Dataskydd</a></li><li><a href="anvandarvillkor.html">Användarvillkor</a></li></ul></div>
+    </div>
+    <div class="footer__bottom"><div>&copy; 2026 Swiftclaim AB</div><div><a href="dataskydd.html">Dataskydd</a><a href="anvandarvillkor.html">Användarvillkor</a></div></div>
+  </div>
+</footer>
 
 <script>
-function toggleSheet() {
-  const open = document.getElementById('sheet').classList.toggle('open');
-  document.getElementById('sheetOverlay').classList.toggle('open', open);
-  document.getElementById('menuToggle').classList.toggle('open', open);
-  document.body.style.overflow = open ? 'hidden' : '';
-}
-function closeSheet() {
-  document.getElementById('sheet').classList.remove('open');
-  document.getElementById('sheetOverlay').classList.remove('open');
-  document.getElementById('menuToggle').classList.remove('open');
-  document.body.style.overflow = '';
-}
-const observer = new IntersectionObserver(
-  entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-  { threshold: 0.1 }
-);
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal-pending').forEach(el => io.observe(el));
+  setTimeout(() => { document.querySelectorAll('.reveal-pending:not(.is-visible)').forEach(el => el.classList.add('is-visible')); }, 2500);
 </script>
+
 </body>
 </html>

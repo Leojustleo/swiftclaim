@@ -3,29 +3,38 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Swiftclaim — Vi kämpar för din ersättning</title>
+<title>Swiftclaim — Snabb, enkel och pålitlig skadehantering </title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23112D4E'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='system-ui' font-weight='700' font-size='18' fill='%23f7d154'%3ES%3C/text%3E%3C/svg%3E" />
+<meta name="description" content="Swiftclaim är ditt skadeombud — vi analyserar, förhandlar och driver ditt försäkringsärende så att du får den ersättning du har rätt till. Ingen vinst, ingen avgift." />
+<meta property="og:title" content="Swiftclaim — Snabb, enkel och pålitlig skadehantering" />
+<meta property="og:description" content="Swiftclaim är ditt skadeombud — vi analyserar, förhandlar och driver ditt försäkringsärende så att du får den ersättning du har rätt till." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://swiftclaim.se" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Swiftclaim — Snabb, enkel och pålitlig skadehantering" />
+<meta name="twitter:description" content="Swiftclaim är ditt skadeombud — vi analyserar, förhandlar och driver ditt försäkringsärende." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500&display=swap">
 <style>
   :root {
-    --bg: #EFECE3;
-    --bg-card: #E5E1D6;
-    --bg-deep: #DDD9CB;
-    --bg-dark: #14161A;
-    --bg-dark-2: #1C1F25;
+    --bg: #F9F7F7;
+    --bg-card: #DBE2EF;
+    --bg-dark: #112D4E;
     --ink: #0A0A0A;
     --ink-2: #2C2C2C;
     --muted: #6F6F6F;
     --line: rgba(0,0,0,0.10);
     --line-strong: rgba(0,0,0,0.18);
-    --line-on-dark: rgba(239,236,227,0.14);
+    --line-on-dark: rgba(249,247,247,0.14);
 
-    --brand: #4A70A9;
-    --brand-dark: #3a5a8f;
-    --lime: #C8E658;
-    --lime-soft: #DFF08F;
-    --lime-deep: #A7C73C;
+    --brand: #3F72AF;
+    --brand-dark: #2E5B9E;
+    --lime: #112D4E;
+    --lime-soft: #3F72AF;
+    --lime-deep: #0A1E36;
+    --cta: #f7d154;
+    --cta-hover: #e6c44d;
 
     --r-card: 14px;
     --r-pill: 999px;
@@ -83,7 +92,7 @@
     background: var(--lime);
     border-radius: 2px;
   }
-  .eyebrow.on-dark { color: rgba(239,236,227,0.85); }
+  .eyebrow.on-dark { color: rgba(249,247,247,0.85); }
 
   /* ── Decorative pixel squares ───────────────── */
   .pixel {
@@ -112,8 +121,9 @@
   }
   .topnav__bar {
     pointer-events: auto;
+    position: relative;
     display: flex; align-items: center; gap: 0;
-    background: rgba(20,22,26,0.92);
+    background: rgba(17,45,78,0.92);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border: 0.5px solid rgba(255,255,255,0.08);
@@ -140,7 +150,7 @@
   .topnav__links > * {
     position: relative;
     font-size: 14px; font-weight: 500;
-    color: rgba(239,236,227,0.78);
+    color: rgba(249,247,247,0.78);
     padding: 9px 14px;
     border-radius: var(--r-pill);
     cursor: pointer;
@@ -158,14 +168,14 @@
     opacity: 0.7;
   }
   .topnav__cta {
-    background: var(--lime);
+    background: var(--cta);
     color: var(--ink) !important;
     font-weight: 600;
     margin-left: 8px;
     padding: 9px 18px !important;
-    background-color: var(--lime) !important;
+    background-color: var(--cta) !important;
   }
-  .topnav__cta:hover { background: var(--lime-deep) !important; color: var(--ink) !important; }
+  .topnav__cta:hover { background: var(--cta-hover) !important; color: var(--ink) !important; }
 
   .topnav__menu-btn {
     display: none;
@@ -177,13 +187,24 @@
   }
   @media (max-width: 880px) {
     .topnav__links { display: none; }
+    .topnav__links.is-open {
+      display: flex; flex-direction: column;
+      position: absolute; top: calc(100% + 8px); right: 0;
+    background: rgba(17,45,78,0.96);
+      backdrop-filter: blur(14px);
+      border: 0.5px solid rgba(255,255,255,0.08);
+      border-radius: 14px; padding: 8px;
+      min-width: 200px;
+      box-shadow: 0 20px 50px -15px rgba(0,0,0,0.4);
+    }
+    .topnav__links.is-open > * { justify-content: flex-start; padding: 10px 14px; width: 100%; }
     .topnav__menu-btn { display: inline-flex; }
   }
 
   /* Dropdown menu */
   .menu-pop {
     position: absolute; top: calc(100% + 12px); left: 0;
-    background: rgba(20,22,26,0.96);
+    background: rgba(17,45,78,0.96);
     backdrop-filter: blur(14px);
     border: 0.5px solid rgba(255,255,255,0.08);
     border-radius: 14px;
@@ -197,79 +218,56 @@
   .has-menu:hover > .menu-pop { opacity: 1; transform: translateY(0); pointer-events: auto; }
   .menu-pop a {
     display: block; padding: 10px 12px;
-    font-size: 14px; color: rgba(239,236,227,0.78);
+    font-size: 14px; color: rgba(249,247,247,0.78);
     border-radius: 8px;
     transition: background 0.12s, color 0.12s;
   }
   .menu-pop a:hover { background: rgba(255,255,255,0.05); color: var(--bg); }
   .menu-pop a strong { display: block; color: var(--bg); margin-bottom: 2px; font-weight: 600; font-size: 14px; }
-  .menu-pop a span { font-size: 12px; color: rgba(239,236,227,0.55); }
+  .menu-pop a span { font-size: 12px; color: rgba(249,247,247,0.55); }
 
   /* ── Hero ───────────────────────────────────── */
   .hero {
+    background: var(--lime);
+    text-align: center;
+    padding: 10rem 0 5rem;
     position: relative;
-    padding: 10rem 0 4rem;
     overflow: hidden;
   }
 
-  .hero__inner { position: relative; text-align: center; }
+  .hero__inner { position: relative; }
+
+  .hero .eyebrow { color: rgba(249,247,247,0.65); margin-bottom: 1.25rem; }
+  .hero .eyebrow::before { background: rgba(249,247,247,0.3); }
 
   .hero h1 {
-    font-size: clamp(3rem, 11vw, 9.5rem);
+    font-size: clamp(2rem, 5vw, 4rem);
     font-family: var(--sans);
-    line-height: 0.92;
-    letter-spacing: -0.05em;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
     font-weight: 600;
+    color: var(--bg);
     max-width: 14ch;
-    margin: 1rem auto 0;
+    margin: 0 auto 1rem;
   }
-  .hero h1 .serif-em {
-    font-size: 1.05em; /* serif italic optical balance */
-    letter-spacing: -0.03em;
-    color: var(--ink);
-  }
-
-  /* Word-split spans */
-  .split-words .word {
-    display: inline-block;
-    overflow: hidden;
-    vertical-align: top;
-    line-height: 0.92;
-    padding-bottom: 0.05em;
-  }
-  .split-words .word__inner {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(110%);
-    transition: opacity 0.7s var(--ease-out), transform 0.9s var(--ease-out);
-    transition-delay: calc(var(--i, 0) * 70ms);
-  }
-  .split-words.is-visible .word__inner {
-    opacity: 1; transform: translateY(0);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .split-words .word__inner { opacity: 1; transform: none; transition: none; }
-  }
+  .hero h1 .serif-em { color: var(--cta); font-size: 1.05em; }
 
   .hero__sub {
-    margin: 1.75rem auto 0;
-    font-size: 1.0625rem; line-height: 1.6;
-    color: var(--ink-2);
+    font-size: 1.0625rem; line-height: 1.7;
+    color: rgba(249,247,247,0.7);
     max-width: 36rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s var(--ease-out) 0.6s, transform 0.6s var(--ease-out) 0.6s;
+    margin: 0 auto;
   }
-  .hero.is-visible .hero__sub { opacity: 1; transform: translateY(0); }
 
   .hero__cta-row {
-    margin-top: 2rem;
+    margin-top: 2.5rem;
     display: inline-flex; align-items: center; gap: 16px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s var(--ease-out) 0.85s, transform 0.6s var(--ease-out) 0.85s;
   }
-  .hero.is-visible .hero__cta-row { opacity: 1; transform: translateY(0); }
+
+  .hero__meta {
+    margin-top: 1.25rem;
+    font-size: 13px; color: rgba(249,247,247,0.55);
+  }
 
   .btn-pill {
     display: inline-flex; align-items: center; gap: 10px;
@@ -294,44 +292,24 @@
   .btn-pill--dark .arrow { background: var(--lime); color: var(--ink); }
   .btn-pill--dark:hover { background: var(--ink-2); }
 
-  .btn-pill--lime {
-    background: var(--lime); color: var(--ink);
-  }
-  .btn-pill--lime:hover { background: var(--lime-deep); }
-
   .btn-pill--ghost {
-    background: transparent; color: var(--ink);
-    border: 1px solid var(--line-strong);
+    background: transparent; color: var(--bg);
+    border: 1px solid rgba(249,247,247,0.25);
   }
-  .btn-pill--ghost:hover { background: var(--bg-card); }
+  .btn-pill--ghost:hover { background: rgba(249,247,247,0.08); }
 
-  .hero__meta {
-    margin-top: 1rem;
-    font-size: 13px; color: var(--muted);
-    opacity: 0;
-    transition: opacity 0.6s var(--ease-out) 1s;
+  .btn-pill--cta {
+    background: var(--cta); color: var(--ink);
   }
-  .hero.is-visible .hero__meta { opacity: 1; }
+  .btn-pill--cta:hover { background: var(--cta-hover); }
+  .btn-pill--cta .arrow { background: var(--ink); color: var(--bg); }
 
-  /* Hero pixel decorations */
-  .hero__deco { position: absolute; inset: 0; pointer-events: none; }
-  .hero__deco .pixel.p1 { top: 22%; left: 8%; }
-  .hero__deco .pixel.p2 { top: 14%; right: 12%; }
-  .hero__deco .pixel.p3 { top: 38%; right: 18%; }
-  .hero__deco .pixel.p4 { top: 60%; left: 14%; }
-  .hero__deco .pixel.p5 { top: 76%; right: 9%; }
-  .hero__deco .pixel.p6 { top: 50%; left: 22%; }
-
-  /* Hero floating mockup (Swiftclaim OS dashboard preview) */
+  /* Hero floating mockup */
   .hero__mockup-wrap {
     margin: 4rem auto 0;
     max-width: 1080px;
     position: relative;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.9s var(--ease-out) 1.1s, transform 1s var(--ease-out) 1.1s;
   }
-  .hero.is-visible .hero__mockup-wrap { opacity: 1; transform: translateY(0); }
 
   .mockup {
     background: var(--bg-card);
@@ -397,7 +375,7 @@
   }
   .mockup__topbar h4 { font-size: 14px; font-weight: 600; }
   .mockup__topbar .badge {
-    background: var(--lime); color: var(--ink);
+    background: var(--lime); color: var(--bg);
     font-size: 11px; font-weight: 600;
     padding: 3px 10px; border-radius: 999px;
   }
@@ -444,17 +422,23 @@
   }
   .mockup__row .pill {
     font-size: 10px; padding: 3px 8px; border-radius: 999px;
-    background: rgba(74,112,169,0.12); color: var(--brand); font-weight: 600;
+    background: rgba(63,114,175,0.12); color: var(--brand); font-weight: 600;
     display: inline-block;
   }
   .mockup__row .pill.warn { background: rgba(220,140,40,0.12); color: #b67320; }
   .mockup__row .pill.ok { background: rgba(60,140,80,0.12); color: #3c7c4f; }
 
   @media (max-width: 720px) {
-    .hero { padding: 7rem 0 2rem; }
+    .hero { padding: 7rem 0 3rem; }
     .mockup__app { grid-template-columns: 1fr; }
     .mockup__sidebar { display: none; }
     .mockup__stats { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .mockup__row { grid-template-columns: 1fr 1fr; gap: 4px; padding: 8px 10px; }
+    .mockup__row.head { display: none; }
+    .mockup__row > *:nth-child(3),
+    .mockup__row > *:nth-child(4) { font-size: 11px; }
   }
 
   /* ── Section base ───────────────────────────── */
@@ -516,6 +500,7 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .marquee__track { animation: none; }
+    .marquee__track [aria-hidden="true"] { display: none; }
   }
 
   /* ── Results section: case cards ────────────── */
@@ -657,7 +642,7 @@
     background: #000;
   }
   .device__inner {
-    margin-top: 36px; height: calc(100% - 50px);
+    margin-top: 36px; height: calc(100% - 64px);
     background: var(--bg-card);
     border-radius: 24px;
     padding: 16px 14px;
@@ -833,6 +818,78 @@
   .quote-card__name { font-size: 14px; font-weight: 600; }
   .quote-card__role { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
+  /* ── FAQ ────────────────────────────────────── */
+  .faq { background: var(--bg); }
+  .faq__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  .faq__cat {
+    background: var(--bg-card);
+    border: 0.5px solid var(--line);
+    border-radius: var(--r-card);
+    padding: 1.75rem;
+    transition: box-shadow 0.25s;
+  }
+  .faq__cat:hover { box-shadow: var(--shadow-soft); }
+  .faq__cat h3 {
+    font-family: var(--sans);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+  .faq__cat > .sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+  .faq__item {
+    border-top: 0.5px solid var(--line);
+  }
+  .faq__item summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--ink);
+    list-style: none;
+  }
+  .faq__item summary::-webkit-details-marker { display: none; }
+  .faq__item summary::after {
+    content: "";
+    flex: 0 0 auto;
+    width: 20px; height: 20px;
+    background: var(--bg);
+    border: 0.5px solid var(--line-strong);
+    border-radius: 50%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%230A0A0A' stroke-width='2.5'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E");
+    background-size: 10px 10px;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.2s var(--ease-out);
+    margin-top: 2px;
+  }
+  .faq__item[open] summary::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%230A0A0A' stroke-width='2.5'%3E%3Cpath d='M5 12h14'/%3E%3C/svg%3E");
+  }
+  .faq__answer {
+    padding: 0 0 0.85rem 0;
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+  @media (max-width: 720px) {
+    .faq__grid { grid-template-columns: 1fr; }
+  }
+
   /* ── Comparison ─────────────────────────────── */
   .compare { text-align: center; background: var(--bg); padding-bottom: 8rem; }
   .compare__head { max-width: 38rem; margin: 0 auto 4rem; }
@@ -872,7 +929,7 @@
     border-bottom: 0.5px solid var(--line);
     position: relative;
   }
-  .compare__col--accent h3 { border-bottom-color: rgba(239,236,227,0.18); }
+  .compare__col--accent h3 { border-bottom-color: rgba(249,247,247,0.18); }
   .compare__col ul { list-style: none; margin-top: 1rem; }
   .compare__col li {
     padding: 14px 0;
@@ -881,7 +938,7 @@
     display: flex; gap: 12px; align-items: flex-start;
     line-height: 1.5;
   }
-  .compare__col--accent li { border-bottom-color: rgba(239,236,227,0.14); }
+  .compare__col--accent li { border-bottom-color: rgba(249,247,247,0.14); }
   .compare__col li:last-child { border-bottom: none; }
   .compare__col li .mark {
     flex: 0 0 auto;
@@ -935,11 +992,11 @@
   }
   .cta-dark__btn {
     width: 64px; height: 64px; border-radius: 50%;
-    background: var(--lime); color: var(--ink);
+    background: var(--cta); color: var(--ink);
     display: grid; place-items: center;
     transition: background 0.18s, transform 0.2s var(--ease-out);
   }
-  .cta-dark__btn:hover { background: var(--lime-deep); transform: translate(2px, -2px); }
+  .cta-dark__btn:hover { background: var(--cta-hover); transform: translate(2px, -2px); }
 
   @media (max-width: 720px) {
     .cta-dark__inner { grid-template-columns: 1fr; }
@@ -960,22 +1017,22 @@
   }
   .footer__col h4 {
     font-size: 13px; font-weight: 600;
-    color: rgba(239,236,227,0.55);
+    color: rgba(249,247,247,0.55);
     text-transform: uppercase; letter-spacing: 0.08em;
     margin-bottom: 1.25rem;
   }
   .footer__col ul { list-style: none; }
   .footer__col li { margin-bottom: 12px; }
-  .footer__col a { font-size: 14px; color: rgba(239,236,227,0.85); transition: color 0.15s; }
+  .footer__col a { font-size: 14px; color: rgba(249,247,247,0.85); transition: color 0.15s; }
   .footer__col a:hover { color: var(--lime); }
-  .footer__brand p { font-size: 14px; color: rgba(239,236,227,0.65); margin-top: 12px; max-width: 22rem; line-height: 1.6; }
+  .footer__brand p { font-size: 14px; color: rgba(249,247,247,0.65); margin-top: 12px; max-width: 22rem; line-height: 1.6; }
   .footer__brand .logo { font-weight: 600; font-size: 1.25rem; letter-spacing: -0.5px; display: inline-flex; align-items: center; gap: 8px; }
   .footer__brand .logo .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--lime); }
 
   .footer__bottom {
     padding-top: 1.5rem;
     display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
-    font-size: 13px; color: rgba(239,236,227,0.55);
+    font-size: 13px; color: rgba(249,247,247,0.55);
   }
   .footer__bottom a { color: inherit; margin-left: 1rem; }
   .footer__bottom a:hover { color: var(--lime); }
@@ -997,6 +1054,49 @@
 
   /* Counter shimmer hint (subtle) */
   .counter { display: inline-block; }
+
+  /* ── Claim intake form ─────────────────────────────── */
+  .claim-intake { padding: 7rem 0; background: var(--bg); }
+  .claim-form {
+    background: var(--bg-card);
+    border: 0.5px solid var(--line);
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-soft);
+    padding: 2.5rem;
+    display: flex; flex-direction: column; gap: 1.5rem;
+  }
+  .claim-form__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  .claim-form label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 500; color: var(--ink); }
+  .claim-form input, .claim-form select, .claim-form textarea {
+    font: inherit; font-size: 14px; color: var(--ink);
+    background: var(--bg);
+    border: 0.5px solid var(--line-strong);
+    border-radius: 10px;
+    padding: 11px 14px;
+    outline: none;
+  }
+  .claim-form input:focus, .claim-form select:focus, .claim-form textarea:focus { border-color: var(--brand); }
+  .claim-form textarea { resize: vertical; }
+  .claim-form__decision { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; padding: 1.25rem; background: var(--bg-deep); border-radius: 10px; }
+  .claim-form__full, .claim-form__decision .claim-form__full { grid-column: 1 / -1; }
+  .claim-form__evidence { border: none; display: flex; flex-wrap: wrap; gap: 10px 18px; }
+  .claim-form__evidence legend { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .claim-form__evidence label { flex-direction: row; align-items: center; gap: 8px; font-weight: 400; font-size: 14px; }
+  .claim-form__actions { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+  .claim-form__error { font-size: 14px; color: #8a1f17; }
+  .claim-form__error a { text-decoration: underline; }
+  .claim-form__success {
+    background: var(--bg-card); border: 0.5px solid var(--line); border-radius: var(--r-card);
+    box-shadow: var(--shadow-soft); padding: 2.5rem; text-align: center;
+  }
+  .claim-form__success h3 { font-size: 1.4rem; font-weight: 600; letter-spacing: -0.03em; margin-bottom: 0.5rem; }
+  .claim-form__success p { font-size: 15px; color: var(--ink-2); }
+  .hidden { display: none !important; }
+  @media (max-width: 720px) {
+    .claim-intake { padding: 4rem 0; }
+    .claim-form { padding: 1.5rem; }
+    .claim-form__grid, .claim-form__decision { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -1009,24 +1109,25 @@
       <span class="has-menu">
         Tjänster
         <div class="menu-pop">
-          <a href="#"><strong>Skadeanalys</strong><span>Bedömning innan anmälan</span></a>
-          <a href="#"><strong>Förhandling</strong><span>Vi tar över kontakten</span></a>
-          <a href="#"><strong>Omprövning</strong><span>Driv avslag vidare</span></a>
-          <a href="#"><strong>ARN-anmälan</strong><span>Klagomål till nämnden</span></a>
+          <a href="#hur"><strong>Skadeanalys</strong><span>Bedömning innan anmälan</span></a>
+          <a href="#hur"><strong>Förhandling</strong><span>Vi tar över kontakten</span></a>
+          <a href="#hur"><strong>Omprövning</strong><span>Driv avslag vidare</span></a>
+          <a href="#hur"><strong>ARN-anmälan</strong><span>Klagomål till nämnden</span></a>
         </div>
       </span>
       <span class="has-menu">
         Skadetyper
         <div class="menu-pop">
-          <a href="#"><strong>Vattenskada</strong><span>Läckage, fukt, översvämning</span></a>
-          <a href="#"><strong>Brandskada</strong><span>Sot, rök, sanering</span></a>
-          <a href="#"><strong>Inbrott</strong><span>Stöld, skadegörelse</span></a>
-          <a href="#"><strong>Stormskada</strong><span>Tak, fasad, träd</span></a>
+          <a href="#kunder"><strong>Vattenskada</strong><span>Läckage, fukt, översvämning</span></a>
+          <a href="#kunder"><strong>Brandskada</strong><span>Sot, rök, sanering</span></a>
+          <a href="#kunder"><strong>Inbrott</strong><span>Stöld, skadegörelse</span></a>
+          <a href="#kunder"><strong>Stormskada</strong><span>Tak, fasad, träd</span></a>
         </div>
       </span>
       <a href="#kunder">Kunder</a>
       <a href="blogg.html">Blogg</a>
       <a href="om-oss.html">Om oss</a>
+      <a href="#faq">FAQ</a>
       <a href="kontakt.html">Kontakt</a>
     </div>
     <a href="#anmal" class="topnav__cta">Anmäl skada
@@ -1040,21 +1141,10 @@
 
 <!-- ── Hero ──────────────────────────────────────────── -->
 <header class="hero" id="hero">
-  <div class="hero__deco" aria-hidden="true">
-    <span class="pixel m p1" data-speed="-0.18"></span>
-    <span class="pixel s p2" data-speed="0.22"></span>
-    <span class="pixel l p3 dim" data-speed="-0.12"></span>
-    <span class="pixel m outline p4" data-speed="0.16"></span>
-    <span class="pixel xl p5" data-speed="-0.08"></span>
-    <span class="pixel s p6 dim" data-speed="0.28"></span>
-  </div>
-
   <div class="wrap hero__inner">
-    <div class="eyebrow" style="opacity:0; animation: heroFadeIn 0.6s ease forwards 0.1s;">Skadeombud för svenska privatpersoner</div>
+    <div class="eyebrow">Skadeombud för svenska privatpersoner</div>
 
-    <h1 class="display split-words">
-      Vi <span class="serif-em">kämpar</span> för din rättmätiga ersättning
-    </h1>
+    <h1>Vi <span class="serif-em">kämpar</span> för din rättmätiga ersättning</h1>
 
     <p class="hero__sub">
       Försäkringsbolaget avslår, drar ut på tiden och betalar för lite. Vi tar över hela ditt
@@ -1062,7 +1152,7 @@
     </p>
 
     <div class="hero__cta-row">
-      <a href="#anmal" class="btn-pill btn-pill--dark">
+      <a href="#anmal" class="btn-pill btn-pill--cta">
         Anmäl din skada
         <span class="arrow">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -1072,10 +1162,10 @@
         Så funkar det
       </a>
     </div>
+
     <div class="hero__meta">Gratis bedömning &middot; Ingen vinst, ingen avgift</div>
 
-    <!-- Hero mockup: realistic Swiftclaim OS preview -->
-    <div class="hero__mockup-wrap" data-speed="-0.04">
+    <div class="hero__mockup-wrap">
       <div class="mockup">
         <div class="mockup__chrome">
           <div class="mockup__dots"><span></span><span></span><span></span></div>
@@ -1278,7 +1368,7 @@
     </div>
 
     <div class="services__grid">
-      <a href="#" class="service">
+      <a href="#hur" class="service">
         <div>
           <div class="service__num">01 / Analys</div>
           <h3>Skadeanalys</h3>
@@ -1288,7 +1378,7 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
         </span>
       </a>
-      <a href="#" class="service">
+      <a href="#hur" class="service">
         <div>
           <div class="service__num">02 / Förhandling</div>
           <h3>Aktiv förhandling</h3>
@@ -1298,7 +1388,7 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
         </span>
       </a>
-      <a href="#" class="service">
+      <a href="#hur" class="service">
         <div>
           <div class="service__num">03 / Eskalering</div>
           <h3>Omprövning &amp; klagomål till ARN</h3>
@@ -1321,7 +1411,7 @@
         <span class="pixel l f2 outline" data-speed="-0.14"></span>
         <span class="pixel s f3" data-speed="0.18"></span>
         <span class="pixel m f4 dim" data-speed="-0.08"></span>
-        <div class="device" data-speed="-0.05">
+        <div class="device">
           <div class="device__inner">
             <div class="device__head">Skadeanalys · 48h</div>
             <div class="device__row"><span class="ic">A</span><span class="lbl">Villkor analyserade</span><span class="check">✓</span></div>
@@ -1353,7 +1443,7 @@
           <div class="feature__result"><span class="check">✓</span> Kostnadsfri första bedömning</div>
         </div>
 
-        <a href="#" class="btn-pill btn-pill--dark feature__cta">
+        <a href="#hur" class="btn-pill btn-pill--dark feature__cta">
           Läs mer
           <span class="arrow">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -1373,7 +1463,7 @@
         <span class="pixel m f2" data-speed="-0.1"></span>
         <span class="pixel l f3 outline dim" data-speed="0.12"></span>
         <span class="pixel m f4" data-speed="-0.18"></span>
-        <div class="device" data-speed="0.05">
+        <div class="device">
           <div class="device__inner">
             <div class="device__head">Förhandling pågår</div>
             <div class="device__row cta"><span class="lbl">Steg 4 av 5 · 67% klart</span><span class="check">✓</span></div>
@@ -1403,7 +1493,7 @@
           <div class="feature__result"><span class="check">✓</span> Tydlig löpande rapportering</div>
         </div>
 
-        <a href="#" class="btn-pill btn-pill--dark feature__cta">
+        <a href="#hur" class="btn-pill btn-pill--dark feature__cta">
           Så ser processen ut
           <span class="arrow">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -1601,8 +1691,147 @@
   </div>
 </section>
 
+<!-- ── FAQ ────────────────────────────────────────────── -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-head__label"><div class="eyebrow">FAQ</div></div>
+      <div class="sec-head__title">
+        <h2>Vanliga <span class="serif-em">frågor</span></h2>
+      </div>
+      <div class="sec-head__meta">
+        Hittar du inte svaret du söker? <a href="kontakt.html">Kontakta oss</a> så hjälper vi dig personligen.
+      </div>
+    </div>
+
+    <div class="faq__grid">
+      <div class="faq__cat reveal-pending">
+        <h3>Om Swiftclaim</h3>
+        <p class="sub">Vad vi gör och vilka vi hjälper.</p>
+        <details class="faq__item"><summary>Vad gör Swiftclaim egentligen?</summary><div class="faq__answer">Vi hjälper dig att driva ärenden mot försäkringsbolag, motparter eller andra aktörer för att se till att du får den ersättning du har rätt till. Vi tar hand om kommunikation, dokumentation och förhandling.</div></details>
+        <details class="faq__item"><summary>Vilka typer av ärenden hanterar ni?</summary><div class="faq__answer">Vi arbetar med försäkringsärenden, skadeståndsanspråk, personskador, sakskador och företagsärenden. Är du osäker — hör av dig så bedömer vi kostnadsfritt.</div></details>
+        <details class="faq__item"><summary>Behöver jag bo i Sverige för att använda er?</summary><div class="faq__answer">Vi hanterar i första hand ärenden under svensk jurisdiktion. Internationella ärenden bedöms från fall till fall.</div></details>
+        <details class="faq__item"><summary>Hur säker är min information?</summary><div class="faq__answer">All data krypteras och lagras enligt GDPR. Endast din handläggare och behörig juridisk personal har åtkomst. Läs mer i vår dataskyddsinformation.</div></details>
+      </div>
+
+      <div class="faq__cat reveal-pending">
+        <h3>Skapa och komma igång</h3>
+        <p class="sub">Så startar du ditt ärende hos oss.</p>
+        <details class="faq__item"><summary>Hur ser processen ut?</summary><div class="faq__answer">Processen börjar med att du kontaktar oss och beskriver ditt ärende. Vi gör därefter en kostnadsfri bedömning, samlar in nödvändig dokumentation och driver ärendet gentemot motparten. Du hålls uppdaterad genom hela förloppet.</div></details>
+        <details class="faq__item"><summary>Hur skapar jag ett ärende?</summary><div class="faq__answer">Du skapar enkelt ett ärende via formuläret på vår kontaktsida eller genom att höra av dig direkt till oss. Beskriv kort vad som hänt, så återkommer vi inom 24 timmar med nästa steg.</div></details>
+        <details class="faq__item"><summary>Vad krävs för att jag ska kunna skapa ett ärende?</summary><div class="faq__answer">Du behöver kunna beskriva händelsen samt ha eventuell dokumentation tillgänglig, exempelvis kvitton, foton, läkarintyg eller korrespondens med försäkringsbolaget. Saknar du underlag hjälper vi dig att samla in det som behövs.</div></details>
+        <details class="faq__item"><summary>Hur gammal kan min skada vara?</summary><div class="faq__answer">Generellt kan vi hjälpa till med skador upp till 10 år tillbaka, beroende på preskriptionstid och försäkringsvillkor. Hör av dig så gör vi en kostnadsfri bedömning av just ditt fall.</div></details>
+        <details class="faq__item"><summary>Jag har tidigare fått ett beslut från försäkringsbolaget, kan ni hjälpa mig att söka ersättning igen?</summary><div class="faq__answer">Ja, i många fall går det att begära omprövning även om du redan fått ett beslut. Vi granskar ditt tidigare beslut kostnadsfritt och bedömer om det finns grund för att driva ärendet vidare.</div></details>
+      </div>
+
+      <div class="faq__cat reveal-pending">
+        <h3>Ditt ärende och handläggning</h3>
+        <p class="sub">Status, ändringar och tidslinjer.</p>
+        <details class="faq__item"><summary>Hur lång tid tar ett ärende?</summary><div class="faq__answer">Det varierar beroende på komplexitet, men de flesta ärenden avslutas inom 3–8 veckor. Vi håller dig löpande informerad genom hela processen.</div></details>
+        <details class="faq__item"><summary>Hur lång tid tar det innan mitt ärende påbörjas?</summary><div class="faq__answer">Vi påbörjar arbetet med ditt ärende inom 1–3 arbetsdagar efter att vi mottagit nödvändig information. Du får en bekräftelse så snart din handläggare är tillsatt.</div></details>
+        <details class="faq__item"><summary>Hur ser jag ärendestatus?</summary><div class="faq__answer">Du får löpande statusuppdateringar via e-post genom hela processen. Vill du ha en aktuell lägesrapport räcker det med ett meddelande till din handläggare.</div></details>
+        <details class="faq__item"><summary>Hur går det med mitt ärende?</summary><div class="faq__answer">Vi håller dig informerad vid varje viktigt steg, men du är alltid välkommen att höra av dig för en uppdatering. Din handläggare svarar normalt inom en arbetsdag.</div></details>
+        <details class="faq__item"><summary>Hur kompletterar jag information till mitt ärende?</summary><div class="faq__answer">Du kan när som helst skicka kompletterande uppgifter eller dokument till din handläggare via e-post. Allt material läggs till i ditt ärende och bekräftas så snart vi mottagit det.</div></details>
+        <details class="faq__item"><summary>Jag har angett fel information i mitt ärende, hur ändrar jag?</summary><div class="faq__answer">Kontakta din handläggare direkt så uppdaterar vi uppgifterna åt dig. Det är viktigt att informationen är korrekt för att ärendet ska kunna drivas på bästa sätt.</div></details>
+        <details class="faq__item"><summary>Hur ändrar jag mina kontaktuppgifter?</summary><div class="faq__answer">Skicka ett mejl till oss med dina nya kontaktuppgifter, så uppdaterar vi dem i vårt system. Du får en bekräftelse när ändringen är genomförd.</div></details>
+        <details class="faq__item"><summary>Kan jag avbryta mitt ärende?</summary><div class="faq__answer">Ja, du kan när som helst avsluta samarbetet utan kostnad. Vi har inga bindningstider.</div></details>
+      </div>
+
+      <div class="faq__cat reveal-pending">
+        <h3>Ersättning</h3>
+        <p class="sub">Vad du kan få och när.</p>
+        <details class="faq__item"><summary>Kommer jag få ersättning för min skada?</summary><div class="faq__answer">Vi kan aldrig garantera ett utfall, men vi tar enbart an ärenden där vi ser goda möjligheter att lyckas. Med vår Standard-tjänst betalar du dessutom ingenting om du inte får ersättning.</div></details>
+        <details class="faq__item"><summary>Vad kan jag få ersättning för?</summary><div class="faq__answer">Du kan få ersättning för bland annat sveda och värk, ärr, inkomstbortfall, sjukvårdskostnader, sakskador och bestående men. Vi går igenom alla möjliga ersättningsposter i ditt ärende.</div></details>
+        <details class="faq__item"><summary>Hur mycket ersättning kan jag få?</summary><div class="faq__answer">Ersättningens storlek beror på skadans omfattning, försäkringsvillkor och underlag. Vi gör en bedömning i samband med att vi går igenom ditt ärende och är tydliga med vad du rimligen kan förvänta dig.</div></details>
+        <details class="faq__item"><summary>Hur länge tar det innan jag får min ersättning?</summary><div class="faq__answer">När ett beslut fattats betalas ersättningen normalt ut inom 2–4 veckor. Tiden kan variera beroende på motpart och ärendets komplexitet.</div></details>
+        <details class="faq__item"><summary>Hur mycket kostar det?</summary><div class="faq__answer">Vi tar endast betalt om du får ersättning. Vår avgift är då 30 % av det belopp vi lyckas driva in, med ett maxtak på 50 000 kr.</div></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Anmäl skada ───────────────────────────────────── -->
+<section class="claim-intake" id="anmal">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-head__label"><div class="eyebrow">Anmäl skada</div></div>
+      <div class="sec-head__title"><h2>Berätta om din <span class="serif-em">skada</span></h2></div>
+      <div class="sec-head__meta">Kostnadsfri första bedömning. Vi går igenom ditt ärende och återkommer inom en arbetsdag.</div>
+    </div>
+
+    <form class="claim-form" id="claimForm">
+      <div class="claim-form__grid">
+        <label>Namn *<input name="customerName" required placeholder="För- och efternamn" /></label>
+        <label>E-post *<input name="email" type="email" required placeholder="namn@exempel.se" /></label>
+        <label>Telefon<input name="phone" type="tel" placeholder="+46 70 123 45 67" /></label>
+        <label>Ort<input name="city" placeholder="Stockholm" /></label>
+        <label>Bostadstyp
+          <select name="propertyType">
+            <option>Villa</option><option>Bostadsrätt</option><option>Hyresrätt</option><option>Fritidshus</option>
+          </select>
+        </label>
+        <label>Försäkringsbolag *
+          <select name="insuranceCompany" required>
+            <option value="">Välj bolag…</option>
+            <option>Folksam</option><option>Trygg-Hansa</option><option>If</option><option>Länsförsäkringar</option><option>Dina Försäkringar</option><option>Gjensidige</option><option>ICA Försäkring</option><option>Hedvig</option><option>Moderna Försäkringar</option><option>Protector</option><option>Annat</option>
+          </select>
+        </label>
+        <label>Typ av skada *
+          <select name="damageCategory" required>
+            <option value="">Välj skadetyp…</option>
+            <option>Vattenskada</option><option>Brand- eller rökskada</option><option>Stormskada</option><option>Stöld- eller inbrottsskada</option><option>Mögel eller fuktskada</option><option>Vitvaruskada</option><option>Ansvar bostadsrätt/hyresrätt</option><option>Annan egendomsskada</option>
+          </select>
+        </label>
+        <label>Skadedatum<input name="incidentDate" type="date" /></label>
+        <label>Yrkat belopp, kr<input name="claimedAmount" type="number" min="0" step="1000" placeholder="150000" /></label>
+        <label>Var står du i processen?
+          <select name="currentStage">
+            <option>Ej inskickat</option>
+            <option>Inskickat till försäkringsbolag</option>
+            <option>Beslut mottaget</option>
+            <option>Avslaget</option>
+            <option>Underbetalt</option>
+            <option>Överklagan pågår</option>
+          </select>
+        </label>
+      </div>
+
+      <label class="claim-form__full">Beskriv skadan *
+        <textarea name="description" rows="6" required placeholder="Vad hände, när, och vad har försäkringsbolaget sagt hittills?"></textarea>
+      </label>
+
+      <div class="claim-form__decision hidden" id="decisionFields">
+        <label>Erbjudet belopp, kr<input name="offeredAmount" type="number" min="0" step="1000" /></label>
+        <label class="claim-form__full">Bolagets motivering
+          <textarea name="insurerReason" rows="3" placeholder="Vad angav bolaget som skäl?"></textarea>
+        </label>
+      </div>
+
+      <fieldset class="claim-form__evidence">
+        <legend>Underlag du har (frivilligt)</legend>
+        <label><input type="checkbox" name="evidence" value="Foton" /> Foton</label>
+        <label><input type="checkbox" name="evidence" value="Försäkringsbeslut" /> Försäkringsbeslut</label>
+        <label><input type="checkbox" name="evidence" value="Försäkringsvillkor" /> Försäkringsvillkor</label>
+        <label><input type="checkbox" name="evidence" value="Kvitton" /> Kvitton</label>
+        <label><input type="checkbox" name="evidence" value="Offert från entreprenör" /> Offert från entreprenör</label>
+        <label><input type="checkbox" name="evidence" value="Skaderapport" /> Skaderapport</label>
+      </fieldset>
+
+      <div class="claim-form__actions">
+        <button class="btn-pill btn-pill--cta" type="submit" id="claimSubmitBtn">Skicka in ärendet</button>
+        <p class="claim-form__error hidden" id="claimError">Kunde inte skicka just nu. Mejla oss på <a href="mailto:hej@swiftclaim.se">hej@swiftclaim.se</a> så återkommer vi.</p>
+      </div>
+    </form>
+
+    <div class="claim-form__success hidden" id="claimSuccess">
+      <h3>Tack! Ditt ärende är <span class="serif-em">mottaget</span>.</h3>
+      <p>Ärendenummer: <strong id="claimCaseId"></strong>. Vi går igenom ditt ärende och återkommer inom en arbetsdag.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ── Dark CTA strip ────────────────────────────────── -->
-<section class="cta-dark" id="anmal">
+<section class="cta-dark">
   <div class="cta-dark__deco" aria-hidden="true">
     <span class="pixel m c1" data-speed="0.12"></span>
     <span class="pixel s c2" data-speed="-0.18"></span>
@@ -1631,20 +1860,20 @@
       <div class="footer__col">
         <h4>Tjänster</h4>
         <ul>
-          <li><a href="#">Skadeanalys</a></li>
-          <li><a href="#">Förhandling</a></li>
-          <li><a href="#">Omprövning</a></li>
-          <li><a href="#">ARN-anmälan</a></li>
+          <li><a href="#hur">Skadeanalys</a></li>
+          <li><a href="#hur">Förhandling</a></li>
+          <li><a href="#hur">Omprövning</a></li>
+          <li><a href="#hur">ARN-anmälan</a></li>
         </ul>
       </div>
 
       <div class="footer__col">
         <h4>Skadetyper</h4>
         <ul>
-          <li><a href="#">Vattenskada</a></li>
-          <li><a href="#">Brandskada</a></li>
-          <li><a href="#">Inbrott</a></li>
-          <li><a href="#">Stormskada</a></li>
+          <li><a href="#kunder">Vattenskada</a></li>
+          <li><a href="#kunder">Brandskada</a></li>
+          <li><a href="#kunder">Inbrott</a></li>
+          <li><a href="#kunder">Stormskada</a></li>
         </ul>
       </div>
 
@@ -1652,7 +1881,7 @@
         <h4>Resurser</h4>
         <ul>
           <li><a href="blogg.html">Blogg</a></li>
-          <li><a href="faq.html">Vanliga frågor</a></li>
+          <li><a href="#faq">Vanliga frågor</a></li>
           <li><a href="priser.html">Priser</a></li>
         </ul>
       </div>
@@ -1678,50 +1907,80 @@
   </div>
 </footer>
 
-<style>
-  @keyframes heroFadeIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
+
+
+<script>
+(function () {
+  const API = "http://localhost:8000/api";
+  const form = document.getElementById("claimForm");
+  if (!form) return;
+
+  const stageSelect = form.querySelector('select[name="currentStage"]');
+  const decisionFields = document.getElementById("decisionFields");
+  const DECISION_STAGES = ["Beslut mottaget", "Avslaget", "Underbetalt", "Överklagan pågår"];
+
+  stageSelect.addEventListener("change", () => {
+    decisionFields.classList.toggle("hidden", !DECISION_STAGES.includes(stageSelect.value));
+  });
+
+  function caseId() {
+    const d = new Date();
+    const yymm = String(d.getFullYear()).slice(2) + String(d.getMonth() + 1).padStart(2, "0");
+    return `SC-${yymm}-${100 + Math.floor(Math.random() * 900)}`;
   }
-</style>
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const data = new FormData(form);
+    const stage = String(data.get("currentStage"));
+    const hasDecision = DECISION_STAGES.includes(stage);
+    const body = {
+      id: caseId(),
+      customer_name: String(data.get("customerName") || "").trim(),
+      customer_email: String(data.get("email") || "").trim(),
+      customer_phone: String(data.get("phone") || "").trim(),
+      property_address: String(data.get("city") || "").trim(),
+      property_type: String(data.get("propertyType") || ""),
+      insurance_company: String(data.get("insuranceCompany") || ""),
+      damage_category: String(data.get("damageCategory") || ""),
+      damage_description: String(data.get("description") || "").trim(),
+      damage_date: String(data.get("incidentDate") || ""),
+      claim_amount: Number(data.get("claimedAmount")) || null,
+      insurer_decision: stage,
+      insurer_amount: hasDecision ? Number(data.get("offeredAmount")) || null : null,
+      insurer_reason: hasDecision ? String(data.get("insurerReason") || "").trim() : null,
+      tags: data.getAll("evidence").map(String),
+    };
+
+    const btn = document.getElementById("claimSubmitBtn");
+    const error = document.getElementById("claimError");
+    btn.disabled = true;
+    error.classList.add("hidden");
+
+    try {
+      const r = await fetch(`${API}/cases`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      const saved = await r.json();
+      form.classList.add("hidden");
+      document.getElementById("claimCaseId").textContent = saved.id;
+      document.getElementById("claimSuccess").classList.remove("hidden");
+    } catch {
+      error.classList.remove("hidden");
+    } finally {
+      btn.disabled = false;
+    }
+  });
+})();
+</script>
 
 <script>
 (() => {
-  // ── 1. Word-split the hero H1 (preserving inline serif-em spans) ──
-  const splitTargets = document.querySelectorAll('.split-words');
-  splitTargets.forEach(el => {
-    // Walk children: text nodes get split into words; .serif-em / other elements stay intact as single words
-    const out = [];
-    let wordIndex = 0;
-    el.childNodes.forEach(node => {
-      if (node.nodeType === Node.TEXT_NODE) {
-        const words = node.textContent.split(/(\s+)/).filter(s => s.trim().length);
-        words.forEach(w => {
-          out.push(`<span class="word" style="--i:${wordIndex}"><span class="word__inner">${w}</span></span>`);
-          wordIndex++;
-        });
-      } else if (node.nodeType === Node.ELEMENT_NODE) {
-        const html = node.outerHTML;
-        out.push(`<span class="word" style="--i:${wordIndex}"><span class="word__inner">${html}</span></span>`);
-        wordIndex++;
-      }
-    });
-    el.innerHTML = out.join(' ');
-  });
-
-  // ── 2. Trigger hero reveal immediately on load ──
-  const hero = document.getElementById('hero');
-  const triggerHero = () => {
-    hero.classList.add('is-visible');
-    splitTargets.forEach(el => el.classList.add('is-visible'));
-  };
-  if (document.readyState === 'complete') triggerHero();
-  else window.addEventListener('load', triggerHero);
-  // also trigger after a short delay regardless, so screenshot tools see it
-  setTimeout(triggerHero, 100);
-
-  // ── 3. Reveal-on-scroll for elements below the fold ──
-  const fold = window.innerHeight;
+  // ── 1. Reveal-on-scroll ──
   const ioReveal = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -1731,36 +1990,59 @@
     });
   }, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
 
-  document.querySelectorAll('.feature, .service, .case-card, .quote-card, .compare__col, .sec-head, .team__title-row, .team__copy, .team__cta, .team__tags, .compare__head, .cta-dark__inner').forEach(el => {
-    if (el.getBoundingClientRect().top > fold * 0.9) {
+  document.querySelectorAll('.feature, .service, .case-card, .quote-card, .compare__col, .sec-head, .faq__cat, .team__title-row, .team__copy, .team__cta, .team__tags, .compare__head, .cta-dark__inner').forEach(el => {
+    if (el.getBoundingClientRect().top > window.innerHeight * 0.9) {
       el.classList.add('reveal-pending');
       ioReveal.observe(el);
     }
   });
-  // safety net: reveal anything still pending after 2.5s
   setTimeout(() => {
     document.querySelectorAll('.reveal-pending:not(.is-visible)').forEach(el => el.classList.add('is-visible'));
   }, 2500);
 
-  // ── 4. Parallax on .pixel and elements with [data-speed] ──
+  // ── 2. Parallax on [data-speed] elements ──
   const parallaxTargets = Array.from(document.querySelectorAll('[data-speed]'));
-  let lastY = window.scrollY;
   let ticking = false;
   const applyParallax = () => {
     const y = window.scrollY;
     parallaxTargets.forEach(el => {
       const speed = parseFloat(el.dataset.speed);
-      el.style.transform = `translate3d(0, ${y * speed}px, 0)`;
+      const offset = y * speed;
+      const clamped = Math.max(-120, Math.min(120, offset));
+      el.style.transform = `translate3d(0, ${clamped}px, 0)`;
     });
     ticking = false;
   };
   window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(applyParallax);
-      ticking = true;
-    }
+    if (!ticking) { requestAnimationFrame(applyParallax); ticking = true; }
   }, { passive: true });
   applyParallax();
+
+  // ── 3. Mobile nav menu toggle ──
+  const menuBtn = document.querySelector('.topnav__menu-btn');
+  const navLinks = document.querySelector('.topnav__links');
+  menuBtn.addEventListener('click', () => {
+    navLinks.classList.toggle('is-open');
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('is-open');
+    });
+  });
+
+  // ── 4. Smooth scroll for all anchor links ──
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      const href = anchor.getAttribute('href');
+      if (href === '#') return;
+      const target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+        history.pushState(null, '', href);
+      }
+    });
+  });
 
   // ── 5. Counter animation on scroll-into-view ──
   const fmt = (n) => n.toLocaleString('sv-SE').replace(/,/g, ' ');

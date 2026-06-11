@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Priser – Swiftclaim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500&display=swap">
+  <style>
+    :root {
+      --bg: #F9F7F7;
+      --bg-card: #DBE2EF;
+      --bg-deep: #CDD6E8;
+      --bg-dark: #112D4E;
+      --bg-dark-2: #0F2642;
+      --ink: #0A0A0A;
+      --ink-2: #2C2C2C;
+      --muted: #6F6F6F;
+      --line: rgba(0,0,0,0.10);
+      --line-strong: rgba(0,0,0,0.18);
+      --line-on-dark: rgba(249,247,247,0.14);
+      --brand: #3F72AF;
+      --brand-dark: #2E5B9E;
+      --lime: #112D4E;
+      --lime-deep: #0A1E36;
+      --cta: #f7d154;
+      --cta-hover: #e6c44d;
+      --r-card: 14px;
+      --r-pill: 999px;
+      --shadow-soft: 0 1px 2px rgba(0,0,0,0.04), 0 8px 28px rgba(0,0,0,0.06);
+      --shadow-float: 0 2px 16px rgba(0,0,0,0.10), 0 30px 60px -20px rgba(0,0,0,0.18);
+      --serif: "Fraunces", "Times New Roman", serif;
+      --sans: "Inter", system-ui, -apple-system, sans-serif;
+      --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.5; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    ::selection { background: var(--lime); color: var(--bg); }
+
+    .topnav { position: fixed; top: 16px; left: 0; right: 0; z-index: 90; display: flex; justify-content: center; pointer-events: none; }
+    .topnav__bar { pointer-events: auto; display: flex; align-items: center; gap: 0; background: rgba(17,45,78,0.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 0.5px solid rgba(249,247,247,0.08); border-radius: var(--r-pill); padding: 7px 8px 7px 22px; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.35); color: var(--bg); }
+    .topnav__logo { font-weight: 600; font-size: 1rem; letter-spacing: -0.5px; color: var(--bg); margin-right: 1.25rem; display: inline-flex; align-items: center; gap: 6px; }
+    .topnav__logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); }
+    .topnav__links { display: flex; align-items: center; }
+    .topnav__links > * { position: relative; font-size: 14px; font-weight: 500; color: rgba(249,247,247,0.78); padding: 9px 14px; border-radius: var(--r-pill); cursor: pointer; transition: color 0.15s, background 0.15s; display: inline-flex; align-items: center; gap: 4px; }
+    .topnav__links > *:hover { color: var(--bg); background: rgba(249,247,247,0.06); }
+    .topnav__links .active { color: var(--bg); background: rgba(249,247,247,0.1); }
+    .topnav__cta { background: var(--cta); color: var(--ink) !important; font-weight: 600; margin-left: 8px; padding: 9px 18px !important; }
+    .topnav__cta:hover { background: var(--cta-hover) !important; color: var(--ink) !important; }
+    @media (max-width: 880px) { .topnav__links { display: none; } }
+
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; display: inline-block; width: 14px; height: 14px; background: var(--lime); border-radius: 2px; }
+
+    .serif-em { font-family: var(--serif); font-weight: 400; font-style: italic; letter-spacing: -0.02em; }
+
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+    .wrap-tight { max-width: 1080px; margin: 0 auto; padding: 0 2rem; }
+    @media (max-width: 720px) { .wrap, .wrap-tight { padding: 0 1.25rem; } }
+
+    .page-hero { background: var(--lime); text-align: center; padding: 10rem 1.25rem 5rem; }
+    .page-hero .eyebrow { color: rgba(249,247,247,0.65); margin-bottom: 1.25rem; }
+    .page-hero .eyebrow::before { background: rgba(249,247,247,0.3); }
+    .page-hero h1 { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 600; color: var(--bg); line-height: 1.05; letter-spacing: -0.04em; max-width: 640px; margin: 0 auto 1rem; }
+    .page-hero p { font-size: 16px; color: rgba(249,247,247,0.7); max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+    .content { padding: 4rem 0 6rem; }
+
+    .calc-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 1.5rem; align-items: start; }
+    @media (max-width: 720px) { .calc-grid { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--bg-card);
+      border: 0.5px solid var(--line);
+      border-radius: var(--r-card);
+      padding: 2rem;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+    .card--dark {
+      background: var(--bg-dark-2);
+      color: var(--bg);
+      border-color: transparent;
+    }
+
+    .calc-label {
+      font-size: 12px; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--brand); margin-bottom: 0.5rem;
+    }
+    .calc-title {
+      font-size: 1.5rem; font-weight: 600;
+      letter-spacing: -0.02em; margin-bottom: 1.5rem;
+    }
+    .calc-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600; color: var(--brand);
+      background: rgba(63,114,175,0.08);
+      padding: 5px 12px; border-radius: var(--r-pill);
+      margin-bottom: 1rem;
+    }
+    .calc-badge .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--lime);
+    }
+
+    .amount-display { text-align: center; margin: 1.5rem 0 2rem; }
+    .amount-display .label { font-size: 13px; color: var(--muted); }
+    .amount-display .num {
+      font-size: 3.5rem; font-weight: 600;
+      letter-spacing: -0.04em; line-height: 1;
+      font-variant-numeric: tabular-nums;
+      margin-top: 0.5rem;
+    }
+
+    .slider-wrap { position: relative; margin: 0 0 2rem; }
+    .slider-wrap input[type="range"] {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 12px;
+      background: linear-gradient(to right, var(--brand) 0%, var(--brand) var(--fill, 15%), rgba(0,0,0,0.1) var(--fill, 15%), rgba(0,0,0,0.1) 100%);
+      border-radius: var(--r-pill);
+      outline: none;
+      cursor: pointer;
+    }
+    .slider-wrap input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 28px; height: 28px;
+      background: var(--brand);
+      border: 4px solid var(--bg);
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      cursor: pointer;
+    }
+    .slider-wrap input[type="range"]::-moz-range-thumb {
+      width: 28px; height: 28px;
+      background: var(--brand);
+      border: 4px solid var(--bg);
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      cursor: pointer;
+    }
+
+    .cap-marker {
+      position: absolute; top: -4px;
+      height: 20px; width: 2px;
+      background: var(--lime); border-radius: 2px;
+      pointer-events: none;
+      left: var(--cap-pct, 16.7%);
+      transition: opacity 0.3s;
+    }
+    .cap-marker.reached { background: var(--lime-deep); }
+
+    .slider-labels {
+      display: flex; justify-content: space-between;
+      font-size: 11px; color: var(--muted); margin-top: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+    .cap-hint {
+      font-size: 11px; color: var(--lime); margin-top: 8px;
+      padding-left: var(--cap-pct-text, 16.7%);
+      transition: opacity 0.3s;
+    }
+    .cap-hint .marker {
+      display: inline-block; width: 6px; height: 6px;
+      border-radius: 50%; background: var(--lime);
+      margin-right: 4px; vertical-align: middle;
+    }
+
+    .input-group { margin-top: 1.5rem; }
+    .input-group label {
+      display: block; font-size: 13px; font-weight: 500;
+      margin-bottom: 6px; color: var(--ink);
+    }
+    .input-row { position: relative; }
+    .input-row input {
+      width: 100%; height: 48px;
+      border: 0.5px solid var(--line-strong);
+      border-radius: 10px;
+      background: var(--bg);
+      padding: 0 50px 0 16px;
+      font-size: 16px; font-weight: 500;
+      font-family: var(--sans);
+      outline: none;
+      transition: border-color 0.15s;
+      font-variant-numeric: tabular-nums;
+    }
+    .input-row input:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(63,114,175,0.1);
+    }
+    .input-row .suffix {
+      position: absolute; right: 16px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px; color: var(--muted);
+      pointer-events: none;
+    }
+
+    .cap-banner {
+      margin-top: 1rem; padding: 0.85rem 1rem;
+      background: rgba(17,45,78,0.1);
+      border: 0.5px solid rgba(17,45,78,0.3);
+      border-radius: 12px;
+      font-size: 13px; line-height: 1.5; color: var(--ink-2);
+      overflow: hidden;
+      transition: max-height 0.4s, opacity 0.3s, margin 0.3s;
+    }
+    .cap-banner.hidden { max-height: 0; opacity: 0; margin-top: 0; padding-top: 0; padding-bottom: 0; border-width: 0; }
+    .cap-banner strong { color: var(--ink); }
+
+    .result-card { padding: 2rem; }
+    .result-card .icon-row {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: rgba(249,247,247,0.55);
+    }
+    .result-card .icon-row svg { width: 14px; height: 14px; }
+    .result-card .big-num {
+      font-size: 2.5rem; font-weight: 600;
+      letter-spacing: -0.03em; margin-top: 0.5rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .result-card .sub-text {
+      font-size: 13px; color: rgba(249,247,247,0.6);
+      margin-top: 0.5rem;
+    }
+
+    .result-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 0.5px solid var(--line-on-dark); }
+    .result-row:last-child { border-bottom: none; }
+    .result-row .lbl { font-size: 13px; color: rgba(249,247,247,0.6); }
+    .result-row .val { font-size: 1.25rem; font-weight: 600; font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 8px; }
+    .cap-badge {
+      font-size: 10px; font-weight: 600; color: var(--lime-deep);
+      background: rgba(17,45,78,0.12);
+      padding: 2px 8px; border-radius: var(--r-pill);
+      transition: opacity 0.2s;
+    }
+    .cap-badge.hidden { opacity: 0; }
+
+    .btn-pill { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px 14px 28px; border-radius: var(--r-pill); font-weight: 600; font-size: 15px; transition: transform 0.2s var(--ease-out), background 0.18s; cursor: pointer; border: none; }
+    .btn-pill .arrow { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; transition: transform 0.25s var(--ease-out); }
+    .btn-pill:hover .arrow { transform: translateX(4px) rotate(-15deg); }
+    .btn-pill--cta { background: var(--cta); color: var(--ink); }
+    .btn-pill--cta:hover { background: var(--cta-hover); }
+    .btn-pill--cta .arrow { background: var(--ink); color: var(--bg); }
+
+    .safety-note {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      font-size: 12px; color: rgba(249,247,247,0.5); margin-top: 1rem;
+    }
+    .safety-note .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--lime);
+    }
+
+    .bottom-note {
+      text-align: center; font-size: 13px; color: var(--muted);
+      margin-top: 2rem;
+    }
+
+    footer { background: var(--bg-dark); color: var(--bg); padding: 4rem 0 2rem; }
+    .footer__grid { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 2rem; padding-bottom: 3rem; border-bottom: 0.5px solid var(--line-on-dark); }
+    .footer__col h4 { font-size: 13px; font-weight: 600; color: rgba(249,247,247,0.55); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1.25rem; }
+    .footer__col ul { list-style: none; }
+    .footer__col li { margin-bottom: 12px; }
+    .footer__col a { font-size: 14px; color: rgba(249,247,247,0.85); transition: color 0.15s; }
+    .footer__col a:hover { color: var(--lime); }
+    .footer__brand p { font-size: 14px; color: rgba(249,247,247,0.65); margin-top: 12px; max-width: 22rem; line-height: 1.6; }
+    .footer__brand .logo { font-weight: 600; font-size: 1.25rem; letter-spacing: -0.5px; display: inline-flex; align-items: center; gap: 8px; }
+    .footer__brand .logo .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--lime); }
+    .footer__bottom { padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 13px; color: rgba(249,247,247,0.55); }
+    .footer__bottom a { color: inherit; margin-left: 1rem; }
+    .footer__bottom a:hover { color: var(--lime); }
+    @media (max-width: 720px) { .footer__grid { grid-template-columns: 1fr 1fr; } .footer__brand { grid-column: 1 / -1; } .page-hero { padding: 8rem 1.25rem 3.5rem; } }
+
+    @media (max-width: 640px) {
+      .amount-display .num { font-size: 2.5rem; }
+      .result-card .big-num { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav__bar">
+    <a href="landing_v2.html" class="topnav__logo"><span class="dot"></span> Swiftclaim</a>
+    <div class="topnav__links">
+      <a href="landing_v2.html">Hem</a>
+      <a href="landing_v2.html#hur">Tjänster</a>
+      <a href="landing_v2.html#kunder">Resultat</a>
+      <a href="landing_v2.html#faq">FAQ</a>
+      <a href="blogg.html">Blogg</a>
+      <a href="priser.html" class="active">Priser</a>
+      <a href="om-oss.html">Om oss</a>
+      <a href="kontakt.html">Kontakt</a>
+      <a href="landing_v2.html#anmal" class="topnav__cta">Anmäl skada</a>
+    </div>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="eyebrow">Pris</div>
+  <h1>Enkelt, transparent <span class="serif-em">och</span> rättvist.</h1>
+  <p>Du betalar endast vid framgång. Vår avgift är 30 % av ersättningen — med ett maxtak på 50 000 kr.</p>
+</section>
+
+<div class="content">
+  <div class="wrap-tight">
+    <div class="calc-grid">
+      <div class="card">
+        <div class="calc-label">Räkna ut</div>
+        <div class="calc-title">Hur mycket får du behålla?</div>
+        <div class="calc-badge"><span class="dot"></span> Maxavgift 50 000 kr</div>
+
+        <div class="amount-display">
+          <div class="label">Din ersättning</div>
+          <div class="num" id="displayAmount">100 000 kr</div>
+        </div>
+
+        <div class="slider-wrap">
+          <input type="range" id="slider" min="10000" max="1000000" step="1000" value="100000" />
+          <div class="cap-marker" id="capMarker"></div>
+          <div class="slider-labels">
+            <span>10 000 kr</span>
+            <span>1 000 000+ kr</span>
+          </div>
+          <div class="cap-hint" id="capHint"><span class="marker"></span> Maxtak vid 166 667 kr</div>
+        </div>
+
+        <div class="input-group">
+          <label for="amountInput">Skriv in exakt belopp</label>
+          <div class="input-row">
+            <input type="text" id="amountInput" inputmode="numeric" value="100 000" />
+            <span class="suffix">kr</span>
+          </div>
+        </div>
+
+        <div class="cap-banner hidden" id="capBanner">
+          <strong>Maxtaket är aktiverat</strong>
+          <br />Ju högre ersättning, desto lägre effektiv procentsats — du behåller mer.
+        </div>
+      </div>
+
+      <div>
+        <div class="card card--dark result-card">
+          <div class="icon-row">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            Du får
+          </div>
+          <div class="big-num" id="youGet">70 000 kr</div>
+          <div class="sub-text">Det här behåller du efter vår avgift.</div>
+
+          <div class="result-row" style="margin-top:1.5rem;">
+            <span class="lbl">Vi får</span>
+            <span class="val"><span id="fee">30 000 kr</span><span class="cap-badge hidden" id="capBadge">Maxavgift</span></span>
+          </div>
+          <div class="result-row">
+            <span class="lbl">Effektiv avgift</span>
+            <span class="val" id="effRate">30,0 %</span>
+          </div>
+
+          <div class="safety-note" style="margin-top:1.25rem;">
+            <span class="dot"></span> Du betalar endast vid framgång.
+          </div>
+
+          <a href="landing_v2.html#anmal" class="btn-pill btn-pill--cta" style="display:flex;justify-content:center;margin-top:1.25rem;">
+            Starta ditt ärende
+            <span class="arrow">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <p class="bottom-note">Ingen avgift utan utbetalning.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer__grid">
+      <div class="footer__brand footer__col">
+        <div class="logo"><span class="dot"></span> Swiftclaim</div>
+        <p>Skadeombud för svenska privatpersoner. Vi argumenterar, förhandlar och driver ditt försäkringsärende — så att du får ut det du har rätt till.</p>
+      </div>
+      <div class="footer__col"><h4>Tjänster</h4><ul><li><a href="landing_v2.html#hur">Skadeanalys</a></li><li><a href="landing_v2.html#hur">Förhandling</a></li><li><a href="landing_v2.html#hur">Omprövning</a></li><li><a href="landing_v2.html#hur">ARN-anmälan</a></li></ul></div>
+      <div class="footer__col"><h4>Skadetyper</h4><ul><li><a href="landing_v2.html#kunder">Vattenskada</a></li><li><a href="landing_v2.html#kunder">Brandskada</a></li><li><a href="landing_v2.html#kunder">Inbrott</a></li><li><a href="landing_v2.html#kunder">Stormskada</a></li></ul></div>
+      <div class="footer__col"><h4>Resurser</h4><ul><li><a href="blogg.html">Blogg</a></li><li><a href="landing_v2.html#faq">Vanliga frågor</a></li><li><a href="priser.html">Priser</a></li></ul></div>
+      <div class="footer__col"><h4>Företaget</h4><ul><li><a href="om-oss.html">Om oss</a></li><li><a href="kontakt.html">Kontakt</a></li><li><a href="dataskydd.html">Dataskydd</a></li><li><a href="anvandarvillkor.html">Användarvillkor</a></li></ul></div>
+    </div>
+    <div class="footer__bottom"><div>&copy; 2026 Swiftclaim AB</div><div><a href="dataskydd.html">Dataskydd</a><a href="anvandarvillkor.html">Användarvillkor</a></div></div>
+  </div>
+</footer>
+
+<script>
+  const MIN = 10000;
+  const MAX = 1000000;
+  const STEP = 1000;
+  const FEE_RATE = 0.3;
+  const FEE_CAP = 50000;
+  const CAP_THRESHOLD = FEE_CAP / FEE_RATE;
+
+  const fmt = (n) => new Intl.NumberFormat("sv-SE", { maximumFractionDigits: 0 }).format(Math.round(n)) + " kr";
+  const fmtPct = (n) => n.toFixed(1).replace(".", ",") + " %";
+
+  const slider = document.getElementById("slider");
+  const amountInput = document.getElementById("amountInput");
+  const displayAmount = document.getElementById("displayAmount");
+  const capMarker = document.getElementById("capMarker");
+  const capHint = document.getElementById("capHint");
+  const capBanner = document.getElementById("capBanner");
+  const capBadge = document.getElementById("capBadge");
+  const youGetEl = document.getElementById("youGet");
+  const feeEl = document.getElementById("fee");
+  const effRateEl = document.getElementById("effRate");
+
+  let currentAmount = 100000;
+  let animFrame = null;
+
+  function updateUI(amount) {
+    currentAmount = amount;
+    const fee = Math.min(amount * FEE_RATE, FEE_CAP);
+    const youGet = amount - fee;
+    const effRate = amount > 0 ? (fee / amount) * 100 : 0;
+    const capReached = amount >= CAP_THRESHOLD;
+
+    const fillPct = ((amount - MIN) / (MAX - MIN)) * 100;
+    const capMarkerPct = ((CAP_THRESHOLD - MIN) / (MAX - MIN)) * 100;
+
+    slider.style.setProperty("--fill", fillPct + "%");
+    slider.value = amount;
+
+    displayAmount.textContent = fmt(amount);
+    amountInput.value = new Intl.NumberFormat("sv-SE", { maximumFractionDigits: 0 }).format(amount);
+
+    capMarker.style.left = capMarkerPct + "%";
+    capMarker.classList.toggle("reached", capReached);
+
+    capHint.style.setProperty("--cap-pct-text", capMarkerPct + "%");
+    capHint.style.opacity = capReached ? "0" : "1";
+
+    capBanner.classList.toggle("hidden", !capReached);
+    capBadge.classList.toggle("hidden", !capReached);
+
+    const start = performance.now();
+    const fromFee = parseFloat(feeEl.textContent.replace(/[^\d]/g, "")) || 0;
+    const fromYouGet = parseFloat(youGetEl.textContent.replace(/[^\d]/g, "")) || 0;
+    const fromRate = parseFloat(effRateEl.textContent.replace(",", ".")) || 0;
+    const dur = 350;
+
+    if (animFrame) cancelAnimationFrame(animFrame);
+    function tick(t) {
+      const p = Math.min(1, (t - start) / dur);
+      const ease = 1 - Math.pow(1 - p, 3);
+      feeEl.textContent = fmt(fromFee + (fee - fromFee) * ease);
+      youGetEl.textContent = fmt(fromYouGet + (youGet - fromYouGet) * ease);
+      effRateEl.textContent = fmtPct(fromRate + (effRate - fromRate) * ease);
+      effRateEl.style.color = capReached ? "#112D4E" : "";
+      if (p < 1) animFrame = requestAnimationFrame(tick);
+    }
+    animFrame = requestAnimationFrame(tick);
+  }
+
+  slider.addEventListener("input", () => {
+    updateUI(parseInt(slider.value));
+  });
+
+  function parseInput(raw) {
+    const digits = raw.replace(/[^\d]/g, "");
+    if (!digits) return MIN;
+    const num = parseInt(digits, 10);
+    return Math.min(MAX, Math.max(MIN, num));
+  }
+
+  amountInput.addEventListener("input", () => {
+    const num = parseInput(amountInput.value);
+    updateUI(num);
+  });
+
+  amountInput.addEventListener("blur", () => {
+    const num = parseInput(amountInput.value);
+    updateUI(num);
+    amountInput.value = new Intl.NumberFormat("sv-SE", { maximumFractionDigits: 0 }).format(num);
+  });
+
+  updateUI(100000);
+</script>
+
+</body>
+</html>

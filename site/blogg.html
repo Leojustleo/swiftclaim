@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blogg – Swiftclaim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500&display=swap">
+<style>
+  :root {
+    --bg: #F9F7F7;
+    --bg-card: #DBE2EF;
+    --bg-dark: #112D4E;
+    --bg-dark-2: #0F2642;
+    --ink: #0A0A0A;
+    --ink-2: #2C2C2C;
+    --muted: #6F6F6F;
+    --line: rgba(0,0,0,0.10);
+    --line-strong: rgba(0,0,0,0.18);
+    --line-on-dark: rgba(249,247,247,0.14);
+    --brand: #3F72AF;
+    --lime: #112D4E;
+    --lime-soft: #3F72AF;
+    --lime-deep: #0A1E36;
+    --cta: #f7d154;
+    --cta-hover: #e6c44d;
+    --r-card: 14px;
+    --r-pill: 999px;
+    --shadow-soft: 0 1px 2px rgba(0,0,0,0.04), 0 8px 28px rgba(0,0,0,0.06);
+    --serif: "Fraunces", "Times New Roman", serif;
+    --sans: "Inter", system-ui, -apple-system, sans-serif;
+    --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.5; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--lime); color: var(--bg); }
+
+  .topnav { position: fixed; top: 16px; left: 0; right: 0; z-index: 90; display: flex; justify-content: center; pointer-events: none; }
+  .topnav__bar {
+    pointer-events: auto; display: flex; align-items: center; gap: 0;
+    background: rgba(17,45,78,0.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border: 0.5px solid rgba(255,255,255,0.08); border-radius: var(--r-pill);
+    padding: 7px 8px 7px 22px;
+    box-shadow: 0 10px 40px -10px rgba(0,0,0,0.35);
+    color: var(--bg);
+  }
+  .topnav__logo { font-weight: 600; font-size: 1rem; letter-spacing: -0.5px; color: var(--bg); margin-right: 1.25rem; display: inline-flex; align-items: center; gap: 6px; }
+  .topnav__logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); }
+  .topnav__links { display: flex; align-items: center; }
+  .topnav__links > * { position: relative; font-size: 14px; font-weight: 500; color: rgba(249,247,247,0.78); padding: 9px 14px; border-radius: var(--r-pill); cursor: pointer; transition: color 0.15s, background 0.15s; display: inline-flex; align-items: center; gap: 4px; }
+  .topnav__links > *:hover { color: var(--bg); background: rgba(255,255,255,0.06); }
+  .topnav__links .active { color: var(--bg); background: rgba(255,255,255,0.1); }
+  .topnav__cta { background: var(--cta); color: var(--ink) !important; font-weight: 600; margin-left: 8px; padding: 9px 18px !important; }
+  .topnav__cta:hover { background: var(--cta-hover) !important; color: var(--ink) !important; }
+  @media (max-width: 880px) { .topnav__links { display: none; } }
+
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; }
+  .eyebrow::before { content: ""; display: inline-block; width: 14px; height: 14px; background: var(--lime); border-radius: 2px; }
+
+  .serif-em { font-family: var(--serif); font-weight: 400; font-style: italic; letter-spacing: -0.02em; }
+
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+  .wrap-tight { max-width: 1080px; margin: 0 auto; padding: 0 2rem; }
+  @media (max-width: 720px) { .wrap, .wrap-tight { padding: 0 1.25rem; } }
+
+  section { padding: 5rem 0; position: relative; }
+
+  .page-hero { background: var(--lime); text-align: center; padding: 10rem 1.25rem 5rem; }
+  .page-hero .eyebrow { color: rgba(249,247,247,0.65); margin-bottom: 1.25rem; }
+  .page-hero .eyebrow::before { background: rgba(249,247,247,0.3); }
+  .page-hero h1 { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 600; color: var(--bg); line-height: 1.05; letter-spacing: -0.04em; max-width: 640px; margin: 0 auto 1rem; }
+  .page-hero p { font-size: 16px; color: rgba(249,247,247,0.7); max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+  .content { padding: 4rem 0 6rem; }
+  .content p { font-size: 16px; color: var(--ink-2); line-height: 1.7; }
+  .text-center { text-align: center; }
+
+  footer {
+    background: var(--bg-dark); color: var(--bg); padding: 4rem 0 2rem;
+  }
+  .footer__grid { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 2rem; padding-bottom: 3rem; border-bottom: 0.5px solid var(--line-on-dark); }
+  .footer__col h4 { font-size: 13px; font-weight: 600; color: rgba(249,247,247,0.55); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1.25rem; }
+  .footer__col ul { list-style: none; }
+  .footer__col li { margin-bottom: 12px; }
+  .footer__col a { font-size: 14px; color: rgba(249,247,247,0.85); transition: color 0.15s; }
+  .footer__col a:hover { color: var(--lime); }
+  .footer__brand p { font-size: 14px; color: rgba(249,247,247,0.65); margin-top: 12px; max-width: 22rem; line-height: 1.6; }
+  .footer__brand .logo { font-weight: 600; font-size: 1.25rem; letter-spacing: -0.5px; display: inline-flex; align-items: center; gap: 8px; }
+  .footer__brand .logo .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--lime); }
+  .footer__bottom { padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 13px; color: rgba(249,247,247,0.55); }
+  .footer__bottom a { color: inherit; margin-left: 1rem; }
+  .footer__bottom a:hover { color: var(--lime); }
+
+  @media (max-width: 720px) {
+    .footer__grid { grid-template-columns: 1fr 1fr; }
+    .footer__brand { grid-column: 1 / -1; }
+    .page-hero { padding: 8rem 1.25rem 3.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav__bar">
+    <a href="landing_v2.html" class="topnav__logo"><span class="dot"></span> Swiftclaim</a>
+    <div class="topnav__links">
+      <a href="landing_v2.html">Hem</a>
+      <a href="landing_v2.html#hur">Tjänster</a>
+      <a href="landing_v2.html#kunder">Resultat</a>
+      <a href="landing_v2.html#faq">FAQ</a>
+      <a href="blogg.html" class="active">Blogg</a>
+      <a href="priser.html">Priser</a>
+      <a href="om-oss.html">Om oss</a>
+      <a href="kontakt.html">Kontakt</a>
+      <a href="landing_v2.html#anmal" class="topnav__cta">Anmäl skada</a>
+    </div>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="eyebrow">Blogg</div>
+  <h1>Kundberättelser &amp; <span class="serif-em">insikter</span></h1>
+  <p>Lär dig mer om försäkring, skadehantering och hur du får ut det du har rätt till.</p>
+</section>
+
+<section class="content">
+  <div class="wrap-tight text-center">
+    <p>Bloggen är under uppbyggnad. Kom tillbaka snart för att ta del av kundberättelser, guider och juridiska insikter.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer__grid">
+      <div class="footer__brand footer__col">
+        <div class="logo"><span class="dot"></span> Swiftclaim</div>
+        <p>Skadeombud för svenska privatpersoner. Vi argumenterar, förhandlar och driver ditt försäkringsärende — så att du får ut det du har rätt till.</p>
+      </div>
+      <div class="footer__col">
+        <h4>Tjänster</h4>
+        <ul>
+          <li><a href="landing_v2.html#hur">Skadeanalys</a></li>
+          <li><a href="landing_v2.html#hur">Förhandling</a></li>
+          <li><a href="landing_v2.html#hur">Omprövning</a></li>
+          <li><a href="landing_v2.html#hur">ARN-anmälan</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Skadetyper</h4>
+        <ul>
+          <li><a href="landing_v2.html#kunder">Vattenskada</a></li>
+          <li><a href="landing_v2.html#kunder">Brandskada</a></li>
+          <li><a href="landing_v2.html#kunder">Inbrott</a></li>
+          <li><a href="landing_v2.html#kunder">Stormskada</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Resurser</h4>
+        <ul>
+          <li><a href="blogg.html">Blogg</a></li>
+          <li><a href="landing_v2.html#faq">Vanliga frågor</a></li>
+          <li><a href="priser.html">Priser</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Företaget</h4>
+        <ul>
+          <li><a href="om-oss.html">Om oss</a></li>
+          <li><a href="kontakt.html">Kontakt</a></li>
+          <li><a href="dataskydd.html">Dataskydd</a></li>
+          <li><a href="anvandarvillkor.html">Användarvillkor</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div>&copy; 2026 Swiftclaim AB</div>
+      <div>
+        <a href="dataskydd.html">Dataskydd</a>
+        <a href="anvandarvillkor.html">Användarvillkor</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

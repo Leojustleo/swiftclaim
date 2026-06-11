@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Användarvillkor – Swiftclaim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500&display=swap">
+<style>
+  :root {
+    --bg: #F9F7F7;
+    --bg-card: #DBE2EF;
+    --bg-dark: #112D4E;
+    --bg-dark-2: #0F2642;
+    --ink: #0A0A0A;
+    --ink-2: #2C2C2C;
+    --muted: #6F6F6F;
+    --line: rgba(0,0,0,0.10);
+    --line-strong: rgba(0,0,0,0.18);
+    --line-on-dark: rgba(249,247,247,0.14);
+    --brand: #3F72AF;
+    --lime: #112D4E;
+    --lime-soft: #3F72AF;
+    --lime-deep: #0A1E36;
+    --cta: #f7d154;
+    --cta-hover: #e6c44d;
+    --r-card: 14px;
+    --r-pill: 999px;
+    --shadow-soft: 0 1px 2px rgba(0,0,0,0.04), 0 8px 28px rgba(0,0,0,0.06);
+    --serif: "Fraunces", "Times New Roman", serif;
+    --sans: "Inter", system-ui, -apple-system, sans-serif;
+    --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.5; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--lime); color: var(--bg); }
+
+  .topnav { position: fixed; top: 16px; left: 0; right: 0; z-index: 90; display: flex; justify-content: center; pointer-events: none; }
+  .topnav__bar {
+    pointer-events: auto; display: flex; align-items: center; gap: 0;
+    background: rgba(17,45,78,0.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border: 0.5px solid rgba(255,255,255,0.08); border-radius: var(--r-pill);
+    padding: 7px 8px 7px 22px;
+    box-shadow: 0 10px 40px -10px rgba(0,0,0,0.35);
+    color: var(--bg);
+  }
+  .topnav__logo { font-weight: 600; font-size: 1rem; letter-spacing: -0.5px; color: var(--bg); margin-right: 1.25rem; display: inline-flex; align-items: center; gap: 6px; }
+  .topnav__logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); }
+  .topnav__links { display: flex; align-items: center; }
+  .topnav__links > * { position: relative; font-size: 14px; font-weight: 500; color: rgba(249,247,247,0.78); padding: 9px 14px; border-radius: var(--r-pill); cursor: pointer; transition: color 0.15s, background 0.15s; display: inline-flex; align-items: center; gap: 4px; }
+  .topnav__links > *:hover { color: var(--bg); background: rgba(255,255,255,0.06); }
+  .topnav__links .active { color: var(--bg); background: rgba(255,255,255,0.1); }
+  .topnav__cta { background: var(--cta); color: var(--ink) !important; font-weight: 600; margin-left: 8px; padding: 9px 18px !important; }
+  .topnav__cta:hover { background: var(--cta-hover) !important; color: var(--ink) !important; }
+  @media (max-width: 880px) { .topnav__links { display: none; } }
+
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; }
+  .eyebrow::before { content: ""; display: inline-block; width: 14px; height: 14px; background: var(--lime); border-radius: 2px; }
+
+  .serif-em { font-family: var(--serif); font-weight: 400; font-style: italic; letter-spacing: -0.02em; }
+
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+  .wrap-tight { max-width: 1080px; margin: 0 auto; padding: 0 2rem; }
+  @media (max-width: 720px) { .wrap, .wrap-tight { padding: 0 1.25rem; } }
+
+  .page-hero { background: var(--lime); text-align: center; padding: 10rem 1.25rem 5rem; }
+  .page-hero .eyebrow { color: rgba(249,247,247,0.65); margin-bottom: 1.25rem; }
+  .page-hero .eyebrow::before { background: rgba(249,247,247,0.3); }
+  .page-hero h1 { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 600; color: var(--bg); line-height: 1.05; letter-spacing: -0.04em; max-width: 640px; margin: 0 auto 1rem; }
+  .page-hero p { font-size: 16px; color: rgba(249,247,247,0.7); max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+  .legal-content { padding: 5rem 0 6rem; }
+  .legal-section { margin-bottom: 2.5rem; }
+  .legal-section h2 { font-size: 1.125rem; font-weight: 600; color: var(--lime); letter-spacing: -0.3px; margin-bottom: 1rem; }
+  .legal-section h3 { font-size: 15px; font-weight: 600; color: var(--ink); margin: 1.25rem 0 0.5rem; }
+  .legal-section p { font-size: 14px; line-height: 1.8; color: var(--ink-2); margin-bottom: 0.75rem; }
+  .legal-section ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; }
+  .legal-section li { font-size: 14px; line-height: 1.7; color: var(--ink-2); margin-bottom: 0.35rem; }
+  .legal-section .def { margin-bottom: 0.5rem; }
+  .legal-section .def strong { font-weight: 600; color: var(--ink); }
+
+  footer {
+    background: var(--bg-dark); color: var(--bg); padding: 4rem 0 2rem;
+  }
+  .footer__grid { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 2rem; padding-bottom: 3rem; border-bottom: 0.5px solid var(--line-on-dark); }
+  .footer__col h4 { font-size: 13px; font-weight: 600; color: rgba(249,247,247,0.55); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1.25rem; }
+  .footer__col ul { list-style: none; }
+  .footer__col li { margin-bottom: 12px; }
+  .footer__col a { font-size: 14px; color: rgba(249,247,247,0.85); transition: color 0.15s; }
+  .footer__col a:hover { color: var(--lime); }
+  .footer__brand p { font-size: 14px; color: rgba(249,247,247,0.65); margin-top: 12px; max-width: 22rem; line-height: 1.6; }
+  .footer__brand .logo { font-weight: 600; font-size: 1.25rem; letter-spacing: -0.5px; display: inline-flex; align-items: center; gap: 8px; }
+  .footer__brand .logo .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--lime); }
+  .footer__bottom { padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 13px; color: rgba(249,247,247,0.55); }
+  .footer__bottom a { color: inherit; margin-left: 1rem; }
+  .footer__bottom a:hover { color: var(--lime); }
+
+  @media (max-width: 720px) {
+    .footer__grid { grid-template-columns: 1fr 1fr; }
+    .footer__brand { grid-column: 1 / -1; }
+    .page-hero { padding: 8rem 1.25rem 3.5rem; }
+    .legal-section { margin-bottom: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav__bar">
+    <a href="landing_v2.html" class="topnav__logo"><span class="dot"></span> Swiftclaim</a>
+    <div class="topnav__links">
+      <a href="landing_v2.html">Hem</a>
+      <a href="landing_v2.html#hur">Tjänster</a>
+      <a href="landing_v2.html#kunder">Resultat</a>
+      <a href="landing_v2.html#faq">FAQ</a>
+      <a href="blogg.html">Blogg</a>
+      <a href="priser.html">Priser</a>
+      <a href="om-oss.html">Om oss</a>
+      <a href="kontakt.html">Kontakt</a>
+      <a href="landing_v2.html#anmal" class="topnav__cta">Anmäl skada</a>
+    </div>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="eyebrow">Juridik</div>
+  <h1>Användar<span class="serif-em">villkor</span></h1>
+  <p>Läs igenom våra villkor noggrant innan du använder våra tjänster.</p>
+</section>
+
+<section class="legal-content">
+  <div class="wrap-tight">
+
+<div class="legal-section">
+  <h2>1. Definitioner av begrepp</h2>
+  <p>I dessa användarvillkor ska de nedan definierade begreppen ha följande betydelse:</p>
+  <p class="def"><strong>Användarkonto[t]:</strong> SwiftClaims Online-portal "Mina sidor" som Kunden loggar in på via BankID.</p>
+  <p class="def"><strong>Avtalet:</strong> Avtal om Tjänsten, ingånget mellan SwiftClaim och Kunden i enlighet med punkten 2.2 i dessa användarvillkor.</p>
+  <p class="def"><strong>Försäkringsbolag:</strong> Juridisk person som yrkesmässigt tillhandahåller försäkringar till enskilda eller annan som i övrigt yrkesmässigt betalar ut ersättning till enskilda eller juridisk person med anledning av skada. Begreppet "Försäkringsbolag" i dessa allmänna villkor inbegriper även skadevållaren, skadevållarens försäkringsbolag eller allmän juridisk person som enligt avtal, lag eller annan författning har rätten eller skyldigheten att hantera skadeanspråk.</p>
+  <p class="def"><strong>Försäkringsersättning[en]:</strong> All ersättning som Kunden, efter att ha ingått Avtalet med SwiftClaim, erhåller från Försäkringsbolag eller annan med anledning av Skadan. Med "Försäkringsersättning" avses både kontant och/eller icke-kontant ersättning (t.ex. reparation).</p>
+  <p class="def"><strong>SwiftClaim:</strong> SwiftClaim AB, ett svenskt aktiebolag med organisationsnummer 559074-2028.</p>
+  <p class="def"><strong>Kunden:</strong> Den fysiska eller juridiska person som har drabbats av Skadan och/eller som har ingått, eller önskar ingå, Avtalet med SwiftClaim i enlighet med dessa användarvillkor. I begreppet "Kunden" inryms även, såvitt aktuellt, vårdnadshavare när den skadelidande är under 18 år.</p>
+  <p class="def"><strong>Skada[n]:</strong> Skada, förlust eller annan omständighet som direkt eller indirekt kan berättiga Kunden till ersättning enligt försäkringsavtal eller annan liknande grund och som Kunden beskrivit för SwiftClaim i anslutning till att Avtalet ingicks eller därefter.</p>
+  <p class="def"><strong>Tjänsten:</strong> SwiftClaims åtagande att driva Kundens ersättningskrav mot Försäkringsbolag enligt definition i punkten 3 i SwiftClaims användarvillkor.</p>
+  <p class="def"><strong>Beslut om ersättning:</strong> Information från ett Försäkringsbolag om att Försäkringsersättning kommer att utbetalas eller icke-kontant åtgärd vidtas för Skadan till följd av Tjänsten.</p>
+  <p class="def"><strong>Skyddad identitet:</strong> Innebär att du har skyddade personuppgifter i folkbokföringsregistret enligt folkbokföringslagen (1991:481) oavsett typ eller nivå av skydd.</p>
+</div>
+
+<div class="legal-section">
+  <h2>2. Avtalets ingående och upphörande</h2>
+  <h3>Ingående</h3>
+  <p>2.1 Genom att acceptera SwiftClaims användarvillkor vid skapande av konto på SwiftClaims hemsida accepterar Kunden villkoren för Användarkontot.</p>
+  <p>2.2 Avtalet ingås när Kunden undertecknar fullmakt för SwiftClaim att företräda Kunden. Genom att skicka in fullmakten intygar Kunden att denne har juridisk behörighet att ingå Avtalet och teckna fullmakten. Kunden har, enligt 16 § lag (1915:218) om avtal och andra rättshandlingar på förmögenhetsrättens område, rätt att när som helst återkalla fullmakten. För det fall att återkallelsen, direkt eller indirekt, innebär att Kunden säger upp Avtalet utan stöd i Avtalet kan SwiftClaim alltjämt äga rätt till arvode i enlighet med punkt 5.3.</p>
+  <p>2.3 Fullmakt signeras och skickas in genom formulär på SwiftClaims hemsida, www.swiftclaim.se, eller på annat sätt som SwiftClaim anvisar Kunden.</p>
+  <h3>Avtalstid</h3>
+  <p>2.4 Avtalet gäller från att Avtalet ingåtts enligt punkten 2.2 till dess Kunden erhållit full betalning från Försäkringsbolag och SwiftClaim erhållit hela sitt arvode och annan ersättning enligt punkten 5.</p>
+  <h3>Avtalets upphörande i förtid</h3>
+  <p>2.5 SwiftClaim kan när som helst säga upp Avtalet genom ett skriftligt meddelande till Kunden om SwiftClaim bedömer att det inte finns någon möjlighet för Kunden att erhålla ersättning för Skadan inom ramen för Tjänsten. SwiftClaims bedömning kan exempelvis grunda sig på att försäkring inte finns, att Skadan sannolikt är preskriberad, att Skadan av SwiftClaim inte bedöms som ett ersättningsgillt försäkringsfall, att Kundens ersättningsanspråk redan slutligt reglerats eller att Kundens ersättningsanspråk är föremål för en rättslig tvist.</p>
+  <p>2.6 SwiftClaim kan utan uppsägningstid säga upp Avtalet genom ett skriftligt meddelande till Kunden om Kunden inte uppfyller sina skyldigheter enligt dessa användarvillkor. Uppsägningen gäller från och med den dag när uppsägningen ska anses ha kommit Kunden tillhanda enligt punkten 7 nedan.</p>
+  <p>2.7 Kunden kan när som helst innan det att Beslut om ersättning lämnats till Bolaget och/eller Kunden säga upp Avtalet genom att lämna eller sända ett meddelande till Bolaget.</p>
+  <p>2.8 Om Kunden är en konsument har denne, enligt lagen (2005:59) om distansavtal och avtal utanför affärslokaler, rätt att frånträda Avtalet genom att till SwiftClaim lämna eller sända ett meddelande inom 14 dagar från den dag då att Avtalet ingicks enligt punkten 2.2, varefter ångerrätten upphör. Kunden kan även använda sig av en ångerblankett som kan laddas ner här.</p>
+  <p>2.9 Om SwiftClaim i enlighet med punkten 9 ändrar Avtalet till nackdel för Kunden får Kunden säga upp Avtalet med verkan från ändringens ikraftträdande om uppsägning görs inom en månad efter det att SwiftClaim informerat Kunden om förändringen.</p>
+  <h3>Skyddad identitet</h3>
+  <p>2.10 Tjänsten har inte utformats för dig som har Skyddad identitet. Eftersom SwiftClaim inte fullt ut kan garantera att dina personuppgifter skyddas på ett tillräckligt sätt inom ramen för Tjänsten om du har Skyddad identitet är Tjänsten därför tyvärr inte tillgänglig för dig med Skyddad identitet. En nödvändig förutsättning och ett villkor för Avtalet och för att kunna använda Tjänsten är således att du inte har Skyddad identitet vid Avtalets ingående eller erhåller Skyddad identitet under avtalstiden.</p>
+  <p>Om det kommer till SwiftClaims kännedom att du har Skyddad identitet antingen i samband med Avtalets ingående, eller därefter, har SwiftClaim rätt att neka dig att ingå Avtalet eller, om Avtalet redan har ingåtts, genom skriftligt meddelande säga upp Avtalet. Uppsägning gäller från och med den dag när uppsägningen ska anses ha kommit dig tillhanda enligt punkten 7 nedan.</p>
+</div>
+
+<div class="legal-section">
+  <h2>3. Tjänsten</h2>
+  <p>3.1 Tjänsten omfattar ett åtagande från SwiftClaim att:</p>
+  <ul>
+    <li>bedöma vilka ersättningar från Försäkringsbolag som Kunden kan erhålla med anledning av Skadan. SwiftClaims bedömning baseras på de uppgifter som erhållits från kunden;</li>
+    <li>framställa ersättningskrav till de Försäkringsbolag från vilka det har bedömts att Kunden kan erhålla ersättning enligt ovan;</li>
+    <li>fortlöpande handlägga kravet utan oskäligt dröjsmål när all relevant och nödvändig information och dokumentation alltemellanåt har inkommit till SwiftClaim under ärendets handläggningstid;</li>
+    <li>driva in betalning eller annan ersättning med anledning av framförda ersättningskrav enligt ovan; och</li>
+    <li>informera Kunden om väsentliga händelser som inträffar i ärendet.</li>
+  </ul>
+  <p>För det fall att SwiftClaim övertar ett krav som tidigare drivits av Kunden eller annat ombud är SwiftClaim inte skyldigt att genomföra samtliga steg ovan om de, i SwiftClaims bedömning, inte är relevanta i handläggningen av kravet.</p>
+  <p>3.2 Tjänsten innefattar inte någon garanti från SwiftClaim avseende Kundens rätt till Försäkringsersättning eller Försäkringsersättningens storlek.</p>
+  <p>3.3 Tjänsten omfattar endast ersättningskrav mot Försäkringsbolag. SwiftClaim är inte skyldiga att driva andra krav såsom krav mot enskilda på skadeståndsrättslig grund.</p>
+  <p>3.4 SwiftClaim är inte skyldiga att driva krav med anledning av personskador eller andra typer av skada.</p>
+  <p>3.5 SwiftClaim är inte skyldiga att överklaga eller begära överprövning av Försäkringsbolags beslut om ersättning eller driva tvister i domstol.</p>
+  <p>3.6 SwiftClaim är berättigade, men inte skyldiga, att på Kundens vägnar inhämta uppgifter av betydelse för rätten till Försäkringsersättning, samt även boka in Kunden på för Försäkringsersättningen nödvändiga möten, undersökningar, inspektioner eller liknande och/eller vidta andra åtgärder av betydelse för rätten till Försäkringsersättning, såsom polisanmälan.</p>
+  <p>3.7 SwiftClaim är berättigade, men inte skyldiga, att på Kundens vägnar inhämta och lagra uppgifter från Försäkringsbolag angående av Kunden tecknade försäkringar samt även inhämta och lagra andra uppgifter av betydelse för Kundens försäkringsskydd, såsom uppgifter avseende medlemskap i fackföreningar, idrottsklubbar, arbetsplatser etc.</p>
+  <p>3.8 Kunden är införstådd med att SwiftClaim använder olika IT-verktyg, inklusive AI-verktyg, för att tillhandahålla Tjänsterna. SwiftClaim vidtar åtgärder för att säkerställa att särskilda kategorier av personuppgifter om Kunden inte används av SwiftClaims leverantörer av AI-verktyg för att träna eller utveckla det aktuella AI-verktyget för leverantörens räkning, utan Kundens uttryckliga samtycke.</p>
+</div>
+
+<div class="legal-section">
+  <h2>4. Kundens skyldigheter</h2>
+  <h3>Särskilt avseende Användarkontot</h3>
+  <p>4.1 Som användare ansvarar Kunden för att:</p>
+  <ul>
+    <li>enbart nyttja Användarkontot för dess avsedda syfte och i enlighet med dessa Användarvillkor;</li>
+    <li>anmäla till SwiftClaim vid misstanke om obehörig inloggning på Användarkontot; och</li>
+    <li>se till att de till Användarkontot registrerade kontaktuppgifterna alltid är aktuella.</li>
+  </ul>
+  <h3>Särskilt avseende Tjänsten</h3>
+  <p>4.2 Som nyttjare av Tjänsten åtar Kunden sig att:</p>
+  <ul>
+    <li>lojalt samarbeta med SwiftClaim och inte hindra SwiftClaim i utförandet av Tjänsten. Detta åtagande innefattar, men är inte begränsat till, att Kunden ska anses ha brutit mot Avtalet för det fall Kunden trots påminnelse inte besvarar SwiftClaims förfrågningar;</li>
+    <li>svara sanningsenligt och utan onödigt dröjsmål på frågor från SwiftClaim med anledning av utförandet av Tjänsten;</li>
+    <li>på begäran tillhandahålla sådana uppgifter och handlingar som är av betydelse för SwiftClaims möjlighet att utföra Tjänsten;</li>
+    <li>upphöra med egna förhandlingar med Försäkringsbolaget och istället omgående informera SwiftClaim om av Kunden mottagen korrespondens från Försäkringsbolag eller annan kontakt Kunden haft med Försäkringsbolag;</li>
+    <li>omgående informera SwiftClaim när Kunden erhåller direkt utbetalning av Försäkringsersättning från Försäkringsbolag eller annan; och</li>
+    <li>inte utan SwiftClaims medgivande överlåta rätten till Försäkringsersättningen.</li>
+  </ul>
+  <h3>Exklusivitet</h3>
+  <p>4.3 Kunden åtar sig att inte själv eller genom annat av Kunden anlitat ombud, utan SwiftClaims medgivande, föra några förhandlingar eller diskussioner direkt med Försäkringsbolag med anledning av Skadan. Om Kunden blir direkt kontaktad av Försäkringsbolag med anledning av Skadan eller av annan som erbjuder sig att driva Kundens anspråk är Kunden skyldig att hänvisa dessa vidare till SwiftClaim.</p>
+</div>
+
+<div class="legal-section">
+  <h2>5. SwiftClaims ersättning för Tjänsten</h2>
+  <h3>Arvode och arvodets storlek</h3>
+  <p>5.1 Vid händelsen att Kunden inte erhåller någon ersättning från Försäkringsbolag med anledning av Skadan har SwiftClaim inte rätt till något arvode. I annat fall ska Kunden betala SwiftClaim ett arvode motsvarande 30 % inklusive mervärdesskatt av Försäkringsersättningen, upp till ett maximalt belopp om 50 000 kr. SwiftClaims rätt till ersättning uppstår när Beslut om ersättning lämnas till SwiftClaim och/eller Kunden.</p>
+  <p>5.2 I det fall ersättning inte utbetalas från Försäkringsbolag kontant, utan sker genom reparation, eller ersättning i form av likadan eller närmast likadan egendom, eller annan icke-kontant ersättning gör SwiftClaim en skälig värdering av den icke-kontanta ersättningen.</p>
+  <p>5.3 Om Kunden utan stöd i Avtalet eller lag säger upp Avtalet i förtid, eller om SwiftClaim på grund av omständighet som beror på Kunden, säger upp Avtalet i förtid, och detta sker efter det att Beslut om ersättning lämnats till SwiftClaim och/eller Kunden ska Kunden alltjämt erlägga ersättning enligt punkt 5.1.</p>
+  <h3>Insyn</h3>
+  <p>5.4 I fall som avses i punkt 5.3 har SwiftClaim även i tiden efter Avtalets upphörande rätt till insyn avseende samtliga förhållanden som kan beröra SwiftClaims rätt till ersättning. På begäran ska SwiftClaim tillställas kopia av de handlingar SwiftClaim önskar ta del av, inklusive, men inte uteslutande, Beslut om ersättning. En begäran enligt denna punkt ska efterkommas inom 14 dagar från det att begäran avsänts eller på annat sätt meddelats Kunden.</p>
+  <h3>Beräkning av arvodet</h3>
+  <p>5.4 SwiftClaim är berättigat att erhålla arvode grundat på all Försäkringsersättning oaktat att ersättningen är en följd av att Kunden har drivit kravet själv eller genom annat ombud när detta skett i strid med Kundens åtagande under punkt 4.3 i Avtalet.</p>
+  <p>5.5 För det fall Kunden avtalsenligt säger upp Avtalet i förtid, eller för det fall SwiftClaim säger upp Avtalet i förtid på grund av omständighet som inte beror på Kunden, är SwiftClaim berättigat till arvode endast i förhållande till den del av Försäkringsersättningen som utgetts som en följd av SwiftClaims arbete.</p>
+  <p>5.6 För det fall SwiftClaim vid ingående av Avtalet med Kunden tar över ett krav som tidigare drivits av Kunden eller genom annat ombud äger SwiftClaim alltjämt rätt till arvode under punkt 5.1, eller det lägre arvode som SwiftClaim från fall till fall finner skäligt.</p>
+  <h3>Utlägg</h3>
+  <p>5.7 I tillägg till arvode ska SwiftClaim även ha rätt till ersättning för skäliga utlägg i tillägg till mervärdesskatt i anledning av SwiftClaims utförande av Tjänsten.</p>
+</div>
+
+<div class="legal-section">
+  <h2>6. Betalning för Tjänsten</h2>
+  <p>6.1 SwiftClaim är berättigade att när så är möjligt uppbära Kundens Försäkringsersättning, som ska utbetalas genom insättning på SwiftClaims klientmedelskonto. Betalning av SwiftClaims ersättning erläggs som huvudregel genom att SwiftClaim använder Kunden tillhöriga medel på SwiftClaims klientmedelskonto för kvittning mot SwiftClaims ersättningsfordran. Försäkringsersättningen, exklusive SwiftClaims ersättningsfordran, utbetalas därefter till Kunden inom 14 dagar. Kunden erhåller i samband härmed redovisning av erhållna medel samt medlens användning.</p>
+  <p>6.2 Om betalning inte erläggs genom kvittning i enlighet med punkten 6.1 ska SwiftClaim fakturera Kunden med betalningstid om 14 dagar från fakturadatum. Då arvode eller annan ersättning inte betalas i tid av Kunden har SwiftClaim rätt till dröjsmålsränta i enlighet med räntelagen samt en påminnelseavgift om 60 kr.</p>
+  <p>6.3 För det fall Kunden inte har lämnat erforderlig information i enlighet med punkt 5.4 gällande Beslut om ersättning och/eller Försäkringsersättning som betalats ut direkt till Kunden från Försäkringsbolag, eller annan icke-kontant ersättningsåtgärd från Försäkringsbolag, äger SwiftClaim rätt att fakturera Kunden en summa som SwiftClaim skäligen bedömer motsvara det arvode som SwiftClaim borde vara berättigat enligt SwiftClaims erfarenhet av liknande krav och Skador.</p>
+</div>
+
+<div class="legal-section">
+  <h2>7. Meddelande</h2>
+  <p>7.1 Meddelanden från SwiftClaim till Kunden får tillställas Kunden på dennes folkbokföringsadress eller annan fysik eller elektronisk adress som angivits av Kunden. Meddelande får även tillhandahållas genom SwiftClaims hemsida www.swiftclaim.se när SwiftClaim bedömer att det är lämpligt.</p>
+  <p>7.2 Om SwiftClaim har skickat ett meddelande med ordinarie post till Kunden ska meddelandet anses ha kommit Kunden tillhanda senast på sjunde dagen efter avsändandet. Har meddelandet sänts med e-post ska det anses ha nått Kunden omedelbart. Har meddelandet tillhandahållits genom SwiftClaims hemsida ska meddelandet anses ha kommit Kunden tillhanda senast på sjunde dagen efter att meddelandet anslogs på hemsidan.</p>
+  <p>7.3 Meddelanden från Kunden till SwiftClaim ska tillhandahållas på sätt som anvisas av SwiftClaim.</p>
+  <p>7.4 Om Kunden i rätt tid och på ett ändamålsenligt sätt har lämnat eller sänt ett meddelande enligt 2.7 och 8.2, får meddelandet åberopas även om det försenas, förvanskas eller inte kommer fram.</p>
+</div>
+
+<div class="legal-section">
+  <h2>8. Ansvarsbegränsning och reklamation</h2>
+  <p>8.1 SwiftClaim ska ansvara för skada eller förlust som uppkommit till följd av fel eller försummelse i samband med utförandet av Tjänsten. SwiftClaims ansvar omfattar inte indirekta skador, såsom utebliven vinst eller följdskador, såvida inte skadan orsakats av SwiftClaim genom grov vårdslöshet eller uppsåt. SwiftClaim ansvarar inte för fel eller brister som uppstår till följd av att Kunden lämnat ofullständig eller oriktig information. Detta begränsar dock inte SwiftClaims ansvar för den information och rådgivning som SwiftClaim tillhandahåller inom ramen för Tjänsten. SwiftClaim har en för verksamheten anpassad ansvarsförsäkring för skada som Kunden vållats till följd av fel, försummelse eller avtalsbrott från SwiftClaims sida.</p>
+  <p>8.2 Kunden ska utan onödigt dröjsmål och så snart Kunden fått kännedom eller borde ha fått kännedom om fel i Tjänsten reklamera detta till SwiftClaim. Reklamation ska ske senast tre (3) år men bör ske inom skälig tid från att Kunden fått kännedom eller borde ha fått kännedom om felet. Reklamationer som sker inom två (2) månader från att Kunden märkt felet skall alltid anses ha skett inom skälig tid. För det fall Kunden inte reklamerar i enlighet med denna punkt har Kunden förlorat rätten att göra gällande felet mot SwiftClaim.</p>
+</div>
+
+<div class="legal-section">
+  <h2>9. Ändringar</h2>
+  <p>SwiftClaim har rätt att ändra eller göra tillägg till Avtalet. Sådan ändring eller tillägg ska meddelas Kunden senast tre månader innan ikraftträdandet. Om ändring sker till nackdel för Kunden äger Kunden rätt att frånträda Avtalet i enlighet med punkt 2.9.</p>
+</div>
+
+<div class="legal-section">
+  <h2>10. Force majeure</h2>
+  <p>Part är befriad från skyldighet att ersätta skada eller fullgöra viss förpliktelse enligt Avtalet om skadan eller underlåtenheten har sin grund i omständighet utanför parts kontroll, exempelvis myndighets åtgärd eller underlåtenhet, nytillkommen eller ändrad lagstiftning, arbetskonflikt, blockad, krig, upplopp, sabotage, extrema väderförhållanden, blixtnedslag, brand, explosion, översvämning, naturkatastrof eller olyckshändelse, och omständigheterna förhindrar, avsevärt försvårar eller försenar fullgörandet av sådan förpliktelse.</p>
+</div>
+
+<div class="legal-section">
+  <h2>11. Immateriella rättigheter</h2>
+  <p>Avtalet innebär inte att upphovsrätt eller andra immateriella rättigheter överlåts eller upplåts till Kunden och Kunden får inte heller i övrigt kopiera eller ändra programvara eller annat material som tillhör Tjänsten.</p>
+</div>
+
+<div class="legal-section">
+  <h2>12. Tvist</h2>
+  <p>Uppkommer tvist med anledning av Avtalet ska tvisten avgöras av svensk allmän domstol och enligt svensk rätt. Många tvister kan även prövas av Allmänna reklamationsnämnden, vars beslut utgör en rekommendation till parterna om hur tvisten bör lösas.</p>
+</div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer__grid">
+      <div class="footer__brand footer__col">
+        <div class="logo"><span class="dot"></span> Swiftclaim</div>
+        <p>Skadeombud för svenska privatpersoner. Vi argumenterar, förhandlar och driver ditt försäkringsärende — så att du får ut det du har rätt till.</p>
+      </div>
+      <div class="footer__col">
+        <h4>Tjänster</h4>
+        <ul>
+          <li><a href="landing_v2.html#hur">Skadeanalys</a></li>
+          <li><a href="landing_v2.html#hur">Förhandling</a></li>
+          <li><a href="landing_v2.html#hur">Omprövning</a></li>
+          <li><a href="landing_v2.html#hur">ARN-anmälan</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Skadetyper</h4>
+        <ul>
+          <li><a href="landing_v2.html#kunder">Vattenskada</a></li>
+          <li><a href="landing_v2.html#kunder">Brandskada</a></li>
+          <li><a href="landing_v2.html#kunder">Inbrott</a></li>
+          <li><a href="landing_v2.html#kunder">Stormskada</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Resurser</h4>
+        <ul>
+          <li><a href="blogg.html">Blogg</a></li>
+          <li><a href="landing_v2.html#faq">Vanliga frågor</a></li>
+          <li><a href="priser.html">Priser</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Företaget</h4>
+        <ul>
+          <li><a href="om-oss.html">Om oss</a></li>
+          <li><a href="kontakt.html">Kontakt</a></li>
+          <li><a href="dataskydd.html">Dataskydd</a></li>
+          <li><a href="anvandarvillkor.html">Användarvillkor</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div>&copy; 2026 Swiftclaim AB</div>
+      <div>
+        <a href="dataskydd.html">Dataskydd</a>
+        <a href="anvandarvillkor.html">Användarvillkor</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dataskyddsinformation – Swiftclaim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500&display=swap">
+<style>
+  :root {--bg:#F9F7F7;--bg-card:#DBE2EF;--bg-dark:#112D4E;--bg-dark-2:#0F2642;--ink:#0A0A0A;--ink-2:#2C2C2C;--muted:#6F6F6F;--line:rgba(0,0,0,0.10);--line-strong:rgba(0,0,0,0.18);--line-on-dark:rgba(249,247,247,0.14);--brand:#3F72AF;--lime:#112D4E;--lime-soft:#3F72AF;--lime-deep:#0A1E36;--cta:#f7d154;--cta-hover:#e6c44d;--r-card:14px;--r-pill:999px;--shadow-soft:0 1px 2px rgba(0,0,0,0.04),0 8px 28px rgba(0,0,0,0.06);--serif:"Fraunces","Times New Roman",serif;--sans:"Inter",system-ui,-apple-system,sans-serif;--ease-out:cubic-bezier(0.2,0.7,0.2,1);}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--lime);color:var(--bg)}
+  .topnav{position:fixed;top:16px;left:0;right:0;z-index:90;display:flex;justify-content:center;pointer-events:none}
+  .topnav__bar{pointer-events:auto;display:flex;align-items:center;gap:0;background:rgba(17,45,78,0.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:0.5px solid rgba(255,255,255,0.08);border-radius:var(--r-pill);padding:7px 8px 7px 22px;box-shadow:0 10px 40px -10px rgba(0,0,0,0.35);color:var(--bg)}
+  .topnav__logo{font-weight:600;font-size:1rem;letter-spacing:-0.5px;color:var(--bg);margin-right:1.25rem;display:inline-flex;align-items:center;gap:6px}
+  .topnav__logo .dot{width:8px;height:8px;border-radius:50%;background:var(--lime)}
+  .topnav__links{display:flex;align-items:center}
+  .topnav__links>*{position:relative;font-size:14px;font-weight:500;color:rgba(249,247,247,0.78);padding:9px 14px;border-radius:var(--r-pill);cursor:pointer;transition:color 0.15s,background 0.15s;display:inline-flex;align-items:center;gap:4px}
+  .topnav__links>*:hover{color:var(--bg);background:rgba(255,255,255,0.06)}
+  .topnav__links .active{color:var(--bg);background:rgba(255,255,255,0.1)}
+  .topnav__cta{background:var(--cta);color:var(--ink)!important;font-weight:600;margin-left:8px;padding:9px 18px!important}
+  .topnav__cta:hover{background:var(--cta-hover)!important;color:var(--ink)!important}
+  @media(max-width:880px){.topnav__links{display:none}}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase}
+  .eyebrow::before{content:"";display:inline-block;width:14px;height:14px;background:var(--lime);border-radius:2px}
+  .serif-em{font-family:var(--serif);font-weight:400;font-style:italic;letter-spacing:-0.02em}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 2rem}
+  .wrap-tight{max-width:1080px;margin:0 auto;padding:0 2rem}
+  @media(max-width:720px){.wrap,.wrap-tight{padding:0 1.25rem}}
+  .page-hero{background:var(--lime);text-align:center;padding:10rem 1.25rem 5rem}
+  .page-hero .eyebrow{color:rgba(249,247,247,0.65);margin-bottom:1.25rem}
+  .page-hero .eyebrow::before{background:rgba(249,247,247,0.3)}
+  .page-hero h1{font-size:clamp(2rem,4.5vw,3.5rem);font-weight:600;color:var(--bg);line-height:1.05;letter-spacing:-0.04em;max-width:640px;margin:0 auto 1rem}
+  .page-hero p{font-size:16px;color:rgba(249,247,247,0.7);max-width:520px;margin:0 auto;line-height:1.7}
+  .legal-content{padding:5rem 0 6rem}
+  .legal-section{margin-bottom:2.5rem}
+  .legal-section h2{font-size:1.125rem;font-weight:600;color:var(--lime);letter-spacing:-0.3px;margin-bottom:1rem}
+  .legal-section h3{font-size:15px;font-weight:600;color:var(--ink);margin:1.25rem 0 0.5rem}
+  .legal-section p{font-size:14px;line-height:1.8;color:var(--ink-2);margin-bottom:0.75rem}
+  .legal-section ul{list-style:disc;padding-left:1.5rem;margin-bottom:0.75rem}
+  .legal-section li{font-size:14px;line-height:1.7;color:var(--ink-2);margin-bottom:0.35rem}
+  footer{background:var(--bg-dark);color:var(--bg);padding:4rem 0 2rem}
+  .footer__grid{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:2rem;padding-bottom:3rem;border-bottom:0.5px solid var(--line-on-dark)}
+  .footer__col h4{font-size:13px;font-weight:600;color:rgba(249,247,247,0.55);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:1.25rem}
+  .footer__col ul{list-style:none}
+  .footer__col li{margin-bottom:12px}
+  .footer__col a{font-size:14px;color:rgba(249,247,247,0.85);transition:color 0.15s}
+  .footer__col a:hover{color:var(--lime)}
+  .footer__brand p{font-size:14px;color:rgba(249,247,247,0.65);margin-top:12px;max-width:22rem;line-height:1.6}
+  .footer__brand .logo{font-weight:600;font-size:1.25rem;letter-spacing:-0.5px;display:inline-flex;align-items:center;gap:8px}
+  .footer__brand .logo .dot{width:10px;height:10px;border-radius:50%;background:var(--lime)}
+  .footer__bottom{padding-top:1.5rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-size:13px;color:rgba(249,247,247,0.55)}
+  .footer__bottom a{color:inherit;margin-left:1rem}
+  .footer__bottom a:hover{color:var(--lime)}
+  @media(max-width:720px){.footer__grid{grid-template-columns:1fr 1fr}.footer__brand{grid-column:1/-1}.page-hero{padding:8rem 1.25rem 3.5rem}.legal-section{margin-bottom:2rem}}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav__bar">
+    <a href="landing_v2.html" class="topnav__logo"><span class="dot"></span> Swiftclaim</a>
+    <div class="topnav__links">
+      <a href="landing_v2.html">Hem</a>
+      <a href="landing_v2.html#hur">Tjänster</a>
+      <a href="landing_v2.html#kunder">Resultat</a>
+      <a href="landing_v2.html#faq">FAQ</a>
+      <a href="blogg.html">Blogg</a>
+      <a href="priser.html">Priser</a>
+      <a href="om-oss.html">Om oss</a>
+      <a href="kontakt.html">Kontakt</a>
+      <a href="landing_v2.html#anmal" class="topnav__cta">Anmäl skada</a>
+    </div>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="eyebrow">GDPR</div>
+  <h1>Dataskydds<span class="serif-em">information</span></h1>
+  <p>Din integritet är viktig för oss. Här beskriver vi hur SwiftClaim behandlar dina personuppgifter.</p>
+</section>
+
+<section class="legal-content">
+<div class="wrap-tight">
+
+<div class="legal-section"><h2>Inledning</h2>
+<p>SwiftClaim AB respekterar och värnar om skyddet för din personliga integritet. För att vi ska kunna tillhandahålla våra tjänster behöver vi hantera personuppgifter om dig. Vi vill därför att du ska känna dig trygg när vi hanterar dina personuppgifter och att vi använder dina personuppgifter i enlighet med gällande lagstiftning, inklusive dataskyddsförordningen (GDPR).</p>
+<p>I denna information beskriver vi vilka personuppgifter om dig som vi hanterar och varför, vilka rättigheter du har avseende vår användning av dina uppgifter och hur du kommer i kontakt med oss om du har några frågor kring vår hantering av dina personuppgifter.</p>
+<p>Med personuppgifter menas information som direkt eller indirekt kan identifiera dig, t.ex. ditt namn, personnummer eller telefonnummer.</p></div>
+
+<div class="legal-section"><h2>Vem som omfattas av denna information</h2>
+<p>Denna information omfattar dig som:</p><ul><li>använder våra tjänster, t.ex. registrerar ett skade- eller ersättningsärende eller genomför vår försäkringsdiagnos eller använder vår försäkringsöverblick,</li><li>registrerar ett användarkonto på vår webbplats,</li><li>är kontaktperson för en leverantör eller samarbetspartner till oss,</li><li>kontaktar oss, t.ex. via e-post eller telefon,</li><li>anmäler dig till eller besöker ett av våra event eller liknande aktiviteter,</li><li>följer oss eller interagerar med oss på våra sociala medier, eller</li><li>är anhörig till en medarbetare hos oss eller en användare av vår försäkringsdiagnos eller försäkringsöverblick.</li></ul></div>
+
+<div class="legal-section"><h2>Ansvaret för hanteringen av personuppgifter</h2>
+<p>SwiftClaim AB, org. nr 559074-2028, ansvarar (är personuppgiftsansvarig) för hanteringen av dina personuppgifter. Kontaktuppgifter till oss hittar du längre ner under rubriken "Om du har frågor" i avsnitt 13.</p>
+<p>I förekommande fall ansvarar vi gemensamt med mottagare av dina personuppgifter när vi delar dina personuppgifter, se "Med vilka mottagare som vi delar dina personuppgifter" i avsnitt 7 nedan för mer information.</p></div>
+
+<div class="legal-section"><h2>Vilka kategorier av personuppgifter som vi hanterar</h2>
+<p>Vi samlar in och använder olika kategorier av personuppgifter om dig. Notera att det inte är säkert att vi samlar in och använder samtliga kategorier av personuppgifter som anges nedan. Vilka kategorier av personuppgifter som vi faktiskt samlar in och använder om dig beror på hur du interagerar med oss.</p>
+<p>Vi samlar in och använder följande kategorier av personuppgifter:</p>
+<ul><li>Identitetsuppgifter, som gör det möjligt att identifiera dig (t.ex. ditt namn),</li><li>Kontaktuppgifter, som gör det möjligt att kontakta dig (t.ex. din adress, e-postadress eller telefonnummer),</li><li>Kommunikation med oss (t.ex. innehåll i e-post eller svar som du lämnar när du deltar i en enkätundersökning),</li><li>Ersättningsuppgifter kopplat till ett skade- eller ersättningsärende hos oss (t.ex. uppgift om ersättningsbelopp för en skada),</li><li>Försäkringsuppgifter avseende försäkringar som du har (t.ex. typ av försäkring och berört försäkringsbolag),</li><li>Ekonomiska uppgifter som rör dig och din ekonomiska situation (t.ex. kostnader som du har haft med anledning av en inträffad skada och bankkontouppgifter som vi kan betala ut ersättning till),</li><li>Skadeuppgifter som avser en sakskada som du har drabbats av (t.ex. typ av skada, tidpunkt för skadan, uppgift om skadad egendom och dess värde),</li><li>Profiluppgifter som rör din profil (t.ex. ålder, kön, civilstatus, utbildning, hur du bor och vilken sysselsättning som du har),</li><li>Beställningsuppgifter som avser en beställning av en vara eller tjänst (t.ex. vilken vara eller tjänst som beställts, pris och leverans- eller uppdragstid),</li><li>Användargenererade uppgifter som genereras vid din användning av vår webbplats och våra digitala kanaler (t.ex. klick och besök på webbplatsen),</li><li>Bild- och ljudmaterial där bild på dig eller din röst förekommer som har fotograferats eller spelats in (t.ex. videoinspelning och ljudupptagningar),</li><li>Tekniska uppgifter som avser den enhet som du använder (t.ex. typ av enhet, version av webbläsare och operativsystem),</li><li>Ägandeuppgifter som avser bostad eller lösöre, såsom saker och egendom, som du äger, dess faktiska eller uppskattade värde och andra uppgifter kopplade till egendomen, såsom uppgift om belåning, samt</li><li>Betalningsuppgifter, såsom premier, uppgift om betalare, aviseringar och påminnelser kopplat till en försäkring som vi har förmedlat till dig.</li></ul>
+<p>Försäkringsuppgifter ovan kan innehålla uppgift om fackligt medlemskap. Dessa uppgifter utgör särskilda kategorier av personuppgifter. I vår detaljerade information om vår användning av personuppgifter kan du se med vilket rättsligt stöd vi hanterar sådana särskilda kategorier av personuppgifter.</p>
+<p>Baserat på de uppgifter som vi samlar in om dig behandlar vi även uppgifter som härleds eller sammanställs från dessa uppgifter:</p>
+<ul><li>ärendehistorik kopplat till skade- eller ersättningsärenden hos oss,</li><li>användarbeteende på vår webbplats och i våra digitala kanaler,</li><li>kundsegment eller -profil,</li><li>kommunikationshistorik, samt</li><li>försäkringsresultat om du har genomfört vår försäkringsdiagnos.</li></ul></div>
+
+<div class="legal-section"><h2>Varifrån vi samlar in personuppgifter</h2>
+<p>De personuppgifter som vi samlar in kommer främst från dig själv när du lämnar personuppgifter till oss, t.ex. när du använder våra tjänster och registrerar ett ärende hos oss, skapar ett användarkonto på vår webbplats eller kontaktar eller på annat sätt interagerar med oss.</p>
+<p>Vi samlar även när det är nödvändigt in personuppgifter från andra källor:</p>
+<ul><li>försäkringsbolag som vi med stöd av din fullmakt får samla in uppgifter från för att hantera ett ersättnings- eller skadeärende,</li><li>myndigheter, t.ex. domstolar och Polisen, för att samla in underlag (exempelvis domar och förundersökningsprotokoll) som är av betydelse för hanteringen av ett ersättnings- eller skadeärende,</li><li>informationstjänster som tillhandahåller uppgifter till oss enligt avtal som vi har med dessa tjänster,</li><li>företaget eller organisationen som du arbetar för om du är en kontaktperson för en leverantör eller samarbetspartner till oss,</li><li>allmänt tillgängliga källor, t.ex. webbplatser och allmänt tillgängliga register och databaser, samt</li><li>andra källor som du ger oss tillgång till, t.ex. om du har anslutit ditt e-postkonto till vår tjänst för att vi ska kunna samla in underlag för eventuella ersättnings- eller skadeärenden.</li></ul></div>
+
+<div class="legal-section"><h2>Vår användning av personuppgifter</h2>
+<p>Vi använder de personuppgifter som vi samlar in för olika syften. Samtliga ändamål behöver inte gälla för dig, utan för vilka syften som vi använder dina personuppgifter beror på hur du interagerar med oss.</p>
+<p>I korthet använder vi dina personuppgifter för att hantera kundförhållandet med dig och tillhandahålla våra tjänster, för att kommunicera med dig bland annat för marknadsföring, för att genomföra analyser bland annat för att bättre förstå våra kunders behov, utveckla vår verksamhet och våra tjänster samt för att uppfylla våra rättsliga skyldigheter.</p>
+<p>Se nedan för en lista över vilka syften som vi samlar in och använder personuppgifter för, uppdelade i olika områden. För mer information om respektive syfte, vilka kategorier av uppgifter, med stöd av vilken rättslig grund som vi hanterar dina uppgifter och hur länge vi sparar personuppgifter för respektive syfte, se vår detaljerade information om vår användning av personuppgifter.</p>
+<h3>Hantera förhållandet till våra kunder m.fl. och tillhandahålla våra tjänster</h3>
+<p>I syfte att kunna tillhandahålla våra tjänster använder vi dina personuppgifter för att:</p>
+<ul><li>hantera kundförhållandet,</li><li>hantera ditt användarkonto i vår online-portal,</li><li>hantera förhållandet till leverantörer och samarbetspartners,</li><li>hantera beställningar,</li><li>besvara frågor och tillhandahålla kundservice,</li><li>hantera skadeärenden,</li><li>hantera ersättningsärenden,</li><li>genomföra försäkringsdiagnos,</li><li>tillhandahålla försäkringsöverblick,</li><li>hantera försäkringar,</li><li>möjliggöra funktionalitet på webbplatsen, samt</li><li>möjliggöra insamling av underlag för ersättnings- eller skadeärenden från externa källor.</li></ul>
+<h3>Kommunicera med dig och andra</h3>
+<p>För att kommunicera med dig och andra använder vi dina personuppgifter för att:</p>
+<ul><li>lämna erbjudanden och marknadsföring,</li><li>genomföra kundundersökningar,</li><li>kommunicera om oss, vår verksamhet och våra tjänster, samt</li><li>kommunicera internt och externt i arbetet.</li></ul>
+<h3>Genomföra olika analyser</h3>
+<p>För att genomföra olika analyser använder vi dina personuppgifter för att:</p>
+<ul><li>följa upp och utvärdera verksamheten,</li><li>genomföra analys för att ta fram kundinsikter,</li><li>följa upp och utvärdera förhållandet till leverantörer och samarbetspartners, samt</li><li>analysera användningen av webbplatsen, våra digitala kanaler och tjänster.</li></ul>
+<h3>Utveckla och förbättra vår verksamhet och våra tjänster</h3>
+<p>För att utveckla och förbättra vår verksamhet och våra tjänster använder vi dina personuppgifter för att:</p>
+<ul><li>utveckla och förbättra verksamheten,</li><li>testa, utveckla och förbättra våra tjänster, samt</li><li>hantera försäljning eller omstrukturering av hela eller delar av verksamheten.</li></ul>
+<h3>Uppfylla våra rättsliga skyldigheter, hantera rättsliga krav och för säkerhet</h3>
+<p>För att uppfylla våra rättsliga skyldigheter, hantera rättsliga krav och för säkerhet använder vi dina personuppgifter för att:</p>
+<ul><li>hantera, bemöta och göra gällande rättsliga krav,</li><li>uppfylla våra rättsliga skyldigheter,</li><li>svara på lagliga förfrågningar,</li><li>skydda och säkerställa säkerheten för vår personal, samt</li><li>säkerställa teknisk funktionalitet och säkerhet i våra IT-system.</li></ul></div>
+
+<div class="legal-section"><h2>Med vilka mottagare som vi delar personuppgifter</h2>
+<p>Vi delar dina personuppgifter med olika mottagare när det är nödvändigt för de syften som vi använder dina personuppgifter för, se "Vår användning av dina personuppgifter" ovan. I vår detaljerade information om vår användning av personuppgifter ser du för vilka syften personuppgifter delas med olika mottagare och med vilken rättslig grund.</p>
+<h3>Ansvar vid delning av dina personuppgifter</h3>
+<p>När vi delar dina personuppgifter med olika mottagare ansvarar vi för att endast de personuppgifter som är nödvändiga för det aktuella syftet delas och att det finns en rättslig grund för delningen. Mottagaren ansvarar (är personuppgiftsansvarig), som utgångspunkt, för sin egen efterföljande hantering av dina personuppgifter, om vi inte anger något annat.</p>
+<p>För viss användning av dina personuppgifter ansvarar dock vi och mottagaren gemensamt. För att det ska vara tydligt för dig när vi och mottagaren ansvarar gemensamt för hanteringen av dina personuppgifter har vi särskilt angivit i förhållande till berörda mottagare nedan när vi ansvarar gemensamt för hanteringen.</p>
+<p>För att läsa mer om vilka mottagare med vilka vi ansvarar gemensamt för hanteringen av dina personuppgifter, se avsnittet "Mottagare med vilka vi är gemensamt ansvariga för hanteringen av dina personuppgifter" i vår detaljerade information om vår användning av personuppgifter.</p>
+<h3>Närmare information om vilka mottagare med vilka vi delar personuppgifter</h3>
+<p>Vi delar personuppgifter med följande mottagare:</p>
+<p>Försäkringsbolag. För att hantera ditt ersättnings- eller skadeärende delar vi personuppgifter med berörda försäkringsbolag.</p>
+<p>Berörda företag, aktörer och instanser. För att hantera ditt ersättningsärende delar vi personuppgifter med berörda företag, aktörer och instanser, t.ex. Trafikskadenämnden.</p>
+<p>Sociala nätverksplattformar. För att lämna erbjudanden och marknadsföring och kommunicera om oss, vår verksamhet och våra tjänster i våra sociala medier delar vi personuppgifter med sociala nätverksplattformar (t.ex. Facebook). När vi automatiskt delar personuppgifter genom användning av kakor och liknande tekniker med dessa plattformar ansvarar vi och berörd plattform – i förekommande fall – gemensamt för insamlingen och överföringen av dina personuppgifter. Vi och berörd plattform är dock i sådant fall ensamt ansvariga för den efterföljande användningen av dina personuppgifter. Vi har ingått särskilda arrangemang med berörda plattformar som beskriver vilken roll och vilket ansvar som vi respektive plattformen har för användningen av dina personuppgifter. Du har rätt att få del av det väsentliga innehållet i dessa arrangemang. Kontakta oss för att få del av denna information. Se även vår detaljerade information om vår användning av personuppgifter för mer information om de mottagare med vilka vi gemensamt ansvarar för användningen av dina personuppgifter.</p>
+<p>Tjänsteleverantörer. För att tillhandahålla våra tjänster och bedriva vår verksamhet anlitar vi olika tjänsteleverantörer. Dessa tjänsteleverantörer tillhandahåller exempelvis IT-tjänster (t.ex. lagring) och kommunikationstjänster (som gör det möjligt för oss att skicka meddelanden till dig). När tjänsteleverantörerna behandlar personuppgifter på vårt uppdrag och enligt våra instruktioner är de så kallade personuppgiftsbiträden till oss och vi ansvarar för hanteringen av dina personuppgifter. De får inte, utan vårt godkännande, använda dina personuppgifter för sina egna ändamål och de är skyldiga enligt lag och avtal med oss att skydda dina uppgifter. I vissa fall delar vi personuppgifter med tjänsteleverantörer för deras egen behandling för vissa syften, till exempel för att de ska kunna utveckla och förbättra sina tjänster.</p>
+<p>Övriga mottagare. I vissa fall, när det är nödvändigt, delar vi dina personuppgifter med andra mottagare för att:</p>
+<ul><li>hantera, bemöta och göra gällande rättsliga krav,</li><li>uppfylla rättsliga skyldigheter,</li><li>svara på lagliga förfrågningar, och</li><li>skydda och garantera säkerheten för vår personal.</li></ul>
+<p>Exempel på mottagare är externa rådgivare, myndigheter, domstolar. I vår detaljerade information om vår användning av personuppgifter kan du se i förhållande till respektive syfte med vilka mottagare vi delar dina personuppgifter.</p></div>
+
+<div class="legal-section"><h2>Dina rättigheter</h2>
+<h3>Rättigheter kopplat till användningen av dina personuppgifter</h3>
+<p>Enligt lag har du vissa rättigheter rörande dina personuppgifter. Du har exempelvis rätt att begära tillgång och kopia på de personuppgifter om dig som vi hanterar, samt begära att vi, under vissa omständigheter, ska rätta, radera eller begränsa användningen av dina personuppgifter. Du kan när som helst kontakta oss om du vill utöva dina rättigheter. Använd gärna den e-postadress som du eventuellt har registrerat hos oss eller använt när du har varit i kontakt med oss. Du hittar övriga kontaktuppgifter till oss under rubriken "Om du har frågor" i avsnitt 13 nedan. Se längre ner för närmare information om vilka rättigheter du har kopplat till användningen av dina personuppgifter.</p>
+<h3>Vi besvarar din begäran normalt inom en månad</h3>
+<p>Vi besvarar din begäran normalt inom en månad från det att du lämnade din begäran. Om din begäran är komplicerad eller om du har lämnat flera begäranden kan vi behöva ytterligare tid för att hantera din begäran. Om vi bedömer att vi behöver förlänga svarstiden kommer vi att meddela detta till dig och skälet för förlängningen senast inom en månad från det att du lämnade din begäran. Om vi av någon anledning, helt eller delvis, inte kan tillmötesgå din begäran kommer vi att meddela dig om detta och varför vi inte kan besvara begäran inom en månad från det att du lämnade begäran. Om du har gjort begäran elektroniskt, t.ex. kontaktat oss via webbplatsen eller via e-post, kommer vi att besvara begäran elektroniskt, om du inte begär något annat.</p>
+<h3>Vi behöver bekräfta din identitet för att besvara din begäran</h3>
+<p>När du lämnar en begäran om utövande av dina rättigheter rörande dina personuppgifter behöver vi bekräfta din identitet för att försäkra oss om att vi är i kontakt med rätt person. Detta för att undvika att vi exempelvis lämnar ut personuppgifter till någon obehörig eller felaktigt raderar personuppgifter rörande en individ. Om vi inte har tillräckligt med information för att bekräfta din identitet kan vi begära att du lämnar kompletterande information om dig själv. Vi begär bara den information som är rimlig och nödvändig för att bekräfta din identitet. Tiden för att besvara din begäran börjar löpa när vi har bekräftat din identitet.</p>
+<h3>Närmare information om dina rättigheter</h3>
+<p>Se nedan för närmare information om dina rättigheter i förhållande till dina personuppgifter som vi hanterar. Mer information om dina rättigheter hittar du på Integritetsskyddsmyndighetens (IMY) webbplats (www.imy.se).</p>
+<h3>Rätt till tillgång (s.k. "registerutdrag") (artikel 15 i GDPR)</h3>
+<p>Du har rätt att begära bekräftelse av oss om vi hanterar dina personuppgifter och i sådant fall få en kopia på dina personuppgifter, tillsammans med närmare information om vår användning av dina personuppgifter (ett s.k. "registerutdrag"). Rätten till kopia på personuppgifter får inte påverka andras rättigheter, inklusive våra rättigheter, negativt. Om vi gör bedömningen att din rätt till kopia skulle påverka andras rättigheter negativt och vi därför exkluderar uppgifter från kopian kommer vi att informera dig om detta och anledningen till att vi har exkluderat uppgifter från kopian.</p>
+<h3>Rätt till rättelse (artikel 16 i GDPR)</h3>
+<p>Du har rätt att begära att vi rättar eller kompletterar personuppgifter om dig som du anser är felaktiga, ofullständiga eller missvisande. Notera att en historisk uppgift inte automatiskt är att anse som felaktig, eftersom den kan vara korrekt vid tidpunkten för när uppgiften registrerades.</p>
+<h3>Rätt att återkalla ditt samtycke (artikel 7 i GDPR)</h3>
+<p>För viss användning av dina personuppgifter förlitar vi oss på ditt samtycke. I vår detaljerade information om vår användning av personuppgifter kan du läsa med stöd av vilka rättsliga grunder som vi hanterar personuppgifter och när vi stödjer oss på ditt samtycke (artikel 6.1 punkten (a) i GDPR). När vi hanterar dina personuppgifter med stöd av ditt samtycke har du rätt att när som helst återkalla ditt samtycke. När du har återkallat ditt samtycke kommer vi inte att fortsätta med den aktuella behandlingen om vi inte har någon annan rättslig grund för behandlingen.</p>
+<h3>Rätt att begära radering (artikel 17 i GDPR)</h3>
+<p>Du har i vissa fall rätt att begära att dina personuppgifter raderas ("rätten att bli bortglömd"). Rätten till radering gäller således bara under vissa omständigheter. Exempel på när rätten till radering gäller är om personuppgifterna inte längre behövs för de ändamål som vi samlade in dem för, om du återkallar ditt samtycke när behandlingen sker med stöd av ditt samtycke, om du invänder mot vår behandling av personuppgifter och det saknas berättigade skäl att fortsätta med behandlingen trots din invändning, eller om personuppgifterna behandlas på ett olagligt sätt.</p>
+<p>Även om rätten till radering gäller finns det dessutom flera undantag från rätten. Om vi är skyldiga att enligt lag spara personuppgifter, eller om uppgifterna behövs för att hantera, bemöta och göra gällande rättsliga krav, får vi fortsätta att använda dina personuppgifter trots att du har begärt att de ska raderas.</p>
+<h3>Rätt att invända mot vår behandling av dina personuppgifter (artikel 21 i GDPR)</h3>
+<p>I vissa fall har du rätt att invända mot vår behandling av personuppgifter. Du har alltid rätt att invända mot vår användning av dina personuppgifter för marknadsföringssyfte. Vi inkluderar alltid en länk i våra utskick som du kan klicka på för att avregistrera dig från framtida utskick. När du har meddelat oss att du inte längre vill ha marknadsföring från oss kommer vi att registrera detta och sluta skicka eller på annat sätt lämna marknadsföring till dig genom användning av dina personuppgifter.</p>
+<p>Du har även rätt att invända mot vår behandling av personuppgifter som sker för att tillgodose vårt eller någon annans berättigade intressen av skäl som rör din specifika situation. I vår detaljerade information om vår användning av personuppgifter kan du läsa när vi förlitar oss på vårt eller någon annans berättigade intresse (artikel 6.1 punkten (f) i GDPR) för vår hantering av dina personuppgifter och således i förhållande till vilka behandlingar som invändningsrätten gäller.</p>
+<p>Om du invänder mot vår behandling av personuppgifter och vi inte kan visa avgörande berättigade skäl för att fortsätta behandlingen som överväger ditt intresse av att inte få dina uppgifter behandlade för det aktuella syftet, kommer vi att sluta använda dina personuppgifter för detta syfte. Bedömningen om vi har avgörande berättigade skäl för att fortsätta behandlingen varierar beroende på syftet med behandlingen.</p>
+<h3>Rätt att begära att behandlingen av dina personuppgifter begränsas (artikel 18 i GDPR)</h3>
+<p>Du har i vissa fall rätt att begära att behandlingen av dina personuppgifter begränsas och du kan då, i vart fall under en viss tid, stoppa oss från att använda dina personuppgifter. Rätten att begära begränsning av behandlingen av dina personuppgifter gäller om du anser att dina uppgifter inte är korrekta och under den tid som vi kontrollerar detta, om behandlingen är olaglig och du vill att vi fortsätter att lagra uppgifterna i stället för att radera dem, samt om vi inte längre behöver uppgifterna för de ändamål som vi samlade in och använder uppgifterna för, men du behöver uppgifterna för att hantera, bemöta och göra gällande rättsliga krav.</p>
+<p>Dessutom gäller rätten att begära begränsning av behandlingen av dina personuppgifter om du har invänt mot vår behandling av personuppgifter och under den tid som vi kontrollerar om vi kan fortsätta att använda dina personuppgifter på grund av att det finns avgörande berättigade skäl för behandlingen.</p>
+<p>Om behandlingen av dina personuppgifter begränsats får vi normalt bara lagra dina uppgifter och använda dem för att hantera, bemöta och göra gällande rättsliga krav. Vi kan även använda dina personuppgifter under den tid som behandlingen av dina personuppgifter begränsats för andra syften om du har lämnat ditt samtycke till sådan ytterligare användning.</p>
+<h3>Rätt att få tillgång till och flytta dina personuppgifter till en annan mottagare (dataportabilitet) (artikel 20 i GDPR)</h3>
+<p>Rätten till dataportabilitet innebär att du har rätt att få en kopia på dina personuppgifter som du själv har lämnat till oss i ett strukturerat allmänt använt format. Dessutom, när det är tekniskt möjligt, har du rätt att begära att dessa personuppgifter överförs direkt till en annan mottagare.</p>
+<p>Rätten till dataportabilitet gäller dock endast för personuppgifter som vi hanterar med stöd av ditt samtycke (artikel 6.1 punkten (a) i GDPR) eller för att uppfylla ett avtal med dig (artikel 6.1 punkten (b) i GDPR), t.ex. våra användarvillkor. I vår detaljerade information om vår användning av personuppgifter kan du läsa när vi hanterar dina personuppgifter med stöd av ditt samtycke eller för att uppfylla ett avtal med dig.</p>
+<h3>Rätt att lämna klagomål</h3>
+<p>Du har även rätt att lämna klagomål till din berörda dataskyddsmyndighet. I Sverige står SwiftClaim AB under tillsyn av Integritetsskyddsmyndigheten (IMY) (www.imy.se).</p>
+<h3>Automatiserat beslutsfattande</h3>
+<p>Vi utför inte något s.k. automatiserat beslutsfattande som får rättsliga följder eller på annat sätt påverkar dig i betydande grad.</p></div>
+
+<div class="legal-section"><h2>Vi skyddar dina personuppgifter</h2>
+<p>Du ska alltid kunna känna dig trygg när du lämnar dina personuppgifter till oss. Vi vidtar tekniska och organisatoriska säkerhetsåtgärder för att skydda dina personuppgifter mot obehörig eller oavsiktlig åtkomst, förändring och radering.</p></div>
+
+<div class="legal-section"><h2>Var vi hanterar personuppgifter</h2>
+<p>Vi lagrar dina personuppgifter inom EU/EES-området. I särskilda fall kan vi komma att överföra dina personuppgifter till mottagare i tredje land, dvs. utanför EU/EES, t.ex. till tjänsteleverantörer som vi anlitar i ett sådant tredje land.</p>
+<p>Om vi överför eller på annat sätt gör dina personuppgifter tillgängliga för en mottagare i ett tredje land utanför EU/EES vidtar vi åtgärder för att säkerställa att dina personuppgifter fortsätter att vara skyddade. Vi använder oss normalt av EU-kommissionens standardavtalsklausuler för överföring av personuppgifter till land utanför EU/EES (som EU-kommissionen antagit enligt beslut 2021/914) och vidtar – i ljuset av mottagarlandets lagstiftning – kompletterande skyddsåtgärder för att säkerställa en väsentligt likvärdig skyddsnivå för överförda personuppgifter.</p>
+<p>För mer information om vilka skyddsåtgärder som vi har vidtagit för att skydda dina personuppgifter kan du kontakta oss på kontaktuppgifterna som du hittar längre ner under rubriken "Om du har frågor" i avsnitt 13 nedan.</p></div>
+
+<div class="legal-section"><h2>Användning av kakor och andra liknande tekniker</h2>
+<p>Vi använder oss av kakor (cookies) och andra liknande tekniker på vår webbplats och i våra tjänster. Detta bland annat för att samla in besöksstatistik i syfte att bättre förstå hur vår webbplats används och hur vi kan förbättra webbplatsen, samt för att lämna erbjudanden och marknadsföring.</p>
+<p>I vår cookie policy beskriver vi hur vi använder kakor och liknande tekniker och vilka val du kan göra för våra kakor.</p></div>
+
+<div class="legal-section"><h2>Uppdateringar till denna information</h2>
+<p>Vi uppdaterar regelbundet denna information. Vår hantering av personuppgifter kan förändras över tid, t.ex. kan vi samla in uppgifter för nya syften, samla in ytterligare uppgifter eller dela dina uppgifter med andra mottagare än vad som anges i denna information. Vi uppdaterar då informationen för att säkerställa att informationen återspeglar den hantering av personuppgifter som vi genomför. Längst upp kan du se när informationen senast uppdaterades. Om vi gör ändringar som inte enbart är språkliga eller redaktionella kommer vi dessförinnan att lämna tydlig information om ändringarna och vad de innebär för dig.</p></div>
+
+<div class="legal-section"><h2>Om du har frågor</h2>
+<p>Du är välkommen att höra av dig till oss om du har några frågor om denna information, hur vi hanterar dina personuppgifter eller om du vill utöva dina rättigheter.</p></div>
+
+</div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer__grid">
+      <div class="footer__brand footer__col">
+        <div class="logo"><span class="dot"></span> Swiftclaim</div>
+        <p>Skadeombud för svenska privatpersoner. Vi argumenterar, förhandlar och driver ditt försäkringsärende — så att du får ut det du har rätt till.</p>
+      </div>
+      <div class="footer__col"><h4>Tjänster</h4><ul><li><a href="landing_v2.html#hur">Skadeanalys</a></li><li><a href="landing_v2.html#hur">Förhandling</a></li><li><a href="landing_v2.html#hur">Omprövning</a></li><li><a href="landing_v2.html#hur">ARN-anmälan</a></li></ul></div>
+      <div class="footer__col"><h4>Skadetyper</h4><ul><li><a href="landing_v2.html#kunder">Vattenskada</a></li><li><a href="landing_v2.html#kunder">Brandskada</a></li><li><a href="landing_v2.html#kunder">Inbrott</a></li><li><a href="landing_v2.html#kunder">Stormskada</a></li></ul></div>
+      <div class="footer__col"><h4>Resurser</h4><ul><li><a href="blogg.html">Blogg</a></li><li><a href="landing_v2.html#faq">Vanliga frågor</a></li><li><a href="priser.html">Priser</a></li></ul></div>
+      <div class="footer__col"><h4>Företaget</h4><ul><li><a href="om-oss.html">Om oss</a></li><li><a href="kontakt.html">Kontakt</a></li><li><a href="dataskydd.html">Dataskydd</a></li><li><a href="anvandarvillkor.html">Användarvillkor</a></li></ul></div>
+    </div>
+    <div class="footer__bottom"><div>&copy; 2026 Swiftclaim AB</div><div><a href="dataskydd.html">Dataskydd</a><a href="anvandarvillkor.html">Användarvillkor</a></div></div>
+  </div>
+</footer>
+
+</body>
+</html>
