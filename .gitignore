@@ -7,11 +7,16 @@ desktop.ini
 *.swp
 *~
 
-# Node (in case anything later adds tooling)
+# Node
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
 
 # Local env / secrets
 .env
@@ -23,11 +28,10 @@ yarn-error.log*
 .playwright-mcp/
 .scraper-inspect/
 
-# Research / scratch artifacts (kept in ../Swiftclaim-research)
-dapper-*.jpeg
-dapper-*.json
-dapper-snapshot.md
-dapper-clone/
-local-*.jpeg
-sc-*.jpeg
-scraper.zip
+# Local databases (recreated by backend startup + /api/arn/import)
+backend/data/*.db
+
+# Law pipeline artifacts (regenerable or pre-anonymization PII — never publish)
+law-pipeline/.embeddings.json
+law-pipeline/raw_pdfs/
+law-pipeline/processed/
