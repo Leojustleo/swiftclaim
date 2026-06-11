@@ -562,6 +562,14 @@
       newCase.id = remote.id;
       newCase.createdAt = remote.created_at || newCase.createdAt;
       newCase.timeline[0].body = "Ärende inskickat via Swiftclaim.se.";
+      if (remote.ai_analysis) {
+        newCase.notes.unshift({
+          id: makeId("note"),
+          author: "AI-analys",
+          body: formatAiAnalysis(remote.ai_analysis),
+          createdAt: newCase.createdAt,
+        });
+      }
       state.cases.unshift(newCase);
       added += 1;
     });
@@ -570,6 +578,24 @@
       renderAll();
     }
     return added;
+  }
+
+  function formatAiAnalysis(a) {
+    const parts = [`Styrka: ${a.strength || "okänd"}.`];
+    if (a.summary) parts.push(a.summary);
+    if (Array.isArray(a.key_arguments) && a.key_arguments.length) {
+      parts.push(`Nyckelargument: ${a.key_arguments.join(" • ")}`);
+    }
+    if (Array.isArray(a.missing_info) && a.missing_info.length) {
+      parts.push(`Saknas: ${a.missing_info.join(" • ")}`);
+    }
+    if (Array.isArray(a.matched_laws) && a.matched_laws.length) {
+      parts.push(`Lagrum: ${a.matched_laws.map((l) => l.ref).join(", ")}`);
+    }
+    if (Array.isArray(a.matched_precedents) && a.matched_precedents.length) {
+      parts.push(`ARN-praxis: ${a.matched_precedents.map((p) => p.id).join(", ")}`);
+    }
+    return parts.join("\n");
   }
 
   function backendCaseToPayload(remote) {
