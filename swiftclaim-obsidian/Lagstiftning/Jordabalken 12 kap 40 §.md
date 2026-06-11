@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 12 kap 40 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K12P40"
+---
+
+# Jordabalken 12 kap 40 §
+
+En hyresgäst får hyra ut eller på något annat sätt upplåta lägenheten i andra hand till någon annan för självständigt brukande, om hyresnämnden lämnar tillstånd till det. [ Tillstånd ska lämnas om 1. hyresgästen har beaktansvärda skäl för upplåtelsen på grund av särskilda familjeförhållanden, ålder, sjukdom, tillfälligt arbete eller studier på annan ort, längre utlandsvistelse eller därmed jämförbara förhållanden, 2. hyresvärden inte har befogad anledning att vägra samtycke, och 3. hyran, när det gäller en bostadslägenhet, inte överstiger skälig hyra enligt 55 § fjärde stycket . [ Ett tillstånd enligt första stycket ska begränsas till en viss tid och kan förenas med villkor. Lag (2019:523).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K12P40)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

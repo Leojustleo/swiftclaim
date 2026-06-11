@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 9 kap 17 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K9P17"
+---
+
+# Jordabalken 9 kap 17 §
+
+Omfattar arrende bostad för arrendatorn eller hans anställda, skall jordägaren vid tillträdet avlämna bostaden i det skick som föreskrivs i gällande hälsoskyddslagstiftning. [ Fråga huruvida bostad vid tillträdet är i sådant skick som anges i första stycket skall prövas vid syn enligt 24 \--28 §§ . Finnes brist föreligga i detta hänseende, skall synemännen föreskriva vilka åtgärder som skall vidtagas för bristens avhjälpande samt fastställa beräknad kostnad för dessa. De skall även utsätta viss tid inom vilken åtgärderna skall vara vidtagna. [ Underlåter jordägaren att inom utsatt tid vidtaga föreskriven åtgärd, får arrendatorn utföra åtgärden i jordägarens ställe. Sedan arbetet fullbordats, har arrendatorn rätt till ersättning av jordägaren med det vid synen fastställda beloppet. Vill arrendatorn hellre uppsäga avtalet, får han göra det, om icke bristen är av ringa betydelse. För den tid arrendestället är i bristfälligt skick har arrendatorn rätt till skälig nedsättning av arrendeavgiften och ersättning för skada. [ Förbehåll som strider mot första--tredje stycket gäller mot arrendatorn, om det godkänts av arrendenämnden. Lag (1984:678).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K9P17)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 9 kap 20 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K9P20"
+---
+
+# Jordabalken 9 kap 20 §
+
+Har arrendatorn uppfört ny byggnad i stället för byggnad som han mottagit och är han icke enligt 17, 17 a eller 18 § berättigad till ersättning därför, har han vid avräkning enligt 23 § rätt till ersättning för brist som vid tillträdet fanns på den mottagna byggnaden, om den nya byggnaden är lämplig för sitt ändamål eller uppförts enligt plan som godkänts av jordägaren. Avdrag skall dock göras med kostnaden för avhjälpande av brist på den nya byggnaden. [ Första stycket äger motsvarande tillämpning i fråga om annan anläggning som ingår i arrendet. Lag (1984:678).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K9P20)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

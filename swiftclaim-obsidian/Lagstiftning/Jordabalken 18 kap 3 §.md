@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 18 kap 3 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K18P3"
+---
+
+# Jordabalken 18 kap 3 §
+
+Bestämmelserna i 1 och 2 §§ äger ej tillämpning, om 1. handling på vilken äganderätten grundats är förfalskad eller på rätte ägarens vägnar utfärdad av någon som saknade behörighet därtill eller är ogiltig såsom tillkommen under sådant tvång som avses i 28 § lagen (1915:218 ) om avtal och andra rättshandlingar på förmögenhetsrättens område, 2. rätte ägaren, när han utfärdade den handling på vilken äganderätten grundats, var i konkurs eller omyndig eller handlade under påverkan av en psykisk störning eller inte hade rådighet över den fasta egendomen på grund av att en förvaltare enligt föräldrabalken var förordnad för honom, 3. förvärvet enligt lag är ogiltigt, enär det icke skett i föreskriven form eller med iakttagande av andra föreskrivna villkor eller med samtycke av någon vars rätt beröres eller med stöd av tillstånd eller annan åtgärd av domstol eller annan myndighet. Lag (1991:1548).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K18P3)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

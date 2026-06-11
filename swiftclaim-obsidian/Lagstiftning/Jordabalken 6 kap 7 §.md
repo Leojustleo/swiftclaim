@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 6 kap 7 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K6P7"
+---
+
+# Jordabalken 6 kap 7 §
+
+Har fastighet överlåtits och har därefter förre ägaren upplåtit panträtt i fastigheten, gäller upplåtelsen, om borgenären vid upplåtelsen eller, när fordringen därefter överlåtits till annan, denne vid sitt förvärv varken ägde eller bort äga kännedom om äganderättsöverlåtelsen. Om fastigheten överlåtits även till annan, äger vad som sagts nu tillämpning i fråga om upplåtelse som den senare förvärvaren gjort. [ Första stycket äger tillämpning även när fastigheten övergått genom sådant förvärv som avses i 17 kap. 11 § . [ Vid tillämpning av första stycket skall den som har förlitat sig på ett högst en månad gammalt gravationsbevis anses ha varit i god tro, om det inte framgår av omständigheterna att han eller hon på annat sätt har fått eller borde ha fått kännedom om äganderättsöverlåtelsen. Lag (2000:226).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K6P7)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

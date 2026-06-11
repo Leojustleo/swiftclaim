@@ -1,0 +1,92 @@
+[
+  {
+    "filename": "ARN 2022-15488.md",
+    "case_id": "2022-15488",
+    "category": "Motor",
+    "date": "2023-12-19",
+    "outcome": "consumer_won",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2023-19612.md",
+    "case_id": "2023-19612",
+    "category": "",
+    "date": "",
+    "outcome": "",
+    "insurer": "",
+    "damage": ""
+  },
+  {
+    "filename": "ARN 2023-13486.md",
+    "case_id": "2023-13486",
+    "category": "Resor",
+    "date": "2023-12-21",
+    "outcome": "consumer_lost",
+    "insurer": "okänt",
+    "damage": "travel"
+  },
+  {
+    "filename": "ARN 2023-07552.md",
+    "case_id": "2023-07552",
+    "category": "Bo",
+    "date": "2023-12-19",
+    "outcome": "consumer_won",
+    "insurer": "SF",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2022-25660.md",
+    "case_id": "2022-25660",
+    "category": "",
+    "date": "",
+    "outcome": "",
+    "insurer": "",
+    "damage": ""
+  },
+  {
+    "filename": "ARN 2024-20746.md",
+    "case_id": "2024-20746",
+    "category": "",
+    "date": "",
+    "outcome": "",
+    "insurer": "",
+    "damage": ""
+  },
+  {
+    "filename": "ARN 2023-17878.md",
+    "case_id": "2023-17878",
+    "category": "",
+    "date": "",
+    "outcome": "",
+    "insurer": "",
+    "damage": ""
+  },
+  {
+    "filename": "ARN 2022-18915.md",
+    "case_id": "2022-18915",
+    "category": "",
+    "date": "",
+    "outcome": "",
+    "insurer": "",
+    "damage": ""
+  },
+  {
+    "filename": "ARN 2025-06866.md",
+    "case_id": "2025-06866",
+    "category": "Motor",
+    "date": "2025-12-30",
+    "outcome": "consumer_won",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2022-14514.md",
+    "case_id": "2022-14514",
+    "category": "",
+    "date": "",
+    "outcome": "",
+    "insurer": "",
+    "damage": ""
+  }
+]

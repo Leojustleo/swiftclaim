@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Bostadsrättslagen 9 kap 29 a §"
+sfs: "1991:614"
+full_name: "Bostadsrättslag"
+source_url: "https://lagen.nu/1991:614#K9P29a"
+---
+
+# Bostadsrättslagen 9 kap 29 a §
+
+Ett beslut om likvidation är giltigt om samtliga röstberättigade i föreningen har röstat för det. Beslutet är även giltigt om det har fattats på två på varandra följande föreningsstämmor och minst två tredjedelar av de röstande på den senare stämman har röstat för beslutet. I stadgarna får det tas in längre gående villkor. Beslutet om likvidation gäller omedelbart eller från och med den senare dag som föreningsstämman bestämmer. [ När det finns grund för tvångslikvidation enligt 17 kap. 11 eller 16 § lagen (2018:672 ) om ekonomiska föreningar, är dock ett beslut om likvidation alltid giltigt om mer än hälften av de röstande har röstat för det. Vid lika röstetal har ordföranden utslagsröst. Ett beslut om likvidation enligt detta stycke gäller omedelbart. Lag (2018:715).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1991:614](https://lagen.nu/1991:614#K9P29a)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1991-614)

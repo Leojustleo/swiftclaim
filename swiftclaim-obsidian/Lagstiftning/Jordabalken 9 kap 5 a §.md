@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 9 kap 5 a §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K9P5a"
+---
+
+# Jordabalken 9 kap 5 a §
+
+Vid tillämpningen av 5 § är arrendeavgift som jordägaren kräver för förlängning inte att anse som skälig, om den överstiger den arrendeavgift som arrendestället vid arrendetidens utgång kan antas betinga på öppna marknaden. Därvid skall dock bortses från anbud eller arrendeavtal som inte är rimliga med hänsyn till det allmänna prisläget i orten för närmast jämförliga arrendeställen. Endast om särskilda skäl föreligger får hänsyn tas till en sådan ökning av arrendeställets värde som en arrendator har åstadkommit. [ I tvist om ersättning enligt 5 § får ett yttrande som arrendenämnden avgett rörande arrendeavgiften frångås endast om det visas eller annars är uppenbart att den arrendeavgift som arrendestället kan antas betinga på öppna marknaden är påtagligt högre eller lägre än arrendenämnden har angett. [ Har i fall som avses i andra stycket jordägaren vid tiden för arrendenämndens yttrande fått anbud eller träffat avtal om arrende av arrendestället utan att han under medlingen lämnat uppgift om detta, får anbudet eller avtalet beaktas vid prövningen endast om det föreligger synnerliga skäl. Lag (1984:678).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K9P5a)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

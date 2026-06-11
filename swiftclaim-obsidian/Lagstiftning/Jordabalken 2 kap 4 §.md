@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 2 kap 4 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K2P4"
+---
+
+# Jordabalken 2 kap 4 §
+
+Föremål som nyttjanderättshavare eller annan än fastighetsägaren tillfört fastigheten hör inte till denna, om inte föremålet och fastigheten kommit i samme ägares hand. Detsamma gäller i fråga om föremål som enligt 3 § kan höra till fastigheten och tillförts denna av fastighetsägaren utan att han eller hon ägde föremålet. Har fastighetsägaren tillfört fastigheten föremål som enligt 3 § kan höra till fastigheten och som han eller hon förvärvat under villkor att överlåtaren har rätt att återta föremålet om förvärvaren åsidosätter vad som åligger honom eller henne enligt överlåtelseavtalet, hör föremålet inte till fastigheten så länge villkoret gäller. [ Ett föremål som omfattas av företagshypotek och som tillförts fastigheten av annan än fastighetsägaren hör till fastigheten, sedan föremålet och fastigheten kommit i samma ägares hand 1. om föremålet upphört att omfattas av företagshypoteket, eller 2. i det fall näringsidkaren förvärvat fastigheten, om sex månader har förflutit från det att han eller hon sökte lagfart på sitt fång. [ Har inteckningsborgenären före utgången av den tid som anges i andra stycket 2 väckt talan om betalning och anmält detta till den inskrivningsmyndighet som avses i 19 kap. 3 § , hör föremålet inte till fastigheten, om inte två månader förflutit från det att talan avgjordes genom dom eller beslut som vunnit laga kraft. [ I lagen (1992:1461 ) om verkan av vissa förbehåll vid överlåtelse av fastighet som tillhör staten, m.m. finns särskilda bestämmelser om att föremål som tillhör staten upphör att höra till fastigheten. Lag (2008:989).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K2P4)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Bostadsrättslagen 10 kap 3 §"
+sfs: "1991:614"
+full_name: "Bostadsrättslag"
+source_url: "https://lagen.nu/1991:614#K10P3"
+---
+
+# Bostadsrättslagen 10 kap 3 §
+
+Till böter döms den som uppsåtligen eller av oaktsamhet 1. upplåter andelsrätt i strid med 1 kap. 8 § , 2. upplåter bostadsrätt i strid med 3 kap. 1 eller 4 § eller 4 kap. 2 § , 3. tar emot förskott i strid med 5 kap. 8 § , 4. bryter mot 9 kap. 6 § sista stycket, 5. inte för medlemsförteckning eller inte håller en sådan förteckning tillgänglig enligt 9 kap. 9 och 9 a §§ , eller 6. inte för lägenhetsförteckning eller meddelar oriktig eller vilseledande uppgift i utdrag enligt 9 kap. 11 § . Lag (2022:1026).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1991:614](https://lagen.nu/1991:614#K10P3)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1991-614)

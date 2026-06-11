@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 2 kap 3 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K2P3"
+---
+
+# Jordabalken 2 kap 3 §
+
+Till fastighet som helt eller delvis är inrättad för industriell verksamhet hör, utöver vad som följer av 1 och 2 §§ , maskiner och annan utrustning som tillförts fastigheten för att användas i verksamheten huvudsakligen på denna. Sådan egendom hör dock inte till fastigheten, om ägaren har avgett förklaring härom och förklaringen är inskriven i fastighetsregistrets inskrivningsdel enligt 24 kap. Fordon, kontorsutrustning och handverktyg hör inte i något fall till fastigheten. Lag (2000:226).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K2P3)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

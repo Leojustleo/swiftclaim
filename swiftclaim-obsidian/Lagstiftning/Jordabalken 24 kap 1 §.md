@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 24 kap 1 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K24P1"
+---
+
+# Jordabalken 24 kap 1 §
+
+En fastighetsägare har rätt att ansöka om inskrivning i fastighetsregistrets inskrivningsdel av en förklaring som avses i 2 kap. 3 § . Som fastighetsägare anses i detta kapitel den för vilken lagfart senast är sökt. [ Ansökan ska avslås, om 1. ansökan om lagfart för sökanden är vilandeförklarad och inskrivningsansökan inte har medgetts av den som har lagfart, 2. en eller flera inteckningar gäller i fastigheten och varje borgenär för vars fordran pantbrev på grund av sådan inteckning utgör säkerhet inte med ingivande av pantbrevet har medgett ansökan, 3. fastigheten har frångått sökanden på grund av exekutiv försäljning eller genom expropriation eller liknande tvångsförvärv, 4. sökanden är i konkurs eller försätts i konkurs den dag då inskrivningen söks samt fastigheten hör till konkursboet, 5. fastigheten eller en del därav är utmätt eller utmäts den dag då inskrivningen söks och Kronofogdemyndigheten inte har medgett ansökan, 6. fastigheten eller en del därav har tagits i anspråk genom betalningssäkring eller tas i anspråk den dag då inskrivningen söks och Kronofogdemyndigheten inte har medgett ansökan, 7. fastigheten eller en del därav är belagd med kvarstad eller tagen i förvar eller beläggs med kvarstad eller tas i förvar den dag då inskrivningen söks och Kronofogdemyndigheten inte har medgett ansökan. [ Om ett ärende angående lagfart för sökanden har skjutits upp till en senare inskrivningsdag, ska behandlingen av inskrivningsansökan skjutas upp till samma dag. Lag (2008:377).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K24P1)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 18 kap 8 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K18P8"
+---
+
+# Jordabalken 18 kap 8 §
+
+Sedan ett ärende om anteckning enligt 19 kap. 29 § första stycket , 20 kap. 14 § eller 21 kap. 4 § denna balk har tagits upp på en inskrivningsdag, får den som därefter har förvärvat egendomen eller någon annan rättighet i denna än panträtt inte till stöd för beståndet av förvärvet eller rätten till ersättning enligt 4 § andra stycket åberopa att han eller hon vid förvärvet varken ägde eller bort äga kännedom om den omständighet som har antecknats. [ Bestämmelserna i 6 kap. 7 § tredje stycket och 7 a § gäller också vid bedömningen av om vid förvärv av panträtt god tro föreligger i fråga om en omständighet som avses med anteckning enligt första stycket . Lag (2010:238).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K18P8)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

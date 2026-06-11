@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 12 kap 58 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K12P58"
+---
+
+# Jordabalken 12 kap 58 §
+
+Vill hyresvärden säga upp avtalet skall han i uppsägningen underrätta hyresgästen om de villkor som han kräver för att förlänga hyresförhållandet eller om orsaken till att han vägrar medge förlängning. Uppsägningen skall dessutom innehålla underrättelse att hyresgästen, om han inte går med på att flytta utan att få ersättning enligt 58 b § , har att inom två månader från uppsägningen hänskjuta tvisten till hyresnämnden för medling. [ Underlåter hyresvärden att fullgöra vad som åligger honom enligt första stycket , är uppsägningen utan verkan. [ Har hyresvärden fullgjort vad som åligger honom enligt första stycket och vill hyresgästen inte lämna lägenheten utan att få ersättning enligt 58 b § , har hyresgästen att hänskjuta tvisten till hyresnämnden inom den i första stycket angivna tiden. Gör han inte det, förfaller rätten till ersättning. Vad som har sagts nu gäller inte, om inom samma tid tvist hänskjuts till nämnden enligt 58 a § första stycket . [ Innan medlingen har avslutats får hyresvärden för förlängning av hyresförhållandet inte kräva högre hyra eller något annat villkor som är oförmånligare för hyresgästen än vad han har angett i uppsägningen. Gör han det och kommer förlängning inte till stånd, har hyresgästen alltid rätt till ersättning enligt 58 b § . Lag (1988:927).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K12P58)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

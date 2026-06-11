@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 13 kap 24 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K13P24"
+---
+
+# Jordabalken 13 kap 24 §
+
+Angående rättegången i mål som avses i 23 § gäller i tillämpliga delar expropriationslagen (1972:719) . Bestämmelserna om utredningsbeslut äger dock tillämpning endast i den mån målet avser bestämmande av lösesumma. Rör tvisten fråga som kan inverka på den rätt som tillkommer innehavare av panträtt eller rättighet som är inskriven, är rätten ej bunden av parts yrkande eller medgivande. [ I mål angående bestämmande av lösesumma skall fastighetsägaren vidkännas på ömse sidor uppkomna rättegångskostnader vid mark- och miljödomstolen, i den mån ej annat föranledes av 18 kap. 6 och 8 §§ rättegångsbalken . Har motpart förebringat utredning i strid med utredningsbeslut som mark- och miljödomstolen meddelat, ersättes dock kostnaden för sådan utredning endast i den mån utredningen haft betydelse för utgången i målet. Beträffande skyldigheten att svara för kostnad i högre rätt gäller med tillämpning i övrigt av 18 kap. rättegångsbalken , att fastighetsägaren, om ej annat föranledes av 18 kap. 6 och 8 §§ samma balk, alltid själv skall vidkännas såväl sina egna kostnader som kostnad som åsamkas motpart genom att fastighetsägaren fullföljt talan. Lag (2010:993).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K13P24)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

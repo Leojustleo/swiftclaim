@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 2 kap 7 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K2P7"
+---
+
+# Jordabalken 2 kap 7 §
+
+En överlåtelse av ett föremål som hör till en fastighet gäller inte mot tredje man, förrän 1. föremålet skiljs från fastigheten på ett sådant sätt att det inte längre kan anses höra till denna, eller 2. ett beslut enligt fastighetsbildningslagen (1970:988) , ledningsrättslagen (1973:1144) eller anläggningslagen (1973:1149) om att föremålet inte längre skall höra till fastigheten har införts i fastighetsregistrets allmänna del. [ Om verkan av vissa överlåtelser från staten, av exekutiv försäljning av föremål som hör till en fastighet och av ianspråktagande av sådana föremål genom expropriation finns särskilda bestämmelser. Lag (2001:889).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K2P7)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

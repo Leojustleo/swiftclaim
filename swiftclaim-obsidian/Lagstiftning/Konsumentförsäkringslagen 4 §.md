@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Konsumentförsäkringslagen 4 §"
+sfs: "1980:38"
+full_name: "Konsumentförsäkringslag (upphävd)"
+source_url: "https://lagen.nu/1980:38#P4"
+---
+
+# Konsumentförsäkringslagen 4 §
+
+I förhållande till annan än försäkringstagaren tillämpas 25 , 54 \-58 , 86 \-88 , 95 och 96 samt 122 och 123 §§ lagen (1927:77 ) om försäkringsavtal även i fråga om försäkringar som avses i denna lag. Vid tillämpningen av dessa bestämmelser gäller även 3 § första stycket lagen om försäkringsavtal. Lag (1999:606). Information
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1980:38](https://lagen.nu/1980:38#P4)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1980-38)

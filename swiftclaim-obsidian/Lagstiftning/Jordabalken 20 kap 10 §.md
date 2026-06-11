@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 20 kap 10 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K20P10"
+---
+
+# Jordabalken 20 kap 10 §
+
+Kan den som påstår sig ha förvärvat fast egendom inte ge in sin fångeshandling eller är hans eller hennes fångeshandling bristfällig, ska inskrivningsmyndigheten på hans eller hennes begäran sätta ut ett sammanträde för utredning av äganderätten till fastigheten (lagfartssammanträde ). Ett sådant sammanträde ska även sättas ut, om det begärs av den som enligt 4 § får söka lagfart på föregående ägares förvärv och dennes fångeshandling inte kan ges in eller är bristfällig. [ En ansökan om lagfartssammanträde ska vara skriftlig och innehålla en redogörelse för vad som sökanden vet om förvärvet och om anledningen till att fångeshandlingen inte kan ges in eller att den är bristfällig. I sist angivna fall ska fångeshandlingen ges in. Sökanden ska vidare ge in intyg om vad Skatteverkets beslut om fastighetstaxering utvisar om äganderätten under de tio åren närmast före ansökan och den skriftliga utredning i övrigt som kan finnas tillgänglig. I 10 a § finns bestämmelser om särskilda åtgärder för att inhämta utredning. Lag (2008:153).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K20P10)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

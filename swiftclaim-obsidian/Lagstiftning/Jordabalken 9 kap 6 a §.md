@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 9 kap 6 a §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K9P6a"
+---
+
+# Jordabalken 9 kap 6 a §
+
+Har arrendatorn uppsagt avtalet och i uppsägningen begärt förlängning av avtalet på ändrade villkor, skall han inom två månader från uppsägningen hänskjuta tvisten till arrendenämnden för medling och därvid ange den ändring han önskar i de avtalade villkoren. [ Underlåter arrendatorn att hänskjuta tvisten till arrendenämnden inom den i första stycket angivna tiden eller återkallar han före arrendetidens utgång sin ansökan om medling, är uppsägningen utan verkan. Har han ej angett de ändringar han önskar i de avtalade villkoren, skall nämnden förelägga honom att avhjälpa bristen inom viss tid. Efterkommes ej föreläggandet, skall ansökan om medling avvisas. [ Har arrendatorn fullgjort vad som åligger honom enligt första stycket , skall arrendenämnden förelägga jordägaren att uppge de villkor han uppställer för att förlänga arrendeförhållandet eller orsaken till att han vägrar medge förlängning. Iakttager jordägaren ej föreläggandet och är avtalet ej uppsagt enligt 5 § första stycket , skall avtalet anses förlängt på de av arrendatorn önskade villkoren. Erinran härom skall intagas i föreläggandet. Förlängningen anses som avtal om fortsatt arrende. Lag (1984:678).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K9P6a)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

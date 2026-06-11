@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Bostadsrättslagen 9 kap 28 §"
+sfs: "1991:614"
+full_name: "Bostadsrättslag"
+source_url: "https://lagen.nu/1991:614#K9P28"
+---
+
+# Bostadsrättslagen 9 kap 28 §
+
+Har vinstutdelning beslutats och verkställts i strid med 27 § eller föreningens stadgar, gäller bestämmelserna om återbäringsskyldighet och bristtäckningsansvar i 12 kap. 7 och 8 §§ lagen (2018:672 ) om ekonomiska föreningar. [ Bestämmelserna om vissa gåvor i 12 kap. 6 § nämnda lag gäller i fråga om bostadsrättsföreningar. Lag (2018:715).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1991:614](https://lagen.nu/1991:614#K9P28)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1991-614)

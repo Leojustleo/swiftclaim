@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 12 kap 20 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K12P20"
+---
+
+# Jordabalken 12 kap 20 §
+
+Om avtal inte har ingåtts om tiden för betalning av hyra i pengar, ska hyran betalas senast sista vardagen före varje kalendermånads början eller, om hyran beräknas för kortare tid än en månad, senast sista vardagen före början av den tid för vilken hyran beräknas. För bostadslägenhet får dock den hyra som avser en annan kalendermånad än den första betalas senast sista vardagen före månadens början, även om tidigare förfallodag har avtalats. [ Hyran ska betalas i hyresvärdens hemvist eller under annan adress som anvisas av denne. Betalning får alltid ske genom en bank eller någon annan liknande betalningsförmedlare. Om hyran ska betalas på en ort utanför Sverige, är hyresvärden skyldig att svara för de särskilda kostnader detta medför. [ Om hyresgästen betalar hyran på bankkontor, anses beloppet ha kommit hyresvärden till handa omedelbart vid betalningen. Lämnar hyresgästen ett betalningsuppdrag på hyran till en bank eller någon annan liknande betalningsförmedlare anses beloppet ha kommit hyresvärden till handa när betalningsuppdraget togs emot. Lag (2024:313).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K12P20)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

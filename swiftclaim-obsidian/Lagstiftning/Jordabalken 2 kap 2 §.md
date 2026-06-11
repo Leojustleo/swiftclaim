@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 2 kap 2 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K2P2"
+---
+
+# Jordabalken 2 kap 2 §
+
+Till byggnad hör fast inredning och annat varmed byggnaden blivit försedd, om det är ägnat till stadigvarande bruk för byggnaden eller del av denna, såsom fast avbalkning, hiss, ledstång, ledning för vatten, värme, ljus eller annat med kranar, kontakter och annan sådan utrustning, värmepanna, element till värmeledning, kamin, kakelugn, innanfönster, markis, brandredskap, civilförsvarsmateriel och nyckel. [ I enlighet med vad som sägs i första stycket hör därjämte i regel till byggnad, såvitt angår 1. bostad: badkar och annan sanitetsanläggning, spis, värmeskåp och kylskåp samt maskin för tvätt eller mangling, 2. butikslokal: hylla, disk och skyltfönsteranordning, 3. samlingslokal: estrad och sittplatsanordning, 4. ekonomibyggnad till jordbruk: anordning för utfodring av djur och anläggning för maskinmjölkning, 5. fabrikslokal: kylsystem och fläktmaskineri. [ Reservdel och dubblett till föremål som avses i första eller andra stycket hör ej till byggnaden. [ Om olika delar av en byggnad hör till skilda fastigheter, hör ett sådant föremål som avses i första eller andra stycket till den del av byggnaden där det finns. Lag (2003:626).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K2P2)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

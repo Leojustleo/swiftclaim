@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Trafikskadelagen 12 §"
+sfs: "1975:1410"
+full_name: "Trafikskadelag"
+source_url: "https://lagen.nu/1975:1410#P12"
+---
+
+# Trafikskadelagen 12 §
+
+Trafikskadeersättning med anledning av personskada kan jämkas, om den skadelidande själv uppsåtligen eller genom grov vårdslöshet har medverkat till skadan. Ersättning till förare som har gjort sig skyldig till rattfylleri eller grovt rattfylleri kan även jämkas, om föraren därvid genom vårdslöshet har medverkat till skadan. Har personskada lett till döden, kan ersättning som avses i 5 kap. 2 § skadeståndslagen (1972:207) också jämkas, om den avlidne uppsåtligen har medverkat till dödsfallet. [ Trafikskadeersättning med anledning av sakskada kan jämkas, om vållande på den skadelidandes sida har medverkat till skadan. I fall som avses i 10 § andra stycket skall sådan medverkan till sakskada anses föreligga, om vållande i samband med förandet av det skadade fordonet eller det fordon varmed den skadade egendomen befordrades eller bristfällighet på fordonet har medverkat till skadan. Vidare skall i fall som avses i 11 § tredje stycket sådan medverkan till sakskada anses föreligga, om vållande i samband med spårdriften eller bristfällighet i någon anordning för denna har medverkat till skadan. [ Jämkning enligt första eller andra stycket sker efter vad som är skäligt med hänsyn till den medverkan som har förekommit på ömse sidor och omständigheterna i övrigt. Lag (2001:734).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1975:1410](https://lagen.nu/1975:1410#P12)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1975-1410)

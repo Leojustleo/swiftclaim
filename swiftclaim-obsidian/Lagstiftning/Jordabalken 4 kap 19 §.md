@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 4 kap 19 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K4P19"
+---
+
+# Jordabalken 4 kap 19 §
+
+Om fastigheten inte stämmer överens med vad som följer av avtalet eller om den annars avviker från vad köparen med fog kunnat förutsätta vid köpet, tillämpas vad som sägs i 12 § om köparens rätt att göra avdrag på köpeskillingen eller häva köpet. Köparen har dessutom rätt till ersättning för skada, om felet eller förlusten beror på försummelse på säljarens sida eller om fastigheten vid köpet avvek från vad säljaren får anses ha utfäst. [ Som fel får inte åberopas en avvikelse som köparen borde ha upptäckt vid en sådan undersökning av fastigheten som varit påkallad med hänsyn till fastighetens skick, den normala beskaffenheten hos jämförliga fastigheter samt omständigheterna vid köpet. Lag (1990:936).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K4P19)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

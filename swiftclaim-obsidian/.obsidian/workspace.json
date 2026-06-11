@@ -1,0 +1,234 @@
+{
+  "main": {
+    "id": "68362eddbdfdb3dd",
+    "type": "split",
+    "children": [
+      {
+        "id": "1ba92f2fe1a048e0",
+        "type": "tabs",
+        "dimension": 13.986013986013987,
+        "children": [
+          {
+            "id": "e3fdbfaa4e3ce4ec",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          }
+        ]
+      },
+      {
+        "id": "2a8ce4cc60d0d64c",
+        "type": "tabs",
+        "dimension": 86.01398601398601,
+        "children": [
+          {
+            "id": "5c40f613f8c03d88",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "c7884418af84b320",
+    "type": "split",
+    "children": [
+      {
+        "id": "f66d54dc980ac583",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8806365af00864fe",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "4934fc0c435c3cc6",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "5106bc893a4c5963",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "c3c4808e61761206",
+    "type": "split",
+    "children": [
+      {
+        "id": "c939c2c9d324202b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a89f19eef919de06",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "ARN/ARN 2023-13486.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for ARN 2023-13486"
+            }
+          },
+          {
+            "id": "4f450acf719f2256",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "ARN/ARN 2023-13486.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from ARN 2023-13486"
+            }
+          },
+          {
+            "id": "dd861ef9f5a16848",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "1dd1ebe22c7e6288",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "d54f01c7aaefb58e",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "ARN/ARN 2023-13486.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of ARN 2023-13486"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "5c40f613f8c03d88",
+  "lastOpenFiles": [
+    "ARN/ARN 2022-14514.md",
+    "ARN/ARN 2025-06866.md",
+    "ARN/ARN 2022-25660.md",
+    "ARN/ARN 2022-18915.md",
+    "ARN/ARN 2022-15488.md",
+    "ARN/ARN 2023-13486.md",
+    "Lagstiftning/Skadeståndslagen 2 kap 3 §.md",
+    "Lagstiftning/Skadeståndslagen 2 kap 1 §.md",
+    "Lagstiftning/FAL 7 kap 9 §.md",
+    "Lagstiftning/FAL 7 kap 2 §.md",
+    "Lagstiftning/FAL 7 kap 1 §.md",
+    "Lagstiftning/FAL 4 kap 11 §.md",
+    "Lagstiftning/FAL 4 kap 9 §.md",
+    "Lagstiftning/FAL 4 kap 8 §.md",
+    "Lagstiftning/FAL 4 kap 6 §.md",
+    "Lagstiftning/FAL 4 kap 4 §.md",
+    "Lagstiftning/FAL 4 kap 2 §.md",
+    "Lagstiftning/FAL 4 kap 1 §.md",
+    "Lagstiftning/FAL 2 kap 8 §.md",
+    "Lagstiftning/FAL 2 kap 7 §.md",
+    "Lagstiftning/FAL 1 kap 6 §.md",
+    "summary.json",
+    "Index/Resor.md",
+    "Index/Motor.md",
+    "Index/Bo.md",
+    "Index",
+    "Koncept/Standardiserad kompensation.md",
+    "Koncept/Slutlig bestämmelseort.md",
+    "Koncept",
+    "Lagstiftning",
+    "ARN"
+  ]
+}

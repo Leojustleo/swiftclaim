@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Bostadsrättslagen 9 kap 30 §"
+sfs: "1991:614"
+full_name: "Bostadsrättslag"
+source_url: "https://lagen.nu/1991:614#K9P30"
+---
+
+# Bostadsrättslagen 9 kap 30 §
+
+Bestämmelserna om fusion i 16 kap. 1 –26 §§ lagen (2018:672 ) om ekonomiska föreningar gäller också för bostadsrättsföreningar. [ Ett beslut av föreningsstämman om godkännande av fusionsplanen är dock giltigt endast om nio tiondelar av de röstberättigade i föreningen har röstat för det eller om det har fattats på två på varandra följande föreningsstämmor och minst två tredjedelar av de röstande på den senare stämman har röstat för beslutet. I stadgarna får det tas in längre gående villkor. Lag (2018:715).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1991:614](https://lagen.nu/1991:614#K9P30)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1991-614)

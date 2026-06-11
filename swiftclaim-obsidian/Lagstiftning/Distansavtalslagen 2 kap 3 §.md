@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Distansavtalslagen 2 kap 3 §"
+sfs: "2005:59"
+full_name: "Lag om distansavtal och avtal utanför affärslokaler"
+source_url: "https://lagen.nu/2005:59#K2P3"
+---
+
+# Distansavtalslagen 2 kap 3 §
+
+I fråga om distansavtal ska informationen enligt 2 \-2 b §§ ges klart och begripligt och på ett sätt som är anpassat till det medel för distanskommunikation som används. Särskild hänsyn ska tas till behoven hos underåriga och andra särskilt utsatta personer. Informationen enligt 2 b § 1 ska ges i ett särskilt avsnitt i onlinegränssnittet och vara direkt och lätt tillgänglig från den plats där sökresultaten presenteras. [ Om avtalet ska ingås genom ett sådant medel för distanskommunikation som gör att information endast kan ges i begränsad omfattning eller under begränsad tid, ska åtminstone information enligt 2 § första stycket 1 , i fråga [ om näringsidkarens namn och organisationsnummer, 2-5, 16 och 18 ges med hjälp av det kommunikationsmedlet. Om det finns en ångerrätt, ska information enligt 2 § första stycket 10 också ges med hjälp av kommunikationsmedlet. Övrig information enligt 2 § första stycket och 2 a § ska ges på något annat lämpligt sätt i enlighet med kraven i första stycket i denna paragraf. [ Om avtalet ska ingås på näringsidkarens webbplats, ska konsumenten särskilt uppmärksammas på innehållet i den information som ges enligt 2 § första stycket 2 \-5 och 16-18. Lag (2022:655).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 2005:59](https://lagen.nu/2005:59#K2P3)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_2005-59)

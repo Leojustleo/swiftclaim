@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 12 kap 38 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K12P38"
+---
+
+# Jordabalken 12 kap 38 §
+
+Överlåter hyresgästen hyresrätten med samtycke av hyresvärden eller med tillstånd av hyresnämnden, är han fri från de skyldigheter som hyresavtalet innebär för honom för tiden efter överlåtelsen. Detta gäller endast om inte annat villkor ställts upp i samband med samtycket eller tillståndet. [ Den nye hyresgästen svarar tillsammans med överlåtaren för skyldigheterna enligt avtalet för tiden före överlåtelsen, om inte något annat avtalats med hyresvärden. Vid ett lägenhetsbyte har en ny bostadshyresgäst dock ett sådant ansvar endast om han gentemot hyresvärden i en särskilt upprättad handling har åtagit sig det. Ett sådant åtagande medför inte skyldighet att betala något annat än hyresskulder och inte heller skyldighet att betala sådana skulder till ett högre belopp än som motsvarar hyran för de tre kalendermånaderna närmast före överlåtelsen. Lag (1993:400).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K12P38)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

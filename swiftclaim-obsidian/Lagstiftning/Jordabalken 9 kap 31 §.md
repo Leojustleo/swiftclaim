@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 9 kap 31 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K9P31"
+---
+
+# Jordabalken 9 kap 31 §
+
+Arrendatorn får inte överlåta arrenderätten utan jordägarens samtycke, om ej annat följer av andra-fjärde styckena eller av 31 a § . [ Är arrendeavtalet slutet för viss tid som ej understiger tio år, får arrendatorn, om ej annat avtalats, överlåta arrenderätten till annan med vilken jordägaren skäligen kan nöjas. Han skall dock först erbjuda jordägaren att återtaga arrendestället mot skyldighet att vid avräkning enligt 23 § utge skälig ersättning för arrenderättens värde. Vill jordägaren antaga erbjudandet, skall han lämna besked därom inom en månad. [ Vidare gäller beträffande arrenden för viss tid att arrendatorn, även om annat avtalats, får överlåta arrenderätten, om den avser ett utvecklat eller utvecklingsbart lantbruksföretag, till sin make eller avkomling, om arrendenämnden tillåter det. Sådant tillstånd skall lämnas, om inte jordägaren har befogad anledning att motsätta sig överlåtelsen. Innehas arrenderätten av flera personer gemensamt, får var och en av dem under samma förutsättningar överlåta sin rätt till en medarrendator som är make eller avkomling till överlåtaren. [ Avlider arrendatorn under arrendetiden, har dödsboet, oavsett för vilken tid avtalet är ingånget, samma rätt som enligt andra stycket tillkommer arrendator för där avsett fall, om ej annat avtalats. Erbjudandet till jordägaren skall göras inom sex månader efter dödsfallet. Dödsboet har vidare samma rätt som enligt tredje stycket tillkommer arrendator för fall som avses där. [ Första tredje styckena äger motsvarande tillämpning på arrenderättens övergång genom bodelning, arv, testamente, bolagsskifte eller liknande förvärv. Lag (1995:1474).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K9P31)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

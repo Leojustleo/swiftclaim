@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "FAL 19 kap 5 §"
+sfs: "2005:104"
+full_name: "Försäkringsavtalslagen"
+source_url: "https://lagen.nu/2005:104#K19P5"
+---
+
+# FAL 19 kap 5 §
+
+Innan ett gruppavtal ingås skall försäkringsbolaget lämna gruppen information som är utformad så att den underlättar bedömningen av gruppmedlemmarnas försäkringsbehov och valet av försäkring. Informationen skall på ett enkelt sätt återge det huvudsakliga innehållet i de försäkringsvillkor som gruppen behöver ha kännedom om för att kunna bedöma kostnaden för och omfattningen av försäkringen. Viktiga begränsningar av försäkringsskyddet skall tydligt framgå. Detsamma gäller om försäkringsbolagets ansvar inträder först när premien betalas. [ Innan ett avtal om frivillig gruppersonförsäkring ingås skall försäkringsbolaget också på ett ändamålsenligt sätt ge gruppmedlemmarna information för bedömning av frågan om de bör ansluta sig till försäkringen. [ Innebär ett gruppavtal om frivillig gruppersonförsäkring att gruppmedlemmarna kan bli anslutna genom att inte avböja försäkringen, skall försäkringsbolaget sända ett meddelande till dem om detta förhållande och om deras möjlighet att enligt 12 § säga upp försäkringen för omedelbart upphörande.
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 2005:104](https://lagen.nu/2005:104#K19P5)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_2005-104)

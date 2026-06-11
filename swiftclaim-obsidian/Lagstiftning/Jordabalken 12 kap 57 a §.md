@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 12 kap 57 a §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K12P57a"
+---
+
+# Jordabalken 12 kap 57 a §
+
+Vid tillämpningen av 57 § första stycket 5 skall en krävd hyra inte anses som skälig, om den överstiger den hyra som lokalen vid hyrestidens utgång kan antas betinga på öppna marknaden (marknadshyra ). Marknadshyran skall i första hand bestämmas med utgångspunkt i en jämförelse med hyran för andra liknande lokaler på orten. Endast om det finns särskilda skäl får hänsyn tas till ökning av lokalens värde, som en hyresgäst har åstadkommit. [ I tvist om ersättning enligt 57 § får yttrande av hyresnämnden frångås endast om det är uppenbart 1. när yttrandet avser marknadshyran, att denna är påtagligt högre eller lägre än hyresnämnden angett, 2. när yttrandet avser anvisad lokal, att hyresnämndens bedömning inte varit riktig. [ I fall som avses i andra stycket 1 får utredning som inte har lagts fram under medlingen, beaktas vid prövningen endast om det finns synnerliga skäl. Lag (2002:29).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K12P57a)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

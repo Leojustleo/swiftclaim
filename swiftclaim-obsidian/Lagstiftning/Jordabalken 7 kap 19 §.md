@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 7 kap 19 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K7P19"
+---
+
+# Jordabalken 7 kap 19 §
+
+Kommer till följd av exekutiv försäljning av fastighet upplåtelse av nyttjanderätt, servitut eller rätt till elektrisk kraft ej att gälla mot den nye ägaren, skall den från vilken försäljningen ägt rum ersätta rättighetshavaren dennes skada. Har rättigheten bevarats genom att rättighetshavaren tillskjutit medel enligt 12 kap. utsökningsbalken om exekutiv försäljning av fast egendom, har rättighetshavaren såsom skadestånd rätt till ersättning för tillskott i den mån detta ej överstiger värdet av rättigheten. Om upplåtelsen skett utan vederlag, äger vad som sagts förut tillämpning endast om fastigheten sålts för annat ändamål än till betalning av fordran för vilken den på grund av utmätning eller eljest svarar. [ Rätt till ersättning enligt första stycket tillkommer ej rättighetshavare, om han låtit inskrivning av rättigheten dödas utan fastighetsägarens samtycke eller om han genom överenskommelse vid exekutiv auktion låtit rättighetens företrädesläge försämras. Är det uppenbart att rättigheten ändå skulle ha gått förlorad, äger vad som sagts nu icke tillämpning. Lag (1981:784).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K7P19)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

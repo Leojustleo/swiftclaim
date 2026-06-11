@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 9 kap 5 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K9P5"
+---
+
+# Jordabalken 9 kap 5 §
+
+Har jordägaren uppsagt arrendeavtalet och vägrar han att förlänga arrendeförhållandet eller kommer förlängning i annat fall ej till stånd på den grund att jordägaren för förlängning kräver arrendeavgift som ej är skälig eller uppställer annat villkor som strider mot god sed i arrendeförhållanden eller eljest är obilligt, skall han i skälig omfattning ersätta arrendatorn dennes förlust på grund av arrendeförhållandets upphörande, om ej 1. arrendatorn åsidosatt sina förpliktelser i sådan mån att det icke skäligen kan fordras att jordägaren förlänger arrendeförhållandet, 2. jordägaren gör sannolikt, att arrendestället skall användas för annat ändamål än det med upplåtelsen avsedda, och jordägarens intresse att kunna förfoga över arrendestället för sådant ändamål påtagligt överväger arrendatorns intresse av fortsatt arrende, eller 3. jordägaren i annat fall har befogad anledning att upplösa arrendeförhållandet. [ Första stycket äger motsvarande tillämpning, om arrendatorn har uppsagt avtalet enligt 3 § och i uppsägningen begärt förlängning av avtalet på ändrade villkor. [ Förlust för arrendatorn som har samband med att denne bekostat uppförande av byggnad eller utförande av annat arbete på arrendestället skall beaktas vid ersättningens bestämmande endast om åtgärden vidtagits i enlighet med arrendeavtalet. Lag (2003:626).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K9P5)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Paketreselagen 1 kap 5 §"
+sfs: "2018:1217"
+full_name: "Paketreselag"
+source_url: "https://lagen.nu/2018:1217#K1P5"
+---
+
+# Paketreselagen 1 kap 5 §
+
+I lagen avses med 1. resenär : en fysisk person som avser att ingå ett avtal som omfattas av denna lag eller som har rätt att resa till följd av ett sådant avtal, 2. näringsidkare : en fysisk eller juridisk person som handlar för ändamål som har samband med den egna näringsverksamheten, 3. arrangör : en näringsidkare som sätter ihop och som själv eller genom en återförsäljare säljer eller erbjuder paketresor eller som överför en resenärs uppgifter till en annan näringsidkare i fall som avses i 3 § första stycket 2 e , 4. återförsäljare : en annan näringsidkare än arrangören som säljer eller erbjuder paketresor som satts ihop av en arrangör.
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 2018:1217](https://lagen.nu/2018:1217#K1P5)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_2018-1217)

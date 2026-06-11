@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 16 kap 1 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K16P1"
+---
+
+# Jordabalken 16 kap 1 §
+
+Om någon erhållit lagfart på fast egendom, som kommit ur rätte ägarens hand, och därefter under tjugo år i följd med äganderättsanspråk innehaft egendomen utan att talan om bättre rätt till egendomen väckts mot honom, har han på grund av hävden rätt till egendomen framför den andre. [ Om innehavet grundas på överlåtelse och innehavaren varken ägde eller bort äga kännedom om att överlåtaren icke var rätt ägare, gäller första stycket fastän tiden för innehavet uppgår till endast tio år. [ Om egendomen under hävdetiden innehafts av flera efter varandra, äger första och andra styckena motsvarande tillämpning, varvid kravet på lagfart gäller endast den förste innehavarens förvärv. Vid tillämpning av andra stycket gäller villkoren om att innehavet grundas på överlåtelse och att innehavaren var i god tro endast den förste innehavaren.
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K16P1)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

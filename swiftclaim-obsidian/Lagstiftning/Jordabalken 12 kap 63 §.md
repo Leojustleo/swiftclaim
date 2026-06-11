@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 12 kap 63 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K12P63"
+---
+
+# Jordabalken 12 kap 63 §
+
+Ett meddelande som avses i 10 § , 11 § , 14 § , 18 e § , 24 § , 25 a § första stycket , 26 § , 33 § , 42 § första stycket 4 , 7 eller 9, 44 § , 46 § andra stycket , 46 a § andra stycket , 54 § eller 54 a § ska anses lämnat när det har avsänts i ett rekommenderat brev till mottagarens vanliga adress. I fall som avses i 24 § är det dock tillräckligt att meddelandet är avsänt på något annat ändamålsenligt sätt. [ Om hyresgästen eller hyresvärden har lämnat uppgift om en adress dit meddelanden ska sändas, anses den som hans eller hennes vanliga adress. Hyresgästen får dock alltid sända meddelanden till den som är behörig att ta emot hyra på hyresvärdens vägnar. Om hyresgästen inte har lämnat någon särskild adressuppgift, får hyresvärden sända meddelanden till den uthyrda lägenhetens adress. Lag (2024:313).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K12P63)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

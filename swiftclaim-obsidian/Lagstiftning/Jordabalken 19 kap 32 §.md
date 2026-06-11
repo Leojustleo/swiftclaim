@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Jordabalken 19 kap 32 §"
+sfs: "1970:994"
+full_name: "Jordabalk"
+source_url: "https://lagen.nu/1970:994#K19P32"
+---
+
+# Jordabalken 19 kap 32 §
+
+Ett beslut av inskrivningsmyndigheten i ett inskrivningsärende får överklagas av den som beslutet rör, om det har gått honom eller henne emot. Ett beslut om rättelse enligt 22 § får överklagas även av den myndighet som avses i 18 kap. 5 § första stycket . [ Beslutet överklagas till den tingsrätt inom vars domkrets fastigheten ligger. [ Vid överklagande tillämpas lagen (1996:242 ) om domstolsärenden, om inte annat följer av denna balk. Ett beslut om att förklara en ansökan vilande får alltid överklagas särskilt. [ Prövningstillstånd krävs vid överklagande till hovrätten. [ Bestämmelser om överklagande av beslut om stämpelskatt finns i lagen (1984:404 ) om stämpelskatt vid inskrivningsmyndigheter. Lag (2008:153).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1970:994](https://lagen.nu/1970:994#K19P32)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1970-994)

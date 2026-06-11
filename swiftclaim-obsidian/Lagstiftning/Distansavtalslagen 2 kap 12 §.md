@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Distansavtalslagen 2 kap 12 §"
+sfs: "2005:59"
+full_name: "Lag om distansavtal och avtal utanför affärslokaler"
+source_url: "https://lagen.nu/2005:59#K2P12"
+---
+
+# Distansavtalslagen 2 kap 12 §
+
+Vid avtal om överlåtelse eller upplåtelse av en vara börjar ångerfristen löpa den dag då konsumenten får varan i sin besittning. Vid avtal om en tjänst börjar ångerfristen löpa den dag då avtalet ingås. [ Om avtalet avser flera varor eller en vara som består av flera delar, börjar ångerfristen löpa den dag då konsumenten får den sista varan respektive den sista delen av varan i sin besittning. I fråga om regelbunden leverans av varor under en viss tid börjar ångerfristen dock löpa när konsumenten får varorna från den första leveransen i sin besittning. [ I fråga om avtal om leverans av vatten, gas eller el, när försäljningen inte sker i en begränsad volym eller en fastställd kvantitet, och i fråga om avtal om leverans av fjärrvärme, börjar ångerfristen löpa den dag då avtalet ingås. Detsamma gäller i fråga om avtal om digitalt innehåll som levereras på något annat sätt än på ett fysiskt medium. [ Ångerfristen enligt första-tredje styckena börjar aldrig löpa förrän konsumenten har fått information om ångerrätten enligt 2 § första stycket 10 på det sätt som anges i 3 § eller 5 § första stycket . Rätten att ångra sig upphör dock senast ett år efter det att ångerfristen skulle ha löpt ut om information hade getts på föreskrivet sätt. Lag (2022:655).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 2005:59](https://lagen.nu/2005:59#K2P12)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_2005-59)
