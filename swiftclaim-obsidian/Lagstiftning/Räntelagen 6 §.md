@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Räntelagen 6 §"
+sfs: "1975:635"
+full_name: "Räntelag"
+source_url: "https://lagen.nu/1975:635#P6"
+---
+
+# Räntelagen 6 §
+
+I fall som avses i 3 eller 4 § beräknas ränta för år enligt en räntefot som motsvarar den vid varje tid gällande referensräntan enligt 9 § med ett tillägg av åtta procentenheter. Om det vid bestämmande av skadestånd med anledning av personskada ska avräknas förmåner som en skadelidande har rätt till enligt 5 kap. 3 § 1 skadeståndslagen (1972:207) , utgör dock tillägget till referensräntan endast två procentenheter för tiden till dess förmånerna har fastställts slutligt. [ Ett avtalsvillkor som innebär att räntan ska beräknas enligt en lägre räntefot än vad som följer av första stycket första meningen är utan verkan mot borgenären i ett förhållande mellan en näringsidkare och en myndighet eller ett annat offentligt organ, när näringsidkaren i sin yrkesmässiga verksamhet tillhandahåller varor eller tjänster mot betalning. Lag (2013:55).
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1975:635](https://lagen.nu/1975:635#P6)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1975-635)

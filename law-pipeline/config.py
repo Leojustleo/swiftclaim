@@ -9,7 +9,7 @@ OPENROUTER_API_KEY = "YOUR_API_KEY_HERE"   # or set env var OPENROUTER_API_KEY
 # OpenRouter model ID format: <provider>/<model>
 # Kimi K2.6: 262K context, ~4x cheaper than Claude Sonnet, strong on multilingual.
 # Swap to anthropic/claude-sonnet-4.5 or anthropic/claude-opus-4.7 for higher quality runs.
-CLAUDE_MODEL       = "moonshotai/kimi-k2.6"
+CLAUDE_MODEL       = "deepseek-chat"
 
 # ─── Paths ────────────────────────────────────────────────────────────────────
 BASE_DIR         = Path(__file__).parent

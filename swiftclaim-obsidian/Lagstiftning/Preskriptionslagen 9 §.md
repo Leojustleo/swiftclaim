@@ -1,0 +1,18 @@
+---
+type: lagrum
+statute: "Preskriptionslagen 9 §"
+sfs: "1981:130"
+full_name: "Preskriptionslag"
+source_url: "https://lagen.nu/1981:130#P9"
+---
+
+# Preskriptionslagen 9 §
+
+Om flera har åtagit sig eller förpliktats att svara solidariskt för samma skuld och denna preskriberas i förhållande till någon av dem, svarar var och en av de andra endast för sin andel. Andelarna beräknas efter huvudtalet, om inte annat har bestämts genom ett avtal eller avgörande som borgenären har fått kännedom om senast sex månader före preskriptionen. [ Uppkommer brist hos någon av de kvarvarande gäldenärerna, fördelas ansvaret för bristen mellan de övriga kvarvarande och borgenären. Därvid svarar varje gäldenär i förhållande till sin andel och borgenären i förhållande till den andel som har preskriberats.
+
+## Relevanta ARN-fall
+*(genereras automatiskt via backlinks i Obsidian)*
+
+## Källa
+- [Lagen.nu: 1981:130](https://lagen.nu/1981:130#P9)
+- [Riksdagen](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/sfs_1981-130)

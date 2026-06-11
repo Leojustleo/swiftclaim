@@ -44,6 +44,9 @@ SFS_MAP: dict[str, tuple[str, str]] = {
     "Jordabalken": ("1970:994", "Jordabalk"),
     "Bostadsr\u00e4ttslagen": ("1991:614", "Bostadsr\u00e4ttslag"),
     "Paketreselagen": ("2018:1217", "Paketreselag"),
+    "Preskriptionslagen": ("1981:130", "Preskriptionslag"),
+    "Räntelagen": ("1975:635", "Räntelag"),
+    "Konsumentköplagen2022": ("2022:260", "Konsumentköplag"),
 }
 
 # All FAL + Skadest\u00e5ndslagen chapters relevant to property insurance

@@ -18,7 +18,7 @@ from dataclasses import dataclass
 from openai import OpenAI, RateLimitError, APIError
 from rich.console import Console
 
-OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
+LLM_BASE_URL = "https://api.deepseek.com/v1"
 
 console = Console()
 
@@ -120,7 +120,7 @@ def process_decision(
     Send one decision to Claude and get back structured Obsidian markdown.
     Retries up to retry_count times on API errors.
     """
-    client = OpenAI(api_key=api_key, base_url=OPENROUTER_BASE_URL)
+    client = OpenAI(api_key=api_key, base_url=LLM_BASE_URL)
 
     user_content = f"""Ärendenummer: {case_id}
 Kategori: {category}

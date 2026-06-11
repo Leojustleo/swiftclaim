@@ -1,92 +1,272 @@
 [
   {
+    "filename": "ARN 2018-11707.md",
+    "case_id": "2018-11707",
+    "category": "försäkring",
+    "date": "2019-05-15",
+    "outcome": "consumer_won",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2018-14272.md",
+    "case_id": "2018-14272",
+    "category": "Försäkring",
+    "date": "2019-05-27",
+    "outcome": "partially_won",
+    "insurer": "IO",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2019-01105.md",
+    "case_id": "2019-01105",
+    "category": "Försäkring",
+    "date": "2019-07-09",
+    "outcome": "consumer_won",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2019-04350.md",
+    "case_id": "2019-04350",
+    "category": "Försäkring",
+    "date": "2020-01-10",
+    "outcome": "consumer_won",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2019-05176.md",
+    "case_id": "2019-05176",
+    "category": "Försäkring",
+    "date": "2020-02-19",
+    "outcome": "consumer_won",
+    "insurer": "Okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2019-11253.md",
+    "case_id": "2019-11253",
+    "category": "Försäkring",
+    "date": "2020-05-12",
+    "outcome": "consumer_lost",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2019-17821.md",
+    "case_id": "2019-17821",
+    "category": "Resa",
+    "date": "2020-03-02",
+    "outcome": "consumer_won",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2020-08372.md",
+    "case_id": "2020-08372",
+    "category": "Försäkring",
+    "date": "2021-05-20",
+    "outcome": "consumer_lost",
+    "insurer": "okänt - flygbolag",
+    "damage": "travel"
+  },
+  {
+    "filename": "ARN 2020-08495.md",
+    "case_id": "2020-08495",
+    "category": "Försäkring",
+    "date": "2021-04-21",
+    "outcome": "consumer_won",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2020-08566.md",
+    "case_id": "2020-08566",
+    "category": "Försäkring",
+    "date": "2021-05-21",
+    "outcome": "consumer_won",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2020-09902.md",
+    "case_id": "2020-09902",
+    "category": "Försäkring",
+    "date": "2021-05-21",
+    "outcome": "consumer_won",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2020-15371.md",
+    "case_id": "2020-15371",
+    "category": "Försäkring",
+    "date": "2021-05-21",
+    "outcome": "consumer_won",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2020-16283.md",
+    "case_id": "2020-16283",
+    "category": "Försäkring",
+    "date": "2021-05-21",
+    "outcome": "consumer_won",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2020-19648.md",
+    "case_id": "2020-19648",
+    "category": "Försäkring",
+    "date": "2021-05-21",
+    "outcome": "partially_won",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2021-17230.md",
+    "case_id": "2021-17230",
+    "category": "Försäkring",
+    "date": "2022-10-24",
+    "outcome": "consumer_lost",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2021-17441.md",
+    "case_id": "2021-17441",
+    "category": "Försäkring",
+    "date": "2022-03-24",
+    "outcome": "consumer_lost",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2022-03728.md",
+    "case_id": "2022-03728",
+    "category": "Försäkring",
+    "date": "2022-09-22",
+    "outcome": "consumer_won",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2022-09243.md",
+    "case_id": "2022-09243",
+    "category": "Försäkring",
+    "date": "2023-03-30",
+    "outcome": "partially_won",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2022-10562.md",
+    "case_id": "2022-10562",
+    "category": "Försäkring",
+    "date": "2023-02-21",
+    "outcome": "consumer_lost",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2022-10784.md",
+    "case_id": "ARN 2022-10784",
+    "category": "Försäkring",
+    "date": "2023-03-14",
+    "outcome": "consumer_won",
+    "insurer": "Resebyrå",
+    "damage": "travel"
+  },
+  {
+    "filename": "ARN 2022-14514.md",
+    "case_id": "ARN 2022-14514",
+    "category": "försäkring",
+    "date": "2023-05-09",
+    "outcome": "consumer_lost",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
     "filename": "ARN 2022-15488.md",
     "case_id": "2022-15488",
-    "category": "Motor",
+    "category": "Försäkring",
     "date": "2023-12-19",
     "outcome": "consumer_won",
     "insurer": "okänt",
     "damage": "other"
   },
   {
-    "filename": "ARN 2023-19612.md",
-    "case_id": "2023-19612",
-    "category": "",
-    "date": "",
-    "outcome": "",
-    "insurer": "",
-    "damage": ""
-  },
-  {
-    "filename": "ARN 2023-13486.md",
-    "case_id": "2023-13486",
-    "category": "Resor",
-    "date": "2023-12-21",
+    "filename": "ARN 2022-15738.md",
+    "case_id": "2022-15738",
+    "category": "Försäkring",
+    "date": "2022-12-07",
     "outcome": "consumer_lost",
     "insurer": "okänt",
-    "damage": "travel"
+    "damage": "other"
   },
   {
-    "filename": "ARN 2023-07552.md",
-    "case_id": "2023-07552",
-    "category": "Bo",
-    "date": "2023-12-19",
+    "filename": "ARN 2022-17669.md",
+    "case_id": "2022-17669",
+    "category": "Försäkring",
+    "date": "2023-03-30",
     "outcome": "consumer_won",
-    "insurer": "SF",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2022-17735.md",
+    "case_id": "2022-17735",
+    "category": "försäkring",
+    "date": "2023-03-30",
+    "outcome": "partially_won",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2022-18915.md",
+    "case_id": "2022-18915",
+    "category": "försäkring",
+    "date": "2023-05-09",
+    "outcome": "consumer_lost",
+    "insurer": "okänt",
     "damage": "other"
   },
   {
     "filename": "ARN 2022-25660.md",
     "case_id": "2022-25660",
-    "category": "",
-    "date": "",
-    "outcome": "",
-    "insurer": "",
-    "damage": ""
-  },
-  {
-    "filename": "ARN 2024-20746.md",
-    "case_id": "2024-20746",
-    "category": "",
-    "date": "",
-    "outcome": "",
-    "insurer": "",
-    "damage": ""
-  },
-  {
-    "filename": "ARN 2023-17878.md",
-    "case_id": "2023-17878",
-    "category": "",
-    "date": "",
-    "outcome": "",
-    "insurer": "",
-    "damage": ""
-  },
-  {
-    "filename": "ARN 2022-18915.md",
-    "case_id": "2022-18915",
-    "category": "",
-    "date": "",
-    "outcome": "",
-    "insurer": "",
-    "damage": ""
-  },
-  {
-    "filename": "ARN 2025-06866.md",
-    "case_id": "2025-06866",
-    "category": "Motor",
-    "date": "2025-12-30",
-    "outcome": "consumer_won",
+    "category": "Försäkring",
+    "date": "2023-05-09",
+    "outcome": "consumer_lost",
     "insurer": "okänt",
     "damage": "other"
   },
   {
-    "filename": "ARN 2022-14514.md",
-    "case_id": "2022-14514",
-    "category": "",
-    "date": "",
-    "outcome": "",
-    "insurer": "",
-    "damage": ""
+    "filename": "ARN 2023-00384.md",
+    "case_id": "2023-00384",
+    "category": "Försäkring",
+    "date": "2023-12-21",
+    "outcome": "partially_won",
+    "insurer": "okänt",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2023-04093.md",
+    "case_id": "2023-04093",
+    "category": "Försäkring",
+    "date": "2023-12-21",
+    "outcome": "partially_won",
+    "insurer": "Flygbolag A",
+    "damage": "other"
+  },
+  {
+    "filename": "ARN 2023-05704.md",
+    "case_id": "2023-05704",
+    "category": "Försäkring",
+    "date": "2023-12-21",
+    "outcome": "consumer_won",
+    "insurer": "Flygbolaget A",
+    "damage": "travel"
   }
 ]
