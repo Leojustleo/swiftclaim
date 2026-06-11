@@ -863,3 +863,134 @@ textarea:focus {
     flex-direction: column;
   }
 }
+
+/* ── Legal Research Panel ─────────────────────────────────────── */
+
+.legal-research .legal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.legal-research .legal-header h3 {
+  margin: 0;
+}
+
+#backendStatus {
+  font-size: 0.75rem;
+}
+
+#backendStatus[data-status="checking"] {
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+
+#backendStatus[data-status="connected"] {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+#backendStatus[data-status="offline"] {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.legal-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.legal-results {
+  min-height: 40px;
+}
+
+.results-count {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.law-result {
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.law-result.precedent {
+  border-left: 3px solid var(--accent);
+}
+
+.law-result.statute {
+  border-left: 3px solid var(--primary);
+}
+
+.law-result-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.law-result-header strong {
+  flex: 1;
+}
+
+.law-result-header .score {
+  font-size: 0.75rem;
+}
+
+.law-result p {
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.badge.precedent {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.badge.statute {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.badge.muted {
+  background: var(--surface-soft);
+  color: var(--muted);
+}
+
+.success {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.draft-section {
+  margin-bottom: 16px;
+}
+
+.draft-section h4 {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0 0 6px 0;
+}
+
+.draft-text {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  max-height: 400px;
+  overflow-y: auto;
+}

@@ -36,6 +36,7 @@
         </nav>
 
         <div class="sidebar-footer">
+          <button class="secondary full" id="syncBackendBtn" type="button">Synka från backend</button>
           <button class="secondary full" id="exportJsonBtn" type="button">Exportera data</button>
           <label class="secondary full file-import">
             Importera data
@@ -285,6 +286,22 @@
                 </div>
               </div>
             </section>
+
+            <section class="panel legal-research">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Lagrum & Prejudikat</p>
+                  <h2>Sök juridisk kunskapsbas</h2>
+                </div>
+              </div>
+              <div class="legal-actions">
+                <div class="search-box" style="flex:1">
+                  <input id="vaultSearchInput" type="search" placeholder="Sök lagrum, t.ex. 'säkerhetsföreskrift nedsättning'" style="width:100%" />
+                </div>
+                <button class="primary" id="vaultSearchBtn" type="button">Sök</button>
+              </div>
+              <div id="vaultResults" class="legal-results"></div>
+            </section>
           </div>
         </section>
       </main>
@@ -294,6 +311,7 @@
       <div class="scorecard"></div>
     </template>
 
+    <script src="api.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

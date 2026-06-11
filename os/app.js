@@ -152,20 +152,16 @@
   function init() {
     state = loadState();
     state.cases = state.cases.map(localizeCase);
-    if (!state.cases.length) {
-      state.cases = seedCases();
-      state.selectedCaseId = state.cases[0].id;
-      saveState();
-    } else {
-      saveState();
-    }
+    saveState();
 
     hydrateSelects();
     bindNavigation();
     bindIntake();
     bindImportExport();
     bindFilters();
+    bindBackendSync();
     renderAll();
+    syncFromBackend();
   }
 
   function loadState() {
@@ -346,117 +342,6 @@
 
   function saveState() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  }
-
-  function seedCases() {
-    const examples = [
-      {
-        customerName: "Alex Andersson",
-        email: "alex.andersson@example.com",
-        phone: "+46 70 123 45 67",
-        city: "Stockholm",
-        propertyType: "Bostadsrätt",
-        insuranceCompany: "If",
-        damageCategory: "Vattenskada",
-        incidentDate: "2026-02-03",
-        decisionDate: "2026-03-28",
-        claimedAmount: 185000,
-        offeredAmount: 62000,
-        currentStage: "Underbetalt",
-        description:
-          "Vattenläcka i köket från diskmaskinskoppling. Försäkringsbolaget godkänner delar av golvet men nekar ersättning för skåp, uttorkning och följdkostnader. Kunden har foton, offert från entreprenör och försäkringsbeslut.",
-        evidence: ["Foton", "Försäkringsbeslut", "Offert från entreprenör", "Skaderapport"],
-      },
-      {
-        customerName: "Mira Lind",
-        email: "mira.lind@example.com",
-        phone: "+46 76 888 20 10",
-        city: "Göteborg",
-        propertyType: "Villa",
-        insuranceCompany: "Länsförsäkringar",
-        damageCategory: "Mögel eller fuktskada",
-        incidentDate: "2025-11-18",
-        decisionDate: "2026-01-12",
-        claimedAmount: 320000,
-        offeredAmount: 0,
-        currentStage: "Avslaget",
-        description:
-          "Fukt och mögel upptäcktes bakom badrumsvägg. Försäkringsbolaget hänvisar till gradvis skada och bristande underhåll. Kunden menar att ett dolt rörfel orsakade skadan.",
-        evidence: ["Foton", "Försäkringsbeslut"],
-      },
-      {
-        customerName: "Jonas Ek",
-        email: "jonas.ek@example.com",
-        phone: "+46 73 333 90 12",
-        city: "Malmö",
-        propertyType: "Fritidshus",
-        insuranceCompany: "Folksam",
-        damageCategory: "Stormskada",
-        incidentDate: "2026-04-02",
-        decisionDate: "",
-        claimedAmount: 90000,
-        offeredAmount: 0,
-        currentStage: "Inskickat till försäkringsbolag",
-        description:
-          "Storm skadade takpannor och ledde till vatteninträngning i innertaket. Ärendet är inskickat med foton, men försäkringsbolaget har inte svarat ännu.",
-        evidence: ["Foton", "Kvitton", "Offert från entreprenör"],
-      },
-    ];
-
-    return examples.map((payload, index) => {
-      const scorecard = analyzeIntake(payload);
-      const id = `SC-2604-${String(index + 1).padStart(3, "0")}`;
-      const now = offsetDate(index * -2);
-      const status = inferInitialStatus(payload, scorecard);
-      return {
-        id,
-        createdAt: now,
-        updatedAt: now,
-        customer: {
-          name: payload.customerName,
-          email: payload.email,
-          phone: payload.phone,
-          city: payload.city,
-          propertyType: payload.propertyType,
-        },
-        insuranceCompany: payload.insuranceCompany,
-        category: payload.damageCategory,
-        shortDescription: payload.description,
-        incidentDate: payload.incidentDate,
-        decisionDate: payload.decisionDate,
-        claimedAmount: Number(payload.claimedAmount) || 0,
-        offeredAmount: Number(payload.offeredAmount) || 0,
-        status,
-        responsible: users[index % users.length],
-        priority: scorecard.deadlineRisk === "hög" ? "Hög" : "Normal",
-        scorecard,
-        intake: payload,
-        documents: [],
-        notes: [
-          {
-            id: makeId("note"),
-            author: "AI-utkast",
-            body: scorecard.summary,
-            createdAt: now,
-          },
-        ],
-        tasks: defaultTasks(scorecard),
-        timeline: [
-          {
-            id: makeId("event"),
-            at: now,
-            title: "Ärende skapat",
-            body: `Exempelintag analyserades och skickades till ${status}.`,
-          },
-        ],
-        outcome: {
-          result: "Pågående",
-          recoveredAmount: 0,
-          feeAmount: 0,
-          lessons: "",
-        },
-      };
-    });
   }
 
   function hydrateSelects() {
@@ -655,6 +540,54 @@
         feeAmount: 0,
         lessons: "",
       },
+    };
+  }
+
+  function bindBackendSync() {
+    document.getElementById("syncBackendBtn").addEventListener("click", async () => {
+      const added = await syncFromBackend();
+      alert(added === null ? "Backend nås inte på localhost:8000." : `${added} nya ärenden hämtade.`);
+    });
+  }
+
+  async function syncFromBackend() {
+    if (!window.SwiftclaimAPI) return null;
+    const backendCases = await window.SwiftclaimAPI.getCases();
+    if (!backendCases) return null;
+    let added = 0;
+    backendCases.forEach((remote) => {
+      if (state.cases.some((item) => item.id === remote.id)) return;
+      const payload = backendCaseToPayload(remote);
+      const newCase = createCaseFromPayload(payload, analyzeIntake(payload));
+      newCase.id = remote.id;
+      newCase.createdAt = remote.created_at || newCase.createdAt;
+      newCase.timeline[0].body = "Ärende inskickat via Swiftclaim.se.";
+      state.cases.unshift(newCase);
+      added += 1;
+    });
+    if (added > 0) {
+      saveState();
+      renderAll();
+    }
+    return added;
+  }
+
+  function backendCaseToPayload(remote) {
+    return {
+      customerName: remote.customer_name || "",
+      email: remote.customer_email || "",
+      phone: remote.customer_phone || "",
+      city: remote.property_address || "",
+      propertyType: remote.property_type || "Villa",
+      insuranceCompany: remote.insurance_company || companies[0],
+      damageCategory: remote.damage_category || "Annan egendomsskada",
+      incidentDate: remote.damage_date || "",
+      decisionDate: "",
+      claimedAmount: Number(remote.claim_amount) || 0,
+      offeredAmount: Number(remote.insurer_amount) || 0,
+      currentStage: remote.insurer_decision || "Ej inskickat",
+      description: remote.damage_description || "",
+      evidence: Array.isArray(remote.tags) ? remote.tags : [],
     };
   }
 
@@ -1046,6 +979,19 @@
             ${scorecardHtml(item.scorecard)}
           </section>
 
+          <section class="subpanel legal-research">
+            <div class="legal-header">
+              <h3>Rättskunskap</h3>
+              <span class="badge muted" id="backendStatus" data-status="checking">Kontrollerar anslutning...</span>
+            </div>
+            <div class="legal-actions">
+              <button class="primary" id="searchLawBtn" type="button">Sök relevant lagstiftning</button>
+              <button class="secondary" id="generateDraftBtn" type="button">Generera juridiskt utkast</button>
+              <button class="ghost" id="importCaseBtn" type="button">Synka till backend</button>
+            </div>
+            <div id="legalResults" class="legal-results"></div>
+          </section>
+
           <section class="subpanel">
             <h3>Tidslinje</h3>
             <div class="timeline-list">
@@ -1217,9 +1163,101 @@
     });
   }
 
+  async function bindLegalResearch(caseId, item) {
+    // Check backend status
+    const statusBadge = document.getElementById("backendStatus");
+    const available = await window.SwiftclaimAPI.isAvailable();
+    if (statusBadge) {
+      statusBadge.textContent = available ? "Backend ansluten" : "Backend ej tillgänglig";
+      statusBadge.dataset.status = available ? "connected" : "offline";
+    }
+
+    // Search law button
+    document.getElementById("searchLawBtn")?.addEventListener("click", async () => {
+      const resultsEl = document.getElementById("legalResults");
+      resultsEl.innerHTML = '<p class="muted">Söker lagstiftning och prejudikat...</p>';
+      const query = `${item.category} ${item.shortDescription || ""}`.trim();
+      const data = await window.SwiftclaimAPI.searchLaw(query);
+      if (!data || !data.hits) {
+        resultsEl.innerHTML = '<p class="muted">Kunde inte nå backend. Kör <code>python backend/run.py</code> för att starta.</p>';
+        return;
+      }
+      resultsEl.innerHTML = renderLawResults(data.hits);
+    });
+
+    // Generate draft button
+    document.getElementById("generateDraftBtn")?.addEventListener("click", async () => {
+      const resultsEl = document.getElementById("legalResults");
+      resultsEl.innerHTML = '<p class="muted">Genererar juridiskt utkast via LLM + RAG...</p>';
+
+      const data = await window.SwiftclaimAPI.generateDraft(item);
+      if (!data) {
+        resultsEl.innerHTML = '<p class="muted">Kunde inte generera utkast. Kontrollera att backend körs och OPENROUTER_API_KEY är satt.</p>';
+        return;
+      }
+      resultsEl.innerHTML = renderDraftResult(data);
+    });
+
+    // Import case to backend button
+    document.getElementById("importCaseBtn")?.addEventListener("click", async () => {
+      const resultsEl = document.getElementById("legalResults");
+      resultsEl.innerHTML = '<p class="muted">Synkroniserar ärende till backend...</p>';
+      const data = await window.SwiftclaimAPI.importCase(item);
+      if (data) {
+        resultsEl.innerHTML = `<p class="success">Ärende ${escapeHtml(item.id)} synkroniserat till backend.</p>`;
+      } else {
+        resultsEl.innerHTML = '<p class="muted">Kunde inte synka. Kör <code>python backend/run.py</code></p>';
+      }
+    });
+  }
+
+  function renderLawResults(hits) {
+    if (!hits.length) return '<p class="muted">Inga relevanta lagrum eller prejudikat hittades.</p>';
+    return `
+      <div class="results-count">${hits.length} relevanta träffar</div>
+      ${hits.map((hit) => `
+        <div class="law-result ${hit.path.startsWith("ARN/") ? "precedent" : "statute"}">
+          <div class="law-result-header">
+            <span class="badge ${hit.path.startsWith("ARN/") ? "precedent" : "statute"}">${hit.path.startsWith("ARN/") ? "ARN" : "Lagrum"}</span>
+            <strong>${escapeHtml(hit.title)}</strong>
+            <span class="muted score">${Math.round(hit.score * 100)}% match</span>
+          </div>
+          <p>${escapeHtml(hit.text?.slice(0, 500) || "")}${(hit.text?.length || 0) > 500 ? "..." : ""}</p>
+        </div>
+      `).join("")}
+    `;
+  }
+
+  function renderDraftResult(data) {
+    const strategy = data.strategy || "";
+    const draft = data.draft_text || "";
+    const citations = data.citations || [];
+    return `
+      <div class="results-count">Juridiskt utkast genererat (v${data.version || 1})</div>
+      ${strategy ? `
+        <div class="draft-section">
+          <h4>Strategi</h4>
+          <pre class="draft-text">${escapeHtml(strategy)}</pre>
+        </div>
+      ` : ""}
+      <div class="draft-section">
+        <h4>Brevutkast</h4>
+        <pre class="draft-text">${escapeHtml(draft)}</pre>
+      </div>
+      ${citations.length ? `
+        <div class="draft-section">
+          <h4>Referenser</h4>
+          <ul>${citations.map((c) => `<li>${escapeHtml(c)}</li>`).join("")}</ul>
+        </div>
+      ` : ""}
+    `;
+  }
+
   function bindCaseDetail(caseId) {
     const item = getCase(caseId);
     if (!item) return;
+
+    bindLegalResearch(caseId, item);
 
     document.getElementById("detailStatus").addEventListener("change", (event) => {
       updateCase(caseId, (draft) => {
@@ -1483,6 +1521,28 @@
         document.execCommand("copy");
       }
     };
+
+    // Vault search
+    const vaultSearchBtn = document.getElementById("vaultSearchBtn");
+    const vaultSearchInput = document.getElementById("vaultSearchInput");
+    if (vaultSearchBtn && vaultSearchInput) {
+      vaultSearchBtn.onclick = async () => {
+        const query = vaultSearchInput.value.trim();
+        if (!query) return;
+        const resultsEl = document.getElementById("vaultResults");
+        resultsEl.innerHTML = '<p class="muted">Söker i juridisk kunskapsbas...</p>';
+        const data = await window.SwiftclaimAPI.searchLaw(query);
+        if (!data || !data.hits) {
+          resultsEl.innerHTML = '<p class="muted">Kunde inte nå backend. Starta med <code>python backend/run.py</code>.</p>';
+          return;
+        }
+        resultsEl.innerHTML = renderLawResults(data.hits);
+      };
+      vaultSearchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") vaultSearchBtn.click();
+      });
+    }
+
     renderKnowledgeMarkdown();
   }
 
