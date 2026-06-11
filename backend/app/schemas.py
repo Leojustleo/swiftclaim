@@ -72,6 +72,7 @@ class CaseOut(BaseModel):
     assigned_to: str
     outcome: Optional[str]
     tags: List
+    ai_analysis: Optional[dict] = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -156,6 +157,50 @@ class DraftRequest(BaseModel):
 class RAGQuery(BaseModel):
     question: str
     top_k: int = 8
+
+
+class IntakeAnalyzeRequest(BaseModel):
+    customer_name: str
+    customer_email: str
+    damage_description: str
+    customer_phone: str = ""
+    property_address: str = ""
+    property_type: str = ""
+    insurance_company: str = ""
+    damage_category: str = ""
+    damage_date: str = ""
+    claim_amount: Optional[int] = None
+    insurer_decision: Optional[str] = None
+    insurer_amount: Optional[int] = None
+    insurer_reason: Optional[str] = None
+    tags: List[str] = []
+
+
+class MatchedLaw(BaseModel):
+    ref: str
+    title: str
+    score: float
+    excerpt: str
+
+
+class MatchedPrecedent(BaseModel):
+    id: str
+    title: str
+    score: float
+    excerpt: str
+
+
+class IntakeAnalysisOut(BaseModel):
+    case_id: str
+    category: str
+    strength: str
+    summary: str
+    key_arguments: List[str]
+    missing_info: List[str]
+    matched_laws: List[MatchedLaw]
+    matched_precedents: List[MatchedPrecedent]
+    degraded: bool
+    generated_at: str
 
 
 class BulkARNImport(BaseModel):

@@ -18,9 +18,11 @@ from app.schemas import (
     ResponseDraftOut,
     KnowledgeNoteCreate, KnowledgeNoteOut,
     DraftRequest, RAGQuery, BulkARNImport,
+    IntakeAnalyzeRequest, IntakeAnalysisOut,
 )
 from app.rag import search_law, search_precedents
 from app.law_importer import get_law_section, fetch_riksdagen_law, CORE_SECTIONS, SFS_MAP
+from app.intake_ai import analyze as run_intake_analysis, LLM_URL, CHAT_MODEL, _get_llm_key
 
 app = FastAPI(title="Swiftclaim API", version="1.0.0")
 
@@ -31,24 +33,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-def _get_llm_key() -> str:
-    key = os.environ.get("DEEPSEEK_API_KEY")
-    if not key:
-        env_file = Path(__file__).parent.parent / ".env"
-        if env_file.exists():
-            for line in env_file.read_text().splitlines():
-                if line.startswith("DEEPSEEK_API_KEY="):
-                    key = line.split("=", 1)[1].strip()
-                    break
-    if not key:
-        raise RuntimeError("DEEPSEEK_API_KEY not set")
-    return key
-
-
-LLM_URL = "https://api.deepseek.com/v1/chat/completions"
-CHAT_MODEL = "deepseek-chat"
 
 
 @app.on_event("startup")
@@ -247,6 +231,11 @@ def get_law_riksdagen(sfs_id: str):
     if not result:
         raise HTTPException(404, f"Law not found in Riksdagen API: {sfs_id}")
     return result
+
+
+@app.post("/api/intake/analyze", response_model=IntakeAnalysisOut)
+def analyze_intake(req: IntakeAnalyzeRequest, db: Session = Depends(get_db)):
+    return run_intake_analysis(req.model_dump(), db)
 
 
 @app.post("/api/search/law")

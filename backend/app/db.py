@@ -16,6 +16,16 @@ class Base(DeclarativeBase):
 def init_db():
     from app.models import Case, ARNDecision, LawSection, ResponseDraft, KnowledgeNote
     Base.metadata.create_all(bind=engine)
+    _migrate(engine)
+
+
+def _migrate(engine):
+    from sqlalchemy import text
+    with engine.connect() as conn:
+        cols = [row[1] for row in conn.execute(text("PRAGMA table_info(cases)"))]
+        if "ai_analysis" not in cols:
+            conn.execute(text("ALTER TABLE cases ADD COLUMN ai_analysis JSON"))
+            conn.commit()
 
 
 def get_db():

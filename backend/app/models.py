@@ -36,6 +36,7 @@ class Case(Base):
     outcome = Column(String, nullable=True)
 
     tags = Column(JSON, default=[])
+    ai_analysis = Column(JSON, nullable=True)
 
     drafts = relationship("ResponseDraft", back_populates="case", cascade="all, delete-orphan")
     knowledge_notes = relationship("KnowledgeNote", back_populates="case", cascade="all, delete-orphan")
