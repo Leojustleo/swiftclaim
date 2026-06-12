@@ -35,3 +35,4 @@ backend/data/*.db
 law-pipeline/.embeddings.json
 law-pipeline/raw_pdfs/
 law-pipeline/processed/
+backend/evals/results/
