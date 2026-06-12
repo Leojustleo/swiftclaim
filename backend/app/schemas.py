@@ -161,6 +161,7 @@ class AskOut(BaseModel):
     sources: List[AskSource] = []
     unverified_refs: List[str] = []
     model_used: Optional[str] = None
+    mode: Optional[str] = None
 
 
 class KnowledgeNoteCreate(BaseModel):
