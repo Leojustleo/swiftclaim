@@ -1,28 +1,29 @@
-import json
-import os
 import re
 from datetime import datetime
 from pathlib import Path
 from typing import Optional, List
 
-import httpx
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from app.db import init_db, get_db
-from app.models import Case, ARNDecision, LawSection as LawSectionModel, ResponseDraft, KnowledgeNote
+from app.models import Case, ARNDecision, LawSection as LawSectionModel, ResponseDraft, KnowledgeNote, DraftJob
 from app.schemas import (
     CaseCreate, CaseUpdate, CaseOut,
     ARNOut, LawSectionOut,
-    ResponseDraftOut,
+    ResponseDraftOut, DraftJobOut,
     KnowledgeNoteCreate, KnowledgeNoteOut,
     DraftRequest, RAGQuery, BulkARNImport,
     IntakeAnalyzeRequest, IntakeAnalysisOut,
+    AskRequest, AskOut,
 )
 from app.rag import search_law, search_precedents
 from app.law_importer import get_law_section, fetch_riksdagen_law, CORE_SECTIONS, SFS_MAP
-from app.intake_ai import analyze as run_intake_analysis, LLM_URL, CHAT_MODEL, _get_llm_key
+from app.intake_ai import analyze as run_intake_analysis
+from app.draft_ai import create_job, run_draft_job
+from app.qa_ai import ask as run_ask
+from app.llm import LLMError
 
 app = FastAPI(title="Swiftclaim API", version="1.0.0")
 
@@ -41,6 +42,9 @@ def startup():
     db = next(get_db())
     try:
         _seed_laws(db)
+        stuck = db.query(DraftJob).filter(DraftJob.status.notin_(["done", "failed"]))
+        stuck.update({"status": "failed", "error": "server restarted"}, synchronize_session=False)
+        db.commit()
     finally:
         db.close()
 
@@ -255,155 +259,47 @@ def search_precedents_endpoint(case_id: str, query: RAGQuery, db: Session = Depe
     return {"case_id": case_id, "hits": hits}
 
 
-DRAFT_SYSTEM_PROMPT = u"""Du \u00e4r en erfaren svensk f\u00f6rs\u00e4kringsjurist som arbetar f\u00f6r Swiftclaim \u2014 en tj\u00e4nst som hj\u00e4lper konsumenter att f\u00e5 maximal ers\u00e4ttning fr\u00e5n sitt f\u00f6rs\u00e4kringsbolag.
-
-Din uppgift: Skriv ett professionellt, juridiskt v\u00e4lgrundat svar till f\u00f6rs\u00e4kringsbolaget som ifr\u00e5gas\u00e4tter deras beslut och kr\u00e4ver h\u00f6gre ers\u00e4ttning.
-
-STRATEGI:
-- Anv\u00e4nd alltid relevanta lagrum som st\u00f6d (FAL, Avtalslagen, etc.)
-- Citera relevanta ARN-beslut som prejudikat
-- Peka p\u00e5 brister i bolagets utredning eller motivering
-- Var specifik om belopp och ber\u00e4kningsgrunder
-- H\u00e5ll en professionell men best\u00e4md ton
-- Om bolaget har nekat ers\u00e4ttning: kr\u00e4v en konkret redovisning av vilka villkor de \u00e5beropar
-- Om bolaget har satt ned ers\u00e4ttning: ifr\u00e5gas\u00e4tt neds\u00e4ttningens storlek och be om specifik motivering
-- N\u00e4mn alltid konsumentens r\u00e4ttigheter enligt FAL:s tvingande regler
-
-FORMAT:
-Svara med ett komplett brevutkast p\u00e5 svenska. B\u00f6rja med \u00e4renderubrik och \"Till [f\u00f6rs\u00e4kringsbolag]\".
-Inkludera:
-1. En inledning som sammanfattar \u00e4rendet och bestrider beslutet
-2. Juridisk argumentation med lagrumsh\u00e4nvisningar
-3. Referens till relevant praxis (ARN-beslut)
-4. Konkreta yrkanden (vad konsumenten vill ha)
-5. Avslutning med tidsfrist f\u00f6r svar
-
-Anv\u00e4nd [[wiki-l\u00e4nkar]] f\u00f6r lagrum och ARN-fall i strateginoten, men skriv ut fullst\u00e4ndiga h\u00e4nvisningar i sj\u00e4lva brevtexten."""
-
-
-@app.post("/api/draft", response_model=ResponseDraftOut)
-def generate_draft(req: DraftRequest, db: Session = Depends(get_db)):
+@app.post("/api/draft", status_code=202)
+def start_draft(req: DraftRequest, background: BackgroundTasks, db: Session = Depends(get_db)):
     case = db.query(Case).filter(Case.id == req.case_id).first()
     if not case:
         raise HTTPException(404, "Case not found")
+    job = create_job(db, req.case_id, req.strategy, req.additional_context)
+    background.add_task(run_draft_job, job.id)
+    return {"job_id": job.id, "status": job.status}
 
-    llm_key = _get_llm_key()
 
-    search_query = f"{case.damage_category} {case.damage_description[:300]} {case.insurance_company}"
-    if case.insurer_reason:
-        search_query += f" {case.insurer_reason[:300]}"
+def _job_out(db: Session, job: DraftJob) -> DraftJobOut:
+    draft = db.query(ResponseDraft).filter(ResponseDraft.id == job.draft_id).first() if job.draft_id else None
+    out = DraftJobOut.model_validate(job)
+    out.draft = ResponseDraftOut.model_validate(draft) if draft else None
+    return out
 
-    law_hits = search_law(search_query, k=6)
-    arn_hits = search_precedents(case.damage_category, case.insurer_reason or case.damage_description, k=6)
 
-    context_parts = []
-    context_parts.append("### RELEVANTA LAGRUM ###\n")
-    for h in law_hits:
-        context_parts.append(f"**{h['title']}**\n{h['text'][:1500]}")
+@app.get("/api/draft-jobs/{job_id}", response_model=DraftJobOut)
+def get_draft_job(job_id: str, db: Session = Depends(get_db)):
+    job = db.query(DraftJob).filter(DraftJob.id == job_id).first()
+    if not job:
+        raise HTTPException(404, "Job not found")
+    return _job_out(db, job)
 
-    context_parts.append("\n### RELEVANTA ARN-BESLUT ###\n")
-    for h in arn_hits:
-        context_parts.append(f"**{h['title']}** (relevans: {h['score']})\n{h['text'][:1500]}")
 
-    context = "\n\n---\n\n".join(context_parts)
+@app.get("/api/draft-jobs", response_model=Optional[DraftJobOut])
+def get_latest_draft_job(case_id: str, db: Session = Depends(get_db)):
+    job = db.query(DraftJob).filter(DraftJob.case_id == case_id) \
+        .order_by(DraftJob.created_at.desc()).first()
+    return _job_out(db, job) if job else None
 
-    user_msg = u"""\u00c4RENDE:
-Kund: {name}
-F\u00f6rs\u00e4kringsbolag: {company}
-F\u00f6rs\u00e4kringsnummer: {policy}
-Typ av skada: {damage_cat}
-Skadebeskrivning: {desc}
-Skadedatum: {damage_date}
-Yrkat belopp: {claim} kr
 
-F\u00f6rs\u00e4kringsbolagets beslut: {decision}
-Bolagets motivering: {reason}
-Erbjudet belopp: {amount} kr
-
-Strategi: {strategy}
-Ytterligare kontext: {context_add}
-
----
-
-JURIDISK KUNSKAPSBAS:
-
-{knowledge}
-
----
-
-Skriv ett brevutkast enligt instruktionerna i system-prompten. Var specifik, juridisk, och \u00f6vertygande. Anv\u00e4nd de lagrum och ARN-fall som \u00e4r relevanta f\u00f6r just detta \u00e4rende.""".format(
-        name=case.customer_name,
-        company=case.insurance_company,
-        policy=case.insurance_policy_number or "ok\u00e4nt",
-        damage_cat=case.damage_category,
-        desc=case.damage_description,
-        damage_date=case.damage_date or "ok\u00e4nt",
-        claim=case.claim_amount or "ej specificerat",
-        decision=case.insurer_decision or "ok\u00e4nt",
-        reason=case.insurer_reason or "ingen motivering angiven",
-        amount=case.insurer_amount or "ej specificerat",
-        strategy=req.strategy,
-        context_add=req.additional_context or "ingen",
-        knowledge=context,
-    )
-
+@app.post("/api/ask", response_model=AskOut)
+def ask_endpoint(req: AskRequest, db: Session = Depends(get_db)):
+    case = db.query(Case).filter(Case.id == req.case_id).first() if req.case_id else None
+    if req.case_id and not case:
+        raise HTTPException(404, "Case not found")
     try:
-        r = httpx.post(
-            LLM_URL,
-            json={
-                "model": CHAT_MODEL,
-                "messages": [
-                    {"role": "system", "content": DRAFT_SYSTEM_PROMPT},
-                    {"role": "user", "content": user_msg},
-                ],
-                "max_tokens": 4000,
-            },
-            headers={"Authorization": f"Bearer {llm_key}"},
-            timeout=180,
-        )
-        if r.status_code != 200:
-            raise HTTPException(500, f"LLM API error: {r.text[:500]}")
-        raw = r.json()["choices"][0]["message"]["content"]
-
-        strategy = ""
-        draft_text = raw
-        if "## Strategi" in raw:
-            parts = raw.split("## Brevutkast", 1)
-            if len(parts) == 2:
-                strategy = parts[0].replace("## Strategi", "").strip()
-                draft_text = parts[1].strip()
-        elif "## BREVUTKAST" in raw:
-            parts = raw.split("## BREVUTKAST", 1)
-            if len(parts) == 2:
-                strategy = parts[0].strip()
-                draft_text = parts[1].strip()
-
-        wiki_links = re.findall(r"\[\[([^\]]+)\]\]", raw)
-
-        existing = db.query(ResponseDraft).filter(
-            ResponseDraft.case_id == req.case_id
-        ).order_by(ResponseDraft.version.desc()).first()
-        version = (existing.version + 1) if existing else 1
-
-        draft = ResponseDraft(
-            case_id=req.case_id,
-            version=version,
-            strategy=strategy or req.strategy,
-            draft_text=draft_text,
-            citations_used=wiki_links,
-            status="draft",
-        )
-        db.add(draft)
-        case.status = "draft"
-        case.updated_at = datetime.utcnow()
-        db.commit()
-        db.refresh(draft)
-        return draft
-
-    except httpx.RequestError as e:
-        raise HTTPException(500, f"API request failed: {e}")
-    except Exception as e:
-        raise HTTPException(500, str(e))
+        return run_ask(db, req.question, case)
+    except LLMError as e:
+        raise HTTPException(503, f"AI-tj\u00e4nsten \u00e4r inte tillg\u00e4nglig just nu: {e}")
 
 
 @app.get("/api/draft/{case_id}", response_model=List[ResponseDraftOut])

@@ -1,18 +1,24 @@
-import json
-import os
 import random
 from datetime import datetime
-from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
-import httpx
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
+from app.llm import LLMError, chat_json
 from app.models import Case
 from app.rag import search_law, search_precedents
 
-LLM_URL = "https://api.deepseek.com/v1/chat/completions"
-CHAT_MODEL = "deepseek-chat"
+
+class CategorizeOut(BaseModel):
+    category: str
+
+
+class AssessOut(BaseModel):
+    strength: str
+    summary: str = ""
+    key_arguments: List[str] = []
+    missing_info: List[str] = []
 
 CATEGORIES = [
     "Vattenskada",
@@ -47,39 +53,6 @@ ASSESS_SYSTEM = (
 )
 
 
-def _get_llm_key() -> str:
-    key = os.environ.get("DEEPSEEK_API_KEY")
-    if not key:
-        env_file = Path(__file__).parent.parent / ".env"
-        if env_file.exists():
-            for line in env_file.read_text().splitlines():
-                if line.startswith("DEEPSEEK_API_KEY="):
-                    key = line.split("=", 1)[1].strip()
-                    break
-    if not key:
-        raise RuntimeError("DEEPSEEK_API_KEY not set")
-    return key
-
-
-def _llm_json(system: str, user: str, max_tokens: int = 1200) -> Dict[str, Any]:
-    r = httpx.post(
-        LLM_URL,
-        json={
-            "model": CHAT_MODEL,
-            "messages": [
-                {"role": "system", "content": system},
-                {"role": "user", "content": user},
-            ],
-            "response_format": {"type": "json_object"},
-            "max_tokens": max_tokens,
-        },
-        headers={"Authorization": f"Bearer {_get_llm_key()}"},
-        timeout=90,
-    )
-    r.raise_for_status()
-    return json.loads(r.json()["choices"][0]["message"]["content"])
-
-
 def keyword_category(text: str) -> str:
     t = (text or "").lower()
     if "vatten" in t or "läcka" in t or "rör" in t:
@@ -100,11 +73,10 @@ def categorize(description: str, hint: str = "") -> Dict[str, Any]:
     if hint:
         user += f"\n\nKundens egen kategorisering: {hint}"
     try:
-        out = _llm_json(CATEGORIZE_SYSTEM, user, max_tokens=100)
-        category = out.get("category", "")
-        if category in CATEGORIES:
-            return {"category": category, "degraded": False}
-    except Exception:
+        out, _ = chat_json(CATEGORIZE_SYSTEM, user, CategorizeOut, stage="intake.categorize", max_tokens=100)
+        if out.category in CATEGORIES:
+            return {"category": out.category, "degraded": False}
+    except LLMError:
         pass
     return {"category": hint if hint in CATEGORIES else keyword_category(description), "degraded": True}
 
@@ -128,16 +100,16 @@ def assess(fields: Dict[str, Any], law_hits: List[Dict], arn_hits: List[Dict]) -
         parts.append(f"** {h['title']} **\n{h['text'][:800]}")
 
     try:
-        out = _llm_json(ASSESS_SYSTEM, "\n\n".join(parts))
-        if out.get("strength") in ("stark", "medel", "svag"):
+        out, _ = chat_json(ASSESS_SYSTEM, "\n\n".join(parts), AssessOut, stage="intake.assess", max_tokens=1200)
+        if out.strength in ("stark", "medel", "svag"):
             return {
-                "strength": out["strength"],
-                "summary": str(out.get("summary", ""))[:1200],
-                "key_arguments": [str(a) for a in out.get("key_arguments", [])][:6],
-                "missing_info": [str(m) for m in out.get("missing_info", [])][:6],
+                "strength": out.strength,
+                "summary": out.summary[:1200],
+                "key_arguments": [str(a) for a in out.key_arguments][:6],
+                "missing_info": [str(m) for m in out.missing_info][:6],
                 "degraded": False,
             }
-    except Exception:
+    except LLMError:
         pass
     return {
         "strength": "okänd",
