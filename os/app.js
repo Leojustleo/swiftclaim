@@ -1015,6 +1015,10 @@
               <button class="secondary" id="generateDraftBtn" type="button">Generera juridiskt utkast</button>
               <button class="ghost" id="importCaseBtn" type="button">Synka till backend</button>
             </div>
+            <div class="ask-box">
+              <input id="askInput" type="search" placeholder="Fråga juridiken om ärendet, t.ex. 'Kan åldersavdraget ifrågasättas?'" />
+              <button class="secondary" id="askBtn" type="button">Fråga</button>
+            </div>
             <div id="legalResults" class="legal-results"></div>
           </section>
 
@@ -1211,18 +1215,50 @@
       resultsEl.innerHTML = renderLawResults(data.hits);
     });
 
-    // Generate draft button
+    // Generate draft button — async job with stage progress
+    const DRAFT_STAGES = {
+      queued: "Köad...",
+      planning: "Planerar argument...",
+      retrieving: "Söker rättskällor...",
+      drafting: "Skriver utkast...",
+      verifying: "Verifierar källor...",
+    };
     document.getElementById("generateDraftBtn")?.addEventListener("click", async () => {
       const resultsEl = document.getElementById("legalResults");
-      resultsEl.innerHTML = '<p class="muted">Genererar juridiskt utkast via LLM + RAG...</p>';
-
-      const data = await window.SwiftclaimAPI.generateDraft(item);
-      if (!data) {
-        resultsEl.innerHTML = '<p class="muted">Kunde inte generera utkast. Kontrollera att backend körs och OPENROUTER_API_KEY är satt.</p>';
+      resultsEl.innerHTML = '<p class="muted draft-progress">Startar utkastjobb...</p>';
+      const job = await window.SwiftclaimAPI.generateDraft(item, (status) => {
+        const label = DRAFT_STAGES[status];
+        if (label) resultsEl.innerHTML = `<p class="muted draft-progress">${label}</p>`;
+      });
+      if (!job) {
+        resultsEl.innerHTML = '<p class="muted">Kunde inte starta utkastjobbet. Kör <code>python backend/run.py</code>.</p>';
         return;
       }
-      resultsEl.innerHTML = renderDraftResult(data);
+      if (job.status === "failed") {
+        resultsEl.innerHTML = `<p class="muted">Utkastet misslyckades: ${escapeHtml(job.error || "okänt fel")}</p>`;
+        return;
+      }
+      if (job.status === "timeout") {
+        resultsEl.innerHTML = '<p class="muted">Jobbet tar längre än väntat — öppna ärendet igen om en stund.</p>';
+        return;
+      }
+      resultsEl.innerHTML = renderDraftResult(job.draft || {});
     });
+
+    // Ask button — case-scoped question to the knowledge base
+    const askBtn = document.getElementById("askBtn");
+    const askInput = document.getElementById("askInput");
+    if (askBtn && askInput) {
+      askBtn.addEventListener("click", async () => {
+        const question = askInput.value.trim();
+        if (!question) return;
+        const resultsEl = document.getElementById("legalResults");
+        resultsEl.innerHTML = '<p class="muted">Söker svar i kunskapsbasen...</p>';
+        const data = await window.SwiftclaimAPI.ask(question, item.id);
+        resultsEl.innerHTML = data ? renderAnswer(data) : '<p class="muted">Kunde inte få svar. Kontrollera att backend körs.</p>';
+      });
+      askInput.addEventListener("keydown", (e) => { if (e.key === "Enter") askBtn.click(); });
+    }
 
     // Import case to backend button
     document.getElementById("importCaseBtn")?.addEventListener("click", async () => {
@@ -1254,26 +1290,56 @@
     `;
   }
 
-  function renderDraftResult(data) {
-    const strategy = data.strategy || "";
-    const draft = data.draft_text || "";
-    const citations = data.citations || [];
+  function renderSourceList(sources) {
+    if (!sources || !sources.length) return "";
+    return `<ul class="source-list">${sources.map((s) => `
+      <li>
+        <span class="badge ${String(s.path || s.ref).startsWith("ARN") ? "precedent" : "statute"}">${escapeHtml(s.ref)}</span>
+        ${s.source_url ? `<a href="${escapeHtml(s.source_url)}" target="_blank" rel="noopener">lagen.nu ↗</a>` : ""}
+        ${s.score ? `<span class="muted score">${Math.round(s.score * 100)}%</span>` : ""}
+      </li>`).join("")}</ul>`;
+  }
+
+  function renderAnswer(data) {
     return `
-      <div class="results-count">Juridiskt utkast genererat (v${data.version || 1})</div>
-      ${strategy ? `
+      <div class="answer-card">
+        <h4>Svar</h4>
+        <pre class="draft-text">${escapeHtml(data.answer_markdown || "")}</pre>
+        ${data.sources?.length ? `<h4>Källor</h4>${renderSourceList(data.sources)}` : ""}
+        ${data.unverified_refs?.length ? `
+          <p class="flagged-warning">⚠ Overifierade hänvisningar: ${data.unverified_refs.map(escapeHtml).join(", ")}</p>` : ""}
+      </div>
+    `;
+  }
+
+  function renderDraftResult(draft) {
+    const flagged = draft.flagged_citations || [];
+    const evidence = draft.evidence || [];
+    const citations = draft.citations_used || [];
+    return `
+      <div class="results-count">Juridiskt utkast genererat (v${draft.version || 1}${draft.model_used ? ` · ${escapeHtml(draft.model_used)}` : ""})</div>
+      ${draft.status === "needs_review" ? `
+        <div class="needs-review-banner">⚠ Kräver manuell granskning${flagged.length ? ` — overifierade hänvisningar: ${flagged.map(escapeHtml).join(", ")}` : " — inga källor hittades"}</div>` : ""}
+      ${draft.strategy ? `
         <div class="draft-section">
           <h4>Strategi</h4>
-          <pre class="draft-text">${escapeHtml(strategy)}</pre>
+          <pre class="draft-text">${escapeHtml(draft.strategy)}</pre>
         </div>
       ` : ""}
       <div class="draft-section">
         <h4>Brevutkast</h4>
-        <pre class="draft-text">${escapeHtml(draft)}</pre>
+        <pre class="draft-text">${escapeHtml(draft.draft_text || "")}</pre>
       </div>
       ${citations.length ? `
         <div class="draft-section">
-          <h4>Referenser</h4>
-          <ul>${citations.map((c) => `<li>${escapeHtml(c)}</li>`).join("")}</ul>
+          <h4>Verifierade referenser</h4>
+          <ul>${citations.map((c) => `<li>✓ ${escapeHtml(c)}</li>`).join("")}</ul>
+        </div>
+      ` : ""}
+      ${evidence.length ? `
+        <div class="draft-section">
+          <h4>Källunderlag</h4>
+          ${renderSourceList(evidence.map((d) => ({ ref: d.title, path: d.path, score: d.score, source_url: d.source_url })))}
         </div>
       ` : ""}
     `;
@@ -1566,6 +1632,23 @@
       };
       vaultSearchInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") vaultSearchBtn.click();
+      });
+    }
+
+    // Knowledge base Q&A
+    const askKBtn = document.getElementById("knowledgeAskBtn");
+    const askKInput = document.getElementById("knowledgeAskInput");
+    if (askKBtn && askKInput) {
+      askKBtn.onclick = async () => {
+        const question = askKInput.value.trim();
+        if (!question) return;
+        const resultEl = document.getElementById("knowledgeAskResult");
+        resultEl.innerHTML = '<p class="muted">Söker svar i kunskapsbasen...</p>';
+        const data = await window.SwiftclaimAPI.ask(question);
+        resultEl.innerHTML = data ? renderAnswer(data) : '<p class="muted">Kunde inte få svar. Kör <code>python backend/run.py</code>.</p>';
+      };
+      askKInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") askKBtn.click();
       });
     }
 

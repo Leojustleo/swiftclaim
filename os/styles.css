@@ -994,3 +994,53 @@ textarea:focus {
   max-height: 400px;
   overflow-y: auto;
 }
+
+/* ── Draft v2 + Q&A ─────────────────────────────────────────── */
+.ask-box {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0;
+}
+.ask-box input {
+  flex: 1;
+}
+.answer-card {
+  background: var(--surface-alt, #f6f8fb);
+  border: 1px solid var(--border, #dbe2ef);
+  border-radius: 10px;
+  padding: 14px;
+  margin-top: 10px;
+}
+.source-list {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0;
+}
+.source-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+.source-list a {
+  font-size: 0.85rem;
+}
+.needs-review-banner {
+  background: #fdf3d7;
+  border: 1px solid #e8c668;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 10px 0;
+  font-weight: 600;
+}
+.flagged-warning {
+  color: #9a6700;
+  font-weight: 600;
+}
+.draft-progress {
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
