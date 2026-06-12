@@ -226,8 +226,8 @@ def _run_stages(db: Session, job: DraftJob, case: Case) -> None:
             if len(tasks) < MAX_QUERIES and q.strip():
                 tasks.append((scrub_pii(q, fields), dirs))
     embeddings = embed_queries([q for q, _ in tasks])
-    per_query = [search_with_embedding(emb, dirs=dirs, k=4, min_score=MIN_SCORE)
-                 for emb, (_, dirs) in zip(embeddings, tasks)]
+    per_query = [search_with_embedding(emb, dirs=dirs, k=4, min_score=MIN_SCORE, query_text=q)
+                 for emb, (q, dirs) in zip(embeddings, tasks)]
     evidence = budget_evidence(per_query)
     _set_stage(db, job, "retrieving", "retrieval", {
         "queries": [q for q, _ in tasks],

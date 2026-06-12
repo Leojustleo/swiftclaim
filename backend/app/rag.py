@@ -139,7 +139,9 @@ def retrieve(query: str, k: int = DEFAULT_TOP_K, notes: Optional[List[NoteDict]]
     return scored[:k]
 
 
-MAX_NOTE_CHARS = 15000
+# Excludes only whole-statute dumps (54k-1.2M chars); the largest real
+# document is an NJA judgment at ~43k. Paragraph/villkor/praxis notes stay in.
+MAX_NOTE_CHARS = 50000
 
 DIR_MAP = {
     "lagstiftning": "Lagstiftning/",
@@ -153,6 +155,50 @@ DIR_MAP = {
 SOURCE_URL_RE = re.compile(r'^source_url:\s*"?([^"\n]+?)"?\s*$', re.MULTILINE)
 
 _INDEX: Dict[str, Any] = {"notes": None, "embeddings": None, "cache_mtime": None}
+
+# Hybrid retrieval: exact Swedish legal terms (e.g. "åldersavdrag") are strong
+# signals that pure cosine similarity misses; matched terms add a bounded boost.
+LEXICAL_MAX_BOOST = 0.15
+_TERM_RE = re.compile(r"[a-zåäö]{4,}")
+_STOPWORDS = {
+    "när", "vad", "hur", "vilka", "vilken", "vilket", "varför",
+    "inte", "från", "till", "över", "under", "utan", "med", "och", "eller", "men",
+    "bolaget", "göra", "gör", "gjort", "finns", "vara", "varit", "blir", "blev",
+    "denna", "detta", "dessa", "deras", "enligt", "samt", "även", "efter",
+}
+
+
+def query_terms(query: str) -> List[str]:
+    seen = []
+    for t in _TERM_RE.findall((query or "").lower()):
+        if t not in _STOPWORDS and t not in seen:
+            seen.append(t)
+    return seen
+
+
+def idf_weights(terms: List[str], texts_lower: List[str]) -> Dict[str, float]:
+    """Weight per term by rarity in the pool: ubiquitous terms ~0, rare terms ~1."""
+    n = len(texts_lower)
+    if n < 2:
+        return {t: 1.0 for t in terms}
+    weights = {}
+    for t in terms:
+        df = sum(1 for x in texts_lower if t in x)
+        weights[t] = max(0.0, math.log(n / (1 + df)) / math.log(n))
+    return weights
+
+
+def lexical_boost(terms: List[str], note_text_lower: str,
+                  weights: Optional[Dict[str, float]] = None) -> float:
+    if not terms:
+        return 0.0
+    if weights is None:
+        weights = {t: 1.0 for t in terms}
+    total = sum(weights.values())
+    if total <= 0:
+        return 0.0
+    matched = sum(weights[t] for t in terms if t in note_text_lower)
+    return LEXICAL_MAX_BOOST * matched / total
 
 
 def note_source_url(text: str) -> Optional[str]:
@@ -193,15 +239,25 @@ def _hit(score: float, n: NoteDict) -> NoteDict:
 
 
 def search_with_embedding(q_emb: FloatList, dirs: Optional[List[str]] = None,
-                          k: int = 5, min_score: float = 0.0) -> List[NoteDict]:
+                          k: int = 5, min_score: float = 0.0,
+                          query_text: str = "") -> List[NoteDict]:
     notes, index = get_index()
     pool = {n["path"]: n for n in eligible_notes(notes, dirs)}
+    terms = query_terms(query_text)
+    weights = None
+    if terms:
+        for n in pool.values():
+            if "text_lower" not in n:
+                n["text_lower"] = n["text"].lower()
+        weights = idf_weights(terms, [n["text_lower"] for n in pool.values()])
     scored: List[ScoredNote] = []
     for path, entry in index.items():
         n = pool.get(path)
         if n is None:
             continue
         s = _cosine(q_emb, entry["embedding"])
+        if terms:
+            s += lexical_boost(terms, n["text_lower"], weights)
         if s >= min_score:
             scored.append((s, n))
     scored.sort(key=lambda x: -x[0])
@@ -210,7 +266,8 @@ def search_with_embedding(q_emb: FloatList, dirs: Optional[List[str]] = None,
 
 def search_vault(query: str, dirs: Optional[List[str]] = None,
                  k: int = 5, min_score: float = 0.0) -> List[NoteDict]:
-    return search_with_embedding(embed_queries([query])[0], dirs=dirs, k=k, min_score=min_score)
+    return search_with_embedding(embed_queries([query])[0], dirs=dirs, k=k,
+                                 min_score=min_score, query_text=query)
 
 
 def search_law(query: str, k: int = 5) -> List[NoteDict]:

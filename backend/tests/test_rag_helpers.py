@@ -1,4 +1,7 @@
-from app.rag import DIR_MAP, MAX_NOTE_CHARS, eligible_notes, note_source_url
+from app.rag import (
+    DIR_MAP, LEXICAL_MAX_BOOST, MAX_NOTE_CHARS,
+    eligible_notes, idf_weights, lexical_boost, note_source_url, query_terms,
+)
 
 
 def _note(path, chars=100):
@@ -22,3 +25,31 @@ def test_note_source_url():
     text = '---\ntype: lagrum\nsource_url: "https://lagen.nu/2005:104#K4P6"\n---\n\n# FAL'
     assert note_source_url(text) == "https://lagen.nu/2005:104#K4P6"
     assert note_source_url("# No frontmatter") is None
+
+
+def test_query_terms_drops_short_and_stopwords():
+    terms = query_terms("När får bolaget göra åldersavdrag på ersättningen?")
+    assert "åldersavdrag" in terms and "ersättningen" in terms
+    assert "när" not in terms and "får" not in terms and "göra" not in terms
+
+
+def test_lexical_boost_bounded_and_proportional():
+    terms = ["åldersavdrag", "ersättningen"]
+    full = lexical_boost(terms, "bolaget gör åldersavdrag på ersättningen enligt tabell")
+    half = lexical_boost(terms, "åldersavdrag regleras i villkoren")
+    none = lexical_boost(terms, "jordabalken handlar om fastigheter")
+    assert full == LEXICAL_MAX_BOOST
+    assert 0 < half < full
+    assert none == 0.0
+    assert lexical_boost([], "text") == 0.0
+
+
+def test_idf_rare_term_dominates_boost():
+    # "ersättning" in every doc (no signal), "åldersavdrag" in one doc (strong signal)
+    pool = ["ersättning för skada", "ersättning vid brand", "åldersavdrag på ersättning"]
+    terms = ["åldersavdrag", "ersättning"]
+    weights = idf_weights(terms, pool)
+    assert weights["åldersavdrag"] > weights["ersättning"]
+    rare_only = lexical_boost(terms, "tabell för åldersavdrag", weights)
+    common_only = lexical_boost(terms, "ersättning utbetalas", weights)
+    assert rare_only > common_only

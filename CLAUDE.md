@@ -204,3 +204,4 @@ law-pipeline/.env     — OPENROUTER_API_KEY, VOYAGE_API_KEY
   - RAG upgrades: in-memory singleton index (was: ~1,800 files + 21MB JSON reloaded per query), `search_vault(dirs, k, min_score)`, whole-statute files (>15k chars) excluded from retrieval
   - Evals: `backend/evals/run_evals.py` + 10-case golden set; smoke run 2/2: 100% completion, 100% citation validity, 100% expected-ref hit
   - Tests: `cd backend && python3 -m pytest tests/` (14 tests, pure functions only — no live calls)
+- **Hybrid retrieval fix** (post-verification improvement): IDF-weighted lexical boost on top of cosine (`rag.py: query_terms/idf_weights/lexical_boost`, bounded +0.15); whole-statute exclusion corrected 15k→50k chars (15k silently dropped all 16 Villkor parts at 20-23k). Verified live: "åldersavdrag"-fråga went from "sources insufficient" to verified answer citing If/Trygg-Hansa villkor + FAL 16 kap 1 §.
