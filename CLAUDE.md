@@ -193,3 +193,14 @@ law-pipeline/.env     — OPENROUTER_API_KEY, VOYAGE_API_KEY
 - **CSS additions**: Legal research panel styles in `styles.css` (~100 new lines)
 - **Voyage embeddings rebuilt**: 1,305 notes re-indexed after vault expansion
 - **Verified**: Backend RAG search returns correct results (`FAL 4 kap 6 §` as top hit for "säkerhetsföreskrift nedsättning")
+
+### 2026-06-12
+- **Draft generation v2** (spec + plan in `docs/superpowers/`): replaced blocking single-shot `/api/draft` with async 4-stage pipeline (plan → retrieve → draft → verify) in `backend/app/draft_ai.py`
+  - `POST /api/draft` returns 202 + job id; poll `GET /api/draft-jobs/{id}`; stage snapshots stored on the job row
+  - Citation verification (`backend/app/verify.py`): lagrum normalizer + resolution against vault/DB; unverified → LLM repair pass → still bad = draft `needs_review` with `flagged_citations`
+  - Shared LLM client (`backend/app/llm.py`): DeepSeek → OpenRouter kimi-k2.6 fallback chain, JSON schema validation, every call logged to `llm_calls` table
+  - **PII guard**: customer name/email/phone/address replaced with `[KUND]`/`[EPOST]`/`[TELEFON]`/`[ADRESS]` before any LLM call, substituted back post-verify
+  - **Vault Q&A**: `POST /api/ask` — grounded answers with verified sources + lagen.nu links; ask boxes in OS (case panel + Knowledge view)
+  - RAG upgrades: in-memory singleton index (was: ~1,800 files + 21MB JSON reloaded per query), `search_vault(dirs, k, min_score)`, whole-statute files (>15k chars) excluded from retrieval
+  - Evals: `backend/evals/run_evals.py` + 10-case golden set; smoke run 2/2: 100% completion, 100% citation validity, 100% expected-ref hit
+  - Tests: `cd backend && python3 -m pytest tests/` (14 tests, pure functions only — no live calls)
