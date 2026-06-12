@@ -139,22 +139,86 @@ def retrieve(query: str, k: int = DEFAULT_TOP_K, notes: Optional[List[NoteDict]]
     return scored[:k]
 
 
-SEARCH_DIRS = ("Lagstiftning/", "ARN/", "Praxis/", "Villkor/", "Förarbeten/", "Vägledning/")
+MAX_NOTE_CHARS = 15000
+
+DIR_MAP = {
+    "lagstiftning": "Lagstiftning/",
+    "arn": "ARN/",
+    "praxis": "Praxis/",
+    "villkor": "Villkor/",
+    "forarbeten": "Förarbeten/",
+    "vagledning": "Vägledning/",
+}
+
+SOURCE_URL_RE = re.compile(r'^source_url:\s*"?([^"\n]+?)"?\s*$', re.MULTILINE)
+
+_INDEX: Dict[str, Any] = {"notes": None, "embeddings": None, "cache_mtime": None}
+
+
+def note_source_url(text: str) -> Optional[str]:
+    m = SOURCE_URL_RE.search(text[:600])
+    return m.group(1).strip() if m else None
+
+
+def eligible_notes(notes: List[NoteDict], dirs: Optional[List[str]] = None) -> List[NoteDict]:
+    prefixes = tuple(DIR_MAP[d] for d in dirs) if dirs else tuple(DIR_MAP.values())
+    return [n for n in notes if n["path"].startswith(prefixes) and len(n["text"]) <= MAX_NOTE_CHARS]
+
+
+def _cache_mtime() -> Optional[float]:
+    return EMBED_CACHE.stat().st_mtime if EMBED_CACHE.exists() else None
+
+
+def get_index() -> Tuple[List[NoteDict], Dict[str, Any]]:
+    """Singleton vault index: notes + embeddings, reloaded only when the cache file changes."""
+    if _INDEX["notes"] is None or _INDEX["cache_mtime"] != _cache_mtime():
+        notes = load_vault_notes()
+        embeddings = build_or_load_index(notes)
+        _INDEX.update(notes=notes, embeddings=embeddings, cache_mtime=_cache_mtime())
+    return _INDEX["notes"], _INDEX["embeddings"]
+
+
+def embed_queries(queries: List[str]) -> List[FloatList]:
+    return voyage_embed(queries, _get_voyage_key(), input_type="query")
+
+
+def _hit(score: float, n: NoteDict) -> NoteDict:
+    return {
+        "score": round(score, 4),
+        "title": n["title"],
+        "path": n["path"],
+        "text": n["text"][:2000],
+        "source_url": note_source_url(n["text"]),
+    }
+
+
+def search_with_embedding(q_emb: FloatList, dirs: Optional[List[str]] = None,
+                          k: int = 5, min_score: float = 0.0) -> List[NoteDict]:
+    notes, index = get_index()
+    pool = {n["path"]: n for n in eligible_notes(notes, dirs)}
+    scored: List[ScoredNote] = []
+    for path, entry in index.items():
+        n = pool.get(path)
+        if n is None:
+            continue
+        s = _cosine(q_emb, entry["embedding"])
+        if s >= min_score:
+            scored.append((s, n))
+    scored.sort(key=lambda x: -x[0])
+    return [_hit(s, n) for s, n in scored[:k]]
+
+
+def search_vault(query: str, dirs: Optional[List[str]] = None,
+                 k: int = 5, min_score: float = 0.0) -> List[NoteDict]:
+    return search_with_embedding(embed_queries([query])[0], dirs=dirs, k=k, min_score=min_score)
 
 
 def search_law(query: str, k: int = 5) -> List[NoteDict]:
-    notes = load_vault_notes(filter_paths=None)
-    law_notes = [n for n in notes if n["path"].startswith(SEARCH_DIRS)]
-    hits = retrieve(query, k=k, notes=law_notes)
-    return [{"score": round(s, 4), "title": n["title"], "path": n["path"], "text": n["text"][:2000]} for s, n in hits]
+    return search_vault(query, dirs=None, k=k)
 
 
 def search_precedents(damage_category: str, insurer_decision_text: str = "", k: int = 5) -> List[NoteDict]:
-    query = "skada " + damage_category + " f" + "\u00f6" + "rs" + "\u00e4" + "kring"
+    query = f"skada {damage_category} f\u00f6rs\u00e4kring"
     if insurer_decision_text:
         query += f" {insurer_decision_text[:200]}"
-    arn_notes = [n for n in load_vault_notes() if n["path"].startswith("ARN/")]
-    if not arn_notes:
-        return []
-    hits = retrieve(query, k=k, notes=arn_notes)
-    return [{"score": round(s, 4), "title": n["title"], "path": n["path"], "text": n["text"][:2000]} for s, n in hits]
+    return search_vault(query, dirs=["arn"], k=k)
