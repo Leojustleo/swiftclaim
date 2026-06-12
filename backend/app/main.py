@@ -93,8 +93,15 @@ def get_case(case_id: str, db: Session = Depends(get_db)):
 
 @app.post("/api/cases", response_model=CaseOut, status_code=201)
 def create_case(data: CaseCreate, db: Session = Depends(get_db)):
-    case = Case(**data.model_dump())
-    db.add(case)
+    case = db.query(Case).filter(Case.id == data.id).first()
+    if case:
+        for key, val in data.model_dump().items():
+            if key != "id":
+                setattr(case, key, val)
+        case.updated_at = datetime.utcnow()
+    else:
+        case = Case(**data.model_dump())
+        db.add(case)
     db.commit()
     db.refresh(case)
     return CaseOut.model_validate(case)

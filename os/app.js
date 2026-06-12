@@ -1223,6 +1223,24 @@
       drafting: "Skriver utkast...",
       verifying: "Verifierar källor...",
     };
+
+    // Resume: show the latest finished draft, or re-attach to a running job
+    if (available) {
+      window.SwiftclaimAPI.getLatestDraftJob(item.id).then(async (latest) => {
+        const resultsEl = document.getElementById("legalResults");
+        if (!latest || !resultsEl || resultsEl.textContent.trim()) return;
+        if (latest.status === "done" && latest.draft) {
+          resultsEl.innerHTML = renderDraftResult(latest.draft);
+        } else if (DRAFT_STAGES[latest.status]) {
+          resultsEl.innerHTML = `<p class="muted draft-progress">${DRAFT_STAGES[latest.status]} (återupptaget)</p>`;
+          const job = await window.SwiftclaimAPI.pollDraftJob(latest.id, (status) => {
+            const label = DRAFT_STAGES[status];
+            if (label) resultsEl.innerHTML = `<p class="muted draft-progress">${label}</p>`;
+          });
+          if (job && job.status === "done") resultsEl.innerHTML = renderDraftResult(job.draft || {});
+        }
+      });
+    }
     document.getElementById("generateDraftBtn")?.addEventListener("click", async () => {
       const resultsEl = document.getElementById("legalResults");
       resultsEl.innerHTML = '<p class="muted draft-progress">Startar utkastjobb...</p>';
