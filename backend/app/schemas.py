@@ -122,8 +122,45 @@ class ResponseDraftOut(BaseModel):
     draft_text: str
     citations_used: List
     status: str
+    flagged_citations: List = []
+    evidence: List = []
+    model_used: Optional[str] = None
+    job_id: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class DraftJobOut(BaseModel):
+    id: str
+    case_id: str
+    status: str
+    error: Optional[str] = None
+    stages: dict = {}
+    draft: Optional[ResponseDraftOut] = None
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class AskRequest(BaseModel):
+    question: str
+    case_id: Optional[str] = None
+
+
+class AskSource(BaseModel):
+    ref: str
+    title: str = ""
+    path: str = ""
+    score: float = 0.0
+    source_url: Optional[str] = None
+
+
+class AskOut(BaseModel):
+    answer_markdown: str
+    sources: List[AskSource] = []
+    unverified_refs: List[str] = []
+    model_used: Optional[str] = None
 
 
 class KnowledgeNoteCreate(BaseModel):
