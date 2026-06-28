@@ -154,6 +154,68 @@ def admin_list_cases(
     return {"cases": all_results[start : start + limit], "total": total}
 
 
+@app.get("/api/admin/stats")
+def admin_stats(
+    db: Session = Depends(get_db),
+    _: dict = Depends(require_admin_token),
+):
+    cases = db.query(Case).all()
+    total = len(cases)
+
+    status_order = ["intake", "analysis", "draft", "negotiation", "appealed", "closed"]
+    status_counts = {s: 0 for s in status_order}
+    for c in cases:
+        k = c.status or "intake"
+        status_counts[k] = status_counts.get(k, 0) + 1
+
+    category_counts: dict = {}
+    for c in cases:
+        k = c.damage_category or "other"
+        category_counts[k] = category_counts.get(k, 0) + 1
+
+    decision_counts: dict = {}
+    for c in cases:
+        k = c.insurer_decision or "pending"
+        decision_counts[k] = decision_counts.get(k, 0) + 1
+
+    priority_counts = {"high": 0, "medium": 0, "low": 0, "unscored": 0}
+    strengths = []
+    for c in cases:
+        if c.scorecard:
+            sc = _json.loads(c.scorecard)
+            s = sc.get("claim_strength")
+            if s is not None:
+                strengths.append(int(s))
+            p = sc.get("priority", "unscored")
+            if p in priority_counts:
+                priority_counts[p] += 1
+            else:
+                priority_counts["unscored"] += 1
+        else:
+            priority_counts["unscored"] += 1
+
+    avg_strength = round(sum(strengths) / len(strengths)) if strengths else None
+    total_claimed = sum(c.claim_amount for c in cases if c.claim_amount)
+    total_offered = sum(c.insurer_amount for c in cases if c.insurer_amount)
+    active_count = sum(1 for c in cases if (c.status or "intake") not in ("closed",))
+
+    recent = sorted([c for c in cases if c.created_at], key=lambda c: c.created_at, reverse=True)[:5]
+
+    return {
+        "total_cases": total,
+        "active_cases": active_count,
+        "avg_claim_strength": avg_strength,
+        "total_claimed_sek": total_claimed,
+        "total_offered_sek": total_offered,
+        "total_gap_sek": total_claimed - total_offered,
+        "status_counts": status_counts,
+        "category_counts": category_counts,
+        "decision_counts": decision_counts,
+        "priority_counts": priority_counts,
+        "recent_cases": [_case_to_admin_dict(c, _json.loads(c.scorecard) if c.scorecard else None) for c in recent],
+    }
+
+
 @app.get("/api/admin/cases/{case_id}")
 def admin_get_case(
     case_id: str,
