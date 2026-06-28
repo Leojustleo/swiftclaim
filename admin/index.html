@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swiftclaim Admin</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:18px">
+    <div class="topbar-logo"><span class="dot"></span> Swiftclaim</div>
+    <span class="topbar-admin">Admin</span>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-user">Swiftclaim Team</span>
+    <button class="topbar-signout" id="signoutBtn">Logga ut</button>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="left">
+    <div class="left-head">
+      <div class="left-title">Ärenden <span>· <span id="caseCount">…</span> st</span></div>
+      <div class="filters">
+        <span class="pill active" data-filter="all">Alla</span>
+        <span class="pill" data-filter="high">🔴 Hög prio</span>
+        <span class="pill" data-filter="medium">🟡 Medel</span>
+        <span class="pill" data-filter="water">Vattenskada</span>
+        <span class="pill" data-filter="fire">Brandskada</span>
+      </div>
+    </div>
+    <div class="case-list" id="caseList">
+      <div style="padding:24px;color:var(--muted)">Laddar ärenden…</div>
+    </div>
+  </div>
+
+  <div class="right" id="right">
+    <div class="right-empty">
+      <p>Välj ett ärende för att visa detaljer och AI-scorecard.</p>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

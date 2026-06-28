@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swiftclaim Admin — Logga in</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="login-logo"><span class="dot"></span> Swiftclaim</div>
+    <p class="login-sub">Adminpanel · Logga in för att fortsätta</p>
+    <label class="login-label" for="pw">Lösenord</label>
+    <input class="login-input" type="password" id="pw" placeholder="••••••••" autofocus>
+    <button class="login-btn" id="loginBtn">Logga in</button>
+    <p class="login-error" id="loginError">Fel lösenord. Försök igen.</p>
+  </div>
+</div>
+<script>
+  const API = "http://localhost:8000/api";
+  const btn = document.getElementById("loginBtn");
+  const pw = document.getElementById("pw");
+  const err = document.getElementById("loginError");
+
+  async function login() {
+    btn.disabled = true;
+    err.classList.remove("show");
+    try {
+      const r = await fetch(`${API}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: pw.value }),
+      });
+      if (!r.ok) throw new Error();
+      const { token } = await r.json();
+      localStorage.setItem("sc_admin_token", token);
+      location.href = "index.html";
+    } catch {
+      err.classList.add("show");
+      btn.disabled = false;
+    }
+  }
+
+  btn.addEventListener("click", login);
+  pw.addEventListener("keydown", e => { if (e.key === "Enter") login(); });
+
+  if (localStorage.getItem("sc_admin_token")) location.href = "index.html";
+</script>
+</body>
+</html>
