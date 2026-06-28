@@ -24,6 +24,7 @@ from app.intake_ai import analyze as run_intake_analysis
 from app.draft_ai import create_job, run_draft_job
 from app.qa_ai import ask as run_ask
 from app.llm import LLMError
+from app.auth import check_password, create_token, require_admin_token
 
 app = FastAPI(title="Swiftclaim API", version="1.0.0")
 
@@ -72,6 +73,20 @@ def _seed_laws(db: Session):
         except Exception:
             pass
     db.commit()
+
+
+from pydantic import BaseModel as _BaseModel
+
+
+class _LoginRequest(_BaseModel):
+    password: str
+
+
+@app.post("/api/auth/login")
+def login(body: _LoginRequest):
+    if not check_password(body.password):
+        raise HTTPException(status_code=401, detail="Wrong password")
+    return {"token": create_token()}
 
 
 @app.get("/api/cases", response_model=List[CaseOut])
