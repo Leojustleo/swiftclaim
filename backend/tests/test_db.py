@@ -10,3 +10,5 @@ def test_new_tables_and_columns_exist():
     assert "llm_calls" in insp.get_table_names()
     draft_cols = {c["name"] for c in insp.get_columns("response_drafts")}
     assert {"flagged_citations", "evidence", "model_used", "job_id"} <= draft_cols
+    case_cols = {c["name"] for c in insp.get_columns("cases")}
+    assert "scorecard" in case_cols
