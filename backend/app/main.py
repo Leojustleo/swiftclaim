@@ -40,6 +40,8 @@ app.add_middleware(
 @app.on_event("startup")
 def startup():
     init_db()
+    from app.wiki_index import build_index
+    build_index()
     db = next(get_db())
     try:
         _seed_laws(db)
