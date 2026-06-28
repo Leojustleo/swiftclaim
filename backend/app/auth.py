@@ -5,7 +5,7 @@ import hmac
 import json
 import os
 import time
-from typing import Any
+from typing import Any, Optional
 
 from fastapi import HTTPException, Security
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
@@ -72,7 +72,7 @@ def check_password(password: str) -> bool:
 
 
 def require_admin_token(
-    creds: HTTPAuthorizationCredentials | None = Security(_bearer),
+    creds: Optional[HTTPAuthorizationCredentials] = Security(_bearer),
 ) -> dict[str, Any]:
     if creds is None:
         raise HTTPException(status_code=401, detail="Missing token")

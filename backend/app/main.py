@@ -5,6 +5,7 @@ from typing import Optional, List
 
 from fastapi import FastAPI, Depends, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 
 from app.db import init_db, get_db
@@ -35,6 +36,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+_admin_dir = Path(__file__).parent.parent.parent / "admin"
+if _admin_dir.exists():
+    app.mount("/admin", StaticFiles(directory=str(_admin_dir), html=True), name="admin")
 
 
 @app.on_event("startup")
@@ -77,6 +82,7 @@ def _seed_laws(db: Session):
     db.commit()
 
 
+import json as _json
 from pydantic import BaseModel as _BaseModel
 
 
@@ -89,6 +95,101 @@ def login(body: _LoginRequest):
     if not check_password(body.password):
         raise HTTPException(status_code=401, detail="Wrong password")
     return {"token": create_token()}
+
+
+def _scorecard_priority(scorecard: Optional[dict]) -> str:
+    if not scorecard:
+        return "unknown"
+    return scorecard.get("priority", "unknown")
+
+
+def _case_to_admin_dict(case: Case, scorecard: Optional[dict] = None) -> dict:
+    return {
+        "id": case.id,
+        "created_at": case.created_at.isoformat() if case.created_at else None,
+        "customer_name": case.customer_name,
+        "customer_email": case.customer_email,
+        "customer_phone": case.customer_phone,
+        "property_address": case.property_address,
+        "property_type": case.property_type,
+        "insurance_company": case.insurance_company,
+        "damage_category": case.damage_category,
+        "damage_description": case.damage_description,
+        "damage_date": case.damage_date,
+        "claim_amount": case.claim_amount,
+        "insurer_decision": case.insurer_decision,
+        "insurer_amount": case.insurer_amount,
+        "insurer_reason": case.insurer_reason,
+        "status": case.status,
+        "scorecard": scorecard,
+    }
+
+
+@app.get("/api/admin/cases")
+def admin_list_cases(
+    priority: Optional[str] = None,
+    damage_category: Optional[str] = None,
+    status: Optional[str] = None,
+    page: int = 1,
+    limit: int = 50,
+    db: Session = Depends(get_db),
+    _: dict = Depends(require_admin_token),
+):
+    q = db.query(Case)
+    if damage_category:
+        q = q.filter(Case.damage_category == damage_category)
+    if status:
+        q = q.filter(Case.status == status)
+    total = q.count()
+    cases = q.order_by(Case.created_at.desc()).offset((page - 1) * limit).limit(limit).all()
+
+    results = []
+    for c in cases:
+        sc = _json.loads(c.scorecard) if c.scorecard else None
+        if priority and _scorecard_priority(sc) != priority:
+            continue
+        results.append(_case_to_admin_dict(c, sc))
+
+    return {"cases": results, "total": total}
+
+
+@app.get("/api/admin/cases/{case_id}")
+def admin_get_case(
+    case_id: str,
+    db: Session = Depends(get_db),
+    _: dict = Depends(require_admin_token),
+):
+    case = db.query(Case).filter(Case.id == case_id).first()
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    sc = _json.loads(case.scorecard) if case.scorecard else None
+    return _case_to_admin_dict(case, sc)
+
+
+@app.post("/api/admin/cases/{case_id}/score")
+def admin_score_case(
+    case_id: str,
+    db: Session = Depends(get_db),
+    _: dict = Depends(require_admin_token),
+):
+    from app.scoring import generate_scorecard as _score
+    case = db.query(Case).filter(Case.id == case_id).first()
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+
+    scorecard = _score({
+        "damage_category": case.damage_category,
+        "insurance_company": case.insurance_company,
+        "claim_amount": case.claim_amount,
+        "insurer_amount": case.insurer_amount,
+        "insurer_decision": case.insurer_decision,
+        "insurer_reason": case.insurer_reason,
+        "damage_description": case.damage_description,
+    })
+
+    case.scorecard = _json.dumps(scorecard, ensure_ascii=False)
+    db.commit()
+    return scorecard
 
 
 @app.get("/api/cases", response_model=List[CaseOut])
