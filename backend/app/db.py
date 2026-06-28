@@ -33,7 +33,9 @@ def _migrate(engine):
         cols = [row[1] for row in conn.execute(text("PRAGMA table_info(cases)"))]
         if "ai_analysis" not in cols:
             conn.execute(text("ALTER TABLE cases ADD COLUMN ai_analysis JSON"))
-            conn.commit()
+        if "scorecard" not in cols:
+            conn.execute(text("ALTER TABLE cases ADD COLUMN scorecard TEXT"))
+        conn.commit()
         draft_cols = [row[1] for row in conn.execute(text("PRAGMA table_info(response_drafts)"))]
         for col, ddl in [
             ("flagged_citations", "ALTER TABLE response_drafts ADD COLUMN flagged_citations JSON"),
@@ -44,10 +46,6 @@ def _migrate(engine):
             if col not in draft_cols:
                 conn.execute(text(ddl))
         conn.commit()
-        case_cols = [row[1] for row in conn.execute(text("PRAGMA table_info(cases)"))]
-        if "scorecard" not in case_cols:
-            conn.execute(text("ALTER TABLE cases ADD COLUMN scorecard TEXT"))
-            conn.commit()
 
 
 def get_db():
