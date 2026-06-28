@@ -140,17 +140,18 @@ def admin_list_cases(
         q = q.filter(Case.damage_category == damage_category)
     if status:
         q = q.filter(Case.status == status)
-    total = q.count()
-    cases = q.order_by(Case.created_at.desc()).offset((page - 1) * limit).limit(limit).all()
+    all_cases = q.order_by(Case.created_at.desc()).all()
 
-    results = []
-    for c in cases:
+    all_results = []
+    for c in all_cases:
         sc = _json.loads(c.scorecard) if c.scorecard else None
         if priority and _scorecard_priority(sc) != priority:
             continue
-        results.append(_case_to_admin_dict(c, sc))
+        all_results.append(_case_to_admin_dict(c, sc))
 
-    return {"cases": results, "total": total}
+    total = len(all_results)
+    start = (page - 1) * limit
+    return {"cases": all_results[start : start + limit], "total": total}
 
 
 @app.get("/api/admin/cases/{case_id}")
