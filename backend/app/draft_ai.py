@@ -245,7 +245,7 @@ def _run_stages(db: Session, job: DraftJob, case: Case) -> None:
         f"Ytterligare kontext: {scrub_pii(request.get('additional_context') or 'ingen', fields)}",
     ])
     out, meta = chat_json(DRAFT_SYSTEM, user_msg, DraftOutput,
-                          db=db, job_id=job.id, stage="draft.write")
+                          db=db, job_id=job.id, stage="draft.write", max_tokens=6000)
     _set_stage(db, job, "drafting", "draft", {"model": meta["model"], "subject": out.letter.subject})
 
     # 4 VERIFY (+ repair) + SAVE
