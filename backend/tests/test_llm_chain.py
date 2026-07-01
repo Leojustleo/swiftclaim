@@ -62,3 +62,38 @@ def test_all_fail_raises(monkeypatch):
     ])
     with pytest.raises(llm.LLMError):
         llm.chat_json("s", "u", Out)
+
+
+class ErrorBodyResponse(FakeResponse):
+    def json(self):
+        return {"error": {"message": "overloaded"}}
+
+
+class NullContentResponse(FakeResponse):
+    def json(self):
+        return {"choices": [{"message": {"content": None}}]}
+
+
+def test_malformed_200_falls_through_to_next_provider(monkeypatch):
+    def fake_post(url, **kwargs):
+        if "deepseek" in url:
+            return ErrorBodyResponse(200, text="overloaded")
+        return FakeResponse(200, content=json.dumps({"x": 3}))
+
+    monkeypatch.setattr(llm.httpx, "post", fake_post)
+    monkeypatch.setattr(llm, "PROVIDERS", [
+        {"name": "deepseek", "url": "https://api.deepseek.com/x", "model": "m1", "key": lambda: "k"},
+        {"name": "openrouter", "url": "https://openrouter.ai/x", "model": "m2", "key": lambda: "k"},
+    ])
+    parsed, meta = llm.chat_json("s", "u", Out)
+    assert parsed.x == 3
+    assert meta["provider"] == "openrouter"
+
+
+def test_null_content_raises_llm_error_not_type_error(monkeypatch):
+    monkeypatch.setattr(llm.httpx, "post", lambda url, **kw: NullContentResponse(200))
+    monkeypatch.setattr(llm, "PROVIDERS", [
+        {"name": "deepseek", "url": "u", "model": "m", "key": lambda: "k"},
+    ])
+    with pytest.raises(llm.LLMError):
+        llm.chat_json("s", "u", Out)

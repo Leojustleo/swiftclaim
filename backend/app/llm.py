@@ -145,7 +145,16 @@ def chat_json(
                 _log_call(db, job_id, stage, prov["name"], prov["model"], "error",
                           f"HTTP {r.status_code}: {r.text[:300]}", latency, prompt_log, None)
                 break
-            raw = r.json()["choices"][0]["message"]["content"]
+            try:
+                choice = r.json()["choices"][0]
+                raw = choice["message"]["content"]
+            except (KeyError, IndexError, TypeError, ValueError):
+                raw = None
+            if not isinstance(raw, str) or not raw.strip():
+                last_err = f"{prov['name']}: malformed response body"
+                _log_call(db, job_id, stage, prov["name"], prov["model"], "error",
+                          f"malformed: {r.text[:300]}", latency, prompt_log, None)
+                continue
             try:
                 parsed = schema.model_validate_json(raw)
             except ValidationError as e:
