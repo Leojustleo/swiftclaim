@@ -18,6 +18,7 @@ PII_FIELDS = [
     ("customer_email", "[EPOST]"),
     ("customer_phone", "[TELEFON]"),
     ("property_address", "[ADRESS]"),
+    ("insurance_policy_number", "[FÖRSNR]"),
 ]
 
 
