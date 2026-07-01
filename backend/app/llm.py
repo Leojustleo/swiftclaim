@@ -159,7 +159,7 @@ def chat_json(
                 last_err = f"{prov['name']}: output truncated at max_tokens={max_tokens}"
                 _log_call(db, job_id, stage, prov["name"], prov["model"], "error",
                           last_err, latency, prompt_log, raw)
-                continue
+                break
             try:
                 parsed = schema.model_validate_json(raw)
             except ValidationError as e:

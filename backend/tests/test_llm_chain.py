@@ -119,3 +119,4 @@ def test_truncated_output_skips_schema_reprompt(monkeypatch):
     assert parsed.x == 5
     # no re-prompt: every request must be the original 2-message payload
     assert all(len(m) == 2 for m in calls)
+    assert len(calls) == 2
