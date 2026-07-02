@@ -1,3 +1,5 @@
+import re
+
 from app import intake_ai
 
 FIELDS = {
@@ -99,3 +101,19 @@ def test_precedent_query_scrubbed(monkeypatch):
     payload = dict(FIELDS, damage_description="Läcka hos Anna Andersson", insurer_reason="Anna Andersson anmälde för sent")
     intake_ai.analyze(payload, NoCaseDB())
     assert "Anna" not in captured["text"]
+
+
+class AlwaysTakenDB:
+    def query(self, *a):
+        return self
+
+    def filter(self, *a):
+        return self
+
+    def first(self):
+        return object()
+
+
+def test_new_case_id_falls_back_when_pool_exhausted():
+    cid = intake_ai._new_case_id(AlwaysTakenDB())
+    assert re.fullmatch(r"SC-\d{4}-[0-9a-f]{6}", cid)

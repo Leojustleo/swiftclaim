@@ -131,10 +131,11 @@ def assess(fields: Dict[str, Any], law_hits: List[Dict], arn_hits: List[Dict],
 
 def _new_case_id(db: Session) -> str:
     yymm = datetime.utcnow().strftime("%y%m")
-    while True:
+    for _ in range(40):
         candidate = f"SC-{yymm}-{random.randint(100, 999)}"
         if not db.query(Case).filter(Case.id == candidate).first():
             return candidate
+    return f"SC-{yymm}-{uuid.uuid4().hex[:6]}"
 
 
 def analyze(payload: Dict[str, Any], db: Session) -> Dict[str, Any]:
