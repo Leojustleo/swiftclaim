@@ -29,9 +29,10 @@ __pycache__/
 .scraper-inspect/
 
 # Local databases (recreated by backend startup + /api/arn/import)
-backend/data/*.db
+backend/data/
 
 # Law pipeline artifacts (regenerable or pre-anonymization PII — never publish)
 law-pipeline/.embeddings.json
 law-pipeline/raw_pdfs/
 law-pipeline/processed/
+backend/evals/results/

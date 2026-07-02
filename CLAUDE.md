@@ -193,3 +193,29 @@ law-pipeline/.env     — OPENROUTER_API_KEY, VOYAGE_API_KEY
 - **CSS additions**: Legal research panel styles in `styles.css` (~100 new lines)
 - **Voyage embeddings rebuilt**: 1,305 notes re-indexed after vault expansion
 - **Verified**: Backend RAG search returns correct results (`FAL 4 kap 6 §` as top hit for "säkerhetsföreskrift nedsättning")
+
+### 2026-07-02 (PM) — Automated legal pipeline
+- **Spec + plan**: `docs/superpowers/specs/2026-07-02-auto-legal-pipeline-design.md`, `docs/superpowers/plans/2026-07-02-auto-legal-pipeline.md`; built on branch `auto-legal-pipeline`
+- **Unified scorecard** (`backend/app/scorecard.py`, replaces `scoring.py`): one `chat_json` call (PII scrub incl. pre-truncation, provider fallback, `llm_calls` logging) → `claim_strength` 0-100, `strength_band`, `win_probability`, `priority`, `key_factors`, `recommended_action`, verified `arn_references`/`lagrum_references` + `flagged_references` via `verify.py` resolver. `intake_ai.assess` is now a thin wrapper — one brain, two views
+- **Pipeline orchestrator** (`backend/app/pipeline.py`, `PipelineJob` rows): every new case (intake form or `POST /api/cases`) auto-runs research → scoring (skipped if intake already scored) → draft v2 → `case.status = needs_review`. Per-stage failure isolation; `fail_if_stale` guard; startup marks stuck jobs failed. Endpoints: `GET /api/pipeline-jobs/{id}`, `GET /api/pipeline-jobs?case_id=`
+- **Flexible ingestion**: `rag.py` auto-discovers top-level vault dirs (only `Index/` excluded; aliases in `DIR_MAP` still work; unknown dir names are literal prefixes) — drop any `.md` into a new dir (e.g. `Domar/`) and `POST /api/reindex` (admin) makes it retrievable; `GET /api/reindex/status`. Verified live: new `Domar/` file was top RAG hit after one reindex call
+- **Review queue**: admin "Granskning" tab — needs_review cases sorted by priority/strength, scorecard + draft + unverified refs shown, Godkänn/Avvisa via `POST /api/admin/cases/{id}/review`
+- **Outcome tracking**: `Case.actual_outcome/actual_amount_sek/outcome_date` (+SQLite migration), `POST /api/admin/cases/{id}/outcome`; `admin_stats.calibration` buckets predicted win-probability vs actual outcomes
+- **Evals**: `evals/run_scorecard_evals.py` — smoke 2/2 completion, 2/2 citation resolution (100%). Legal team TODO: add `expected_band` labels to `golden_cases.json` for band-match scoring
+- **ARN corpus**: re-ran law-pipeline over all of arn.se's vägledande beslut — **41 decisions** (was 36; 5 new incl. 2023-10393, 2024-16960, 2026-00382), reindexed (1,714 notes) + `/api/arn/import` (45 DB rows). **Ceiling reached**: arn.se only publishes 96 curated decisions (41 after category filter) — growing to "a few hundred" needs new sources (ARN archive requests, court rulings into `Domar/`)
+- **Gotcha**: `law-pipeline/src/processor.py` points at `api.deepseek.com` but the pipeline loads `OPENROUTER_API_KEY` — pass the DeepSeek key explicitly: `python main.py --api-key $DEEPSEEK_API_KEY`
+- Tests: 54 passing (`cd backend && python3 -m pytest tests/`)
+- Live E2E verified: intake POST → scored (medel/50) → draft with verified citations (FAL 6 kap 1 §, ARN 2018-11707, 0 flagged) → review queue → approve
+
+### 2026-06-12
+- **Draft generation v2** (spec + plan in `docs/superpowers/`): replaced blocking single-shot `/api/draft` with async 4-stage pipeline (plan → retrieve → draft → verify) in `backend/app/draft_ai.py`
+  - `POST /api/draft` returns 202 + job id; poll `GET /api/draft-jobs/{id}`; stage snapshots stored on the job row
+  - Citation verification (`backend/app/verify.py`): lagrum normalizer + resolution against vault/DB; unverified → LLM repair pass → still bad = draft `needs_review` with `flagged_citations`
+  - Shared LLM client (`backend/app/llm.py`): DeepSeek → OpenRouter kimi-k2.6 fallback chain, JSON schema validation, every call logged to `llm_calls` table
+  - **PII guard**: customer name/email/phone/address replaced with `[KUND]`/`[EPOST]`/`[TELEFON]`/`[ADRESS]` before any LLM call, substituted back post-verify
+  - **Vault Q&A**: `POST /api/ask` — grounded answers with verified sources + lagen.nu links; ask boxes in OS (case panel + Knowledge view)
+  - RAG upgrades: in-memory singleton index (was: ~1,800 files + 21MB JSON reloaded per query), `search_vault(dirs, k, min_score)`, whole-statute files (>15k chars) excluded from retrieval
+  - Evals: `backend/evals/run_evals.py` + 10-case golden set; smoke run 2/2: 100% completion, 100% citation validity, 100% expected-ref hit
+  - Tests: `cd backend && python3 -m pytest tests/` (14 tests, pure functions only — no live calls)
+- **Hybrid retrieval fix** (post-verification improvement): IDF-weighted lexical boost on top of cosine (`rag.py: query_terms/idf_weights/lexical_boost`, bounded +0.15); whole-statute exclusion corrected 15k→50k chars (15k silently dropped all 16 Villkor parts at 20-23k). Verified live: "åldersavdrag"-fråga went from "sources insufficient" to verified answer citing If/Trygg-Hansa villkor + FAL 16 kap 1 §.
+- **Q&A two-mode upgrade**: `/api/ask` classifies questions as `lookup` (specific rule → narrow retrieval, unchanged) or `broad` (patterns/statistics → DB-computed ARN outcome stats per category + most-cited lagrum + top keywords fed to LLM with wide retrieval k=14). Broad answers always state corpus-size caveat; unanswerable questions get explicit reason + what data would be needed. Heuristic fallback if classify LLM call fails.

@@ -33,11 +33,12 @@
 
   async function apiFetch(path, options = {}) {
     if (!(await isAvailable())) return null;
+    const { timeoutMs = 15000, ...rest } = options;
     try {
       const r = await fetch(`${API_BASE}${path}`, {
-        headers: { "Content-Type": "application/json", ...options.headers },
-        signal: timeoutSignal(15000),
-        ...options,
+        headers: { "Content-Type": "application/json", ...rest.headers },
+        signal: timeoutSignal(timeoutMs),
+        ...rest,
       });
       if (!r.ok) return null;
       return r.json();
@@ -87,14 +88,46 @@
     },
 
     /**
-     * Generate a legal draft letter via LLM + RAG.
-     * First imports the case to backend if needed.
+     * Start a draft job (plan → retrieve → draft → verify) and poll it
+     * to completion. onProgress(status) is called on every poll tick.
+     * Resolves to the finished job ({status, draft, error}) or null.
      */
-    async generateDraft(caseItem) {
+    async generateDraft(caseItem, onProgress) {
       await api.importCase(caseItem);
-      return apiFetch("/draft", {
+      const start = await apiFetch("/draft", {
         method: "POST",
         body: JSON.stringify({ case_id: caseItem.id }),
+      });
+      if (!start || !start.job_id) return null;
+      return api.pollDraftJob(start.job_id, onProgress);
+    },
+
+    async pollDraftJob(jobId, onProgress) {
+      const deadline = Date.now() + 8 * 60 * 1000;
+      while (Date.now() < deadline) {
+        const job = await apiFetch(`/draft-jobs/${jobId}`);
+        if (job) {
+          if (onProgress) onProgress(job.status);
+          if (job.status === "done" || job.status === "failed") return job;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+      }
+      return { id: jobId, status: "timeout" };
+    },
+
+    async getLatestDraftJob(caseId) {
+      return apiFetch(`/draft-jobs?case_id=${encodeURIComponent(caseId)}`);
+    },
+
+    /**
+     * Ask the legal knowledge base a question, optionally scoped to a case.
+     * Returns { answer_markdown, sources, unverified_refs } or null.
+     */
+    async ask(question, caseId) {
+      return apiFetch("/ask", {
+        method: "POST",
+        body: JSON.stringify({ question, case_id: caseId || null }),
+        timeoutMs: 90000,
       });
     },
 

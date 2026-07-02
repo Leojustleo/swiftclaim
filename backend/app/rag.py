@@ -139,22 +139,172 @@ def retrieve(query: str, k: int = DEFAULT_TOP_K, notes: Optional[List[NoteDict]]
     return scored[:k]
 
 
-SEARCH_DIRS = ("Lagstiftning/", "ARN/", "Praxis/", "Villkor/", "Förarbeten/", "Vägledning/")
+# Excludes only whole-statute dumps (54k-1.2M chars); the largest real
+# document is an NJA judgment at ~43k. Paragraph/villkor/praxis notes stay in.
+MAX_NOTE_CHARS = 50000
+
+DIR_MAP = {
+    "lagstiftning": "Lagstiftning/",
+    "arn": "ARN/",
+    "praxis": "Praxis/",
+    "villkor": "Villkor/",
+    "forarbeten": "Förarbeten/",
+    "vagledning": "Vägledning/",
+}
+
+SOURCE_URL_RE = re.compile(r'^source_url:\s*"?([^"\n]+?)"?\s*$', re.MULTILINE)
+
+_INDEX: Dict[str, Any] = {"notes": None, "embeddings": None, "cache_mtime": None}
+
+# Hybrid retrieval: exact Swedish legal terms (e.g. "åldersavdrag") are strong
+# signals that pure cosine similarity misses; matched terms add a bounded boost.
+LEXICAL_MAX_BOOST = 0.15
+_TERM_RE = re.compile(r"[a-zåäö]{4,}")
+_STOPWORDS = {
+    "när", "vad", "hur", "vilka", "vilken", "vilket", "varför",
+    "inte", "från", "till", "över", "under", "utan", "med", "och", "eller", "men",
+    "bolaget", "göra", "gör", "gjort", "finns", "vara", "varit", "blir", "blev",
+    "denna", "detta", "dessa", "deras", "enligt", "samt", "även", "efter",
+}
+
+
+def query_terms(query: str) -> List[str]:
+    seen = []
+    for t in _TERM_RE.findall((query or "").lower()):
+        if t not in _STOPWORDS and t not in seen:
+            seen.append(t)
+    return seen
+
+
+def idf_weights(terms: List[str], texts_lower: List[str]) -> Dict[str, float]:
+    """Weight per term by rarity in the pool: ubiquitous terms ~0, rare terms ~1."""
+    n = len(texts_lower)
+    if n < 2:
+        return {t: 1.0 for t in terms}
+    weights = {}
+    for t in terms:
+        df = sum(1 for x in texts_lower if t in x)
+        weights[t] = max(0.0, math.log(n / (1 + df)) / math.log(n))
+    return weights
+
+
+def lexical_boost(terms: List[str], note_text_lower: str,
+                  weights: Optional[Dict[str, float]] = None) -> float:
+    if not terms:
+        return 0.0
+    if weights is None:
+        weights = {t: 1.0 for t in terms}
+    total = sum(weights.values())
+    if total <= 0:
+        return 0.0
+    matched = sum(weights[t] for t in terms if t in note_text_lower)
+    return LEXICAL_MAX_BOOST * matched / total
+
+
+def note_source_url(text: str) -> Optional[str]:
+    m = SOURCE_URL_RE.search(text[:600])
+    return m.group(1).strip() if m else None
+
+
+EXCLUDED_TOP_DIRS = {"Index"}
+
+
+def dir_prefixes(notes: List[NoteDict], dirs: Optional[List[str]] = None) -> Tuple[str, ...]:
+    """Alias (DIR_MAP key) or literal top-level vault dir → path prefix.
+    No dirs given → every discovered top-level dir except EXCLUDED_TOP_DIRS,
+    so new data sources become retrievable without code changes."""
+    if dirs:
+        return tuple(DIR_MAP.get(d, f"{d.rstrip('/')}/") for d in dirs)
+    tops = {n["path"].split("/", 1)[0] for n in notes if "/" in n["path"]}
+    return tuple(f"{t}/" for t in sorted(tops) if t not in EXCLUDED_TOP_DIRS)
+
+
+def eligible_notes(notes: List[NoteDict], dirs: Optional[List[str]] = None) -> List[NoteDict]:
+    prefixes = dir_prefixes(notes, dirs)
+    if not prefixes:
+        return []
+    return [n for n in notes if n["path"].startswith(prefixes) and len(n["text"]) <= MAX_NOTE_CHARS]
+
+
+def _cache_mtime() -> Optional[float]:
+    return EMBED_CACHE.stat().st_mtime if EMBED_CACHE.exists() else None
+
+
+def get_index() -> Tuple[List[NoteDict], Dict[str, Any]]:
+    """Singleton vault index: notes + embeddings, reloaded only when the cache file changes."""
+    if _INDEX["notes"] is None or _INDEX["cache_mtime"] != _cache_mtime():
+        notes = load_vault_notes()
+        embeddings = build_or_load_index(notes)
+        _INDEX.update(notes=notes, embeddings=embeddings, cache_mtime=_cache_mtime())
+    return _INDEX["notes"], _INDEX["embeddings"]
+
+
+def reindex_vault(vault_path: Optional[Path] = None) -> Dict[str, Any]:
+    """Incremental reindex: embed only new/changed vault files, then force
+    the singleton index to reload. Safe to call any time new data lands."""
+    notes = load_vault_notes(vault_path)
+    cache: Dict[str, Any] = {}
+    if EMBED_CACHE.exists():
+        cache = json.loads(EMBED_CACHE.read_text())
+    stale = [n for n in notes
+             if (cache.get(n["path"]) or {}).get("hash") != _content_hash(n["text"])]
+    build_or_load_index(notes)
+    _INDEX["notes"] = None
+    return {"total_notes": len(notes), "embedded": len(stale)}
+
+
+def embed_queries(queries: List[str]) -> List[FloatList]:
+    return voyage_embed(queries, _get_voyage_key(), input_type="query")
+
+
+def _hit(score: float, n: NoteDict) -> NoteDict:
+    return {
+        "score": round(score, 4),
+        "title": n["title"],
+        "path": n["path"],
+        "text": n["text"][:2000],
+        "source_url": note_source_url(n["text"]),
+    }
+
+
+def search_with_embedding(q_emb: FloatList, dirs: Optional[List[str]] = None,
+                          k: int = 5, min_score: float = 0.0,
+                          query_text: str = "") -> List[NoteDict]:
+    notes, index = get_index()
+    pool = {n["path"]: n for n in eligible_notes(notes, dirs)}
+    terms = query_terms(query_text)
+    weights = None
+    if terms:
+        for n in pool.values():
+            if "text_lower" not in n:
+                n["text_lower"] = n["text"].lower()
+        weights = idf_weights(terms, [n["text_lower"] for n in pool.values()])
+    scored: List[ScoredNote] = []
+    for path, entry in index.items():
+        n = pool.get(path)
+        if n is None:
+            continue
+        s = _cosine(q_emb, entry["embedding"])
+        if terms:
+            s += lexical_boost(terms, n["text_lower"], weights)
+        if s >= min_score:
+            scored.append((s, n))
+    scored.sort(key=lambda x: -x[0])
+    return [_hit(s, n) for s, n in scored[:k]]
+
+
+def search_vault(query: str, dirs: Optional[List[str]] = None,
+                 k: int = 5, min_score: float = 0.0) -> List[NoteDict]:
+    return search_with_embedding(embed_queries([query])[0], dirs=dirs, k=k,
+                                 min_score=min_score, query_text=query)
 
 
 def search_law(query: str, k: int = 5) -> List[NoteDict]:
-    notes = load_vault_notes(filter_paths=None)
-    law_notes = [n for n in notes if n["path"].startswith(SEARCH_DIRS)]
-    hits = retrieve(query, k=k, notes=law_notes)
-    return [{"score": round(s, 4), "title": n["title"], "path": n["path"], "text": n["text"][:2000]} for s, n in hits]
+    return search_vault(query, dirs=None, k=k)
 
 
 def search_precedents(damage_category: str, insurer_decision_text: str = "", k: int = 5) -> List[NoteDict]:
-    query = "skada " + damage_category + " f" + "\u00f6" + "rs" + "\u00e4" + "kring"
+    query = f"skada {damage_category} f\u00f6rs\u00e4kring"
     if insurer_decision_text:
         query += f" {insurer_decision_text[:200]}"
-    arn_notes = [n for n in load_vault_notes() if n["path"].startswith("ARN/")]
-    if not arn_notes:
-        return []
-    hits = retrieve(query, k=k, notes=arn_notes)
-    return [{"score": round(s, 4), "title": n["title"], "path": n["path"], "text": n["text"][:2000]} for s, n in hits]
+    return search_vault(query, dirs=["arn"], k=k)

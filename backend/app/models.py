@@ -34,9 +34,13 @@ class Case(Base):
     priority = Column(String, default="normal")
     assigned_to = Column(String, default="swiftclaim-bot")
     outcome = Column(String, nullable=True)
+    actual_outcome = Column(String, nullable=True)  # won, partial, lost, withdrawn
+    actual_amount_sek = Column(Integer, nullable=True)
+    outcome_date = Column(String, nullable=True)
 
     tags = Column(JSON, default=[])
     ai_analysis = Column(JSON, nullable=True)
+    scorecard = Column(Text, nullable=True)
 
     drafts = relationship("ResponseDraft", back_populates="case", cascade="all, delete-orphan")
     knowledge_notes = relationship("KnowledgeNote", back_populates="case", cascade="all, delete-orphan")
@@ -90,9 +94,55 @@ class ResponseDraft(Base):
     strategy = Column(Text)       # legal strategy notes
     draft_text = Column(Text)     # the actual draft reply
     citations_used = Column(JSON, default=[])   # laws and ARN cases cited
-    status = Column(String, default="draft")     # draft, reviewed, sent, archived
+    status = Column(String, default="draft")     # draft, needs_review, reviewed, sent, archived
+    flagged_citations = Column(JSON, default=[])
+    evidence = Column(JSON, default=[])
+    model_used = Column(String, nullable=True)
+    job_id = Column(String, nullable=True)
 
     case = relationship("Case", back_populates="drafts")
+
+
+class DraftJob(Base):
+    __tablename__ = "draft_jobs"
+
+    id = Column(String, primary_key=True)
+    case_id = Column(String, ForeignKey("cases.id"), index=True)
+    status = Column(String, default="queued")  # queued, planning, retrieving, drafting, verifying, done, failed
+    stages = Column(JSON, default={})
+    error = Column(Text, nullable=True)
+    draft_id = Column(Integer, nullable=True)
+    pipeline_version = Column(String, default="2.0")
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+
+
+class PipelineJob(Base):
+    __tablename__ = "pipeline_jobs"
+
+    id = Column(String, primary_key=True)
+    case_id = Column(String, ForeignKey("cases.id"), index=True)
+    status = Column(String, default="queued")  # queued, research, scoring, drafting, done, failed
+    stages = Column(JSON, default={})
+    error = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+
+
+class LLMCall(Base):
+    __tablename__ = "llm_calls"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    job_id = Column(String, nullable=True, index=True)
+    stage = Column(String)
+    provider = Column(String)
+    model = Column(String)
+    status = Column(String)  # ok, error
+    error = Column(Text, nullable=True)
+    latency_ms = Column(Integer, default=0)
+    prompt_text = Column(Text)
+    response_text = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
 
 class KnowledgeNote(Base):

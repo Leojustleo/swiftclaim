@@ -1,28 +1,33 @@
-import json
-import os
 import re
 from datetime import datetime
 from pathlib import Path
 from typing import Optional, List
 
-import httpx
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 
 from app.db import init_db, get_db
-from app.models import Case, ARNDecision, LawSection as LawSectionModel, ResponseDraft, KnowledgeNote
+from app.models import Case, ARNDecision, LawSection as LawSectionModel, ResponseDraft, KnowledgeNote, DraftJob, PipelineJob
 from app.schemas import (
     CaseCreate, CaseUpdate, CaseOut,
     ARNOut, LawSectionOut,
-    ResponseDraftOut,
+    ResponseDraftOut, DraftJobOut, PipelineJobOut,
     KnowledgeNoteCreate, KnowledgeNoteOut,
     DraftRequest, RAGQuery, BulkARNImport,
     IntakeAnalyzeRequest, IntakeAnalysisOut,
+    AskRequest, AskOut,
 )
+from app.pipeline import create_pipeline_job, run_pipeline
 from app.rag import search_law, search_precedents
 from app.law_importer import get_law_section, fetch_riksdagen_law, CORE_SECTIONS, SFS_MAP
-from app.intake_ai import analyze as run_intake_analysis, LLM_URL, CHAT_MODEL, _get_llm_key
+from app.intake_ai import analyze as run_intake_analysis
+from app.draft_ai import create_job, run_draft_job, fail_if_stale, case_fields
+from app.scorecard import build_scorecard, calibration_buckets
+from app.qa_ai import ask as run_ask
+from app.llm import LLMError
+from app.auth import check_password, create_token, require_admin_token
 
 app = FastAPI(title="Swiftclaim API", version="1.0.0")
 
@@ -34,13 +39,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+_admin_dir = Path(__file__).parent.parent.parent / "admin"
+if _admin_dir.exists():
+    app.mount("/admin", StaticFiles(directory=str(_admin_dir), html=True), name="admin")
+
 
 @app.on_event("startup")
 def startup():
     init_db()
+    from app.wiki_index import build_index
+    build_index()
     db = next(get_db())
     try:
         _seed_laws(db)
+        stuck = db.query(DraftJob).filter(DraftJob.status.notin_(["done", "failed"]))
+        stuck.update({"status": "failed", "error": "server restarted"}, synchronize_session=False)
+        stuck_pl = db.query(PipelineJob).filter(PipelineJob.status.notin_(["done", "failed"]))
+        stuck_pl.update({"status": "failed", "error": "server restarted"}, synchronize_session=False)
+        db.commit()
     finally:
         db.close()
 
@@ -70,6 +86,280 @@ def _seed_laws(db: Session):
     db.commit()
 
 
+import json as _json
+from pydantic import BaseModel as _BaseModel
+
+
+class _LoginRequest(_BaseModel):
+    password: str
+
+
+@app.post("/api/auth/login")
+def login(body: _LoginRequest):
+    if not check_password(body.password):
+        raise HTTPException(status_code=401, detail="Wrong password")
+    return {"token": create_token()}
+
+
+def _scorecard_priority(scorecard: Optional[dict]) -> str:
+    if not scorecard:
+        return "unknown"
+    return scorecard.get("priority", "unknown")
+
+
+def _case_to_admin_dict(case: Case, scorecard: Optional[dict] = None) -> dict:
+    return {
+        "id": case.id,
+        "created_at": case.created_at.isoformat() if case.created_at else None,
+        "customer_name": case.customer_name,
+        "customer_email": case.customer_email,
+        "customer_phone": case.customer_phone,
+        "property_address": case.property_address,
+        "property_type": case.property_type,
+        "insurance_company": case.insurance_company,
+        "damage_category": case.damage_category,
+        "damage_description": case.damage_description,
+        "damage_date": case.damage_date,
+        "claim_amount": case.claim_amount,
+        "insurer_decision": case.insurer_decision,
+        "insurer_amount": case.insurer_amount,
+        "insurer_reason": case.insurer_reason,
+        "status": case.status,
+        "scorecard": scorecard,
+        "actual_outcome": case.actual_outcome,
+        "actual_amount_sek": case.actual_amount_sek,
+        "outcome_date": case.outcome_date,
+    }
+
+
+@app.get("/api/admin/cases")
+def admin_list_cases(
+    priority: Optional[str] = None,
+    damage_category: Optional[str] = None,
+    status: Optional[str] = None,
+    page: int = 1,
+    limit: int = 50,
+    db: Session = Depends(get_db),
+    _: dict = Depends(require_admin_token),
+):
+    q = db.query(Case)
+    if damage_category:
+        q = q.filter(Case.damage_category == damage_category)
+    if status:
+        q = q.filter(Case.status == status)
+    all_cases = q.order_by(Case.created_at.desc()).all()
+
+    all_results = []
+    for c in all_cases:
+        sc = _json.loads(c.scorecard) if c.scorecard else None
+        if priority and _scorecard_priority(sc) != priority:
+            continue
+        all_results.append(_case_to_admin_dict(c, sc))
+
+    total = len(all_results)
+    start = (page - 1) * limit
+    return {"cases": all_results[start : start + limit], "total": total}
+
+
+@app.get("/api/admin/stats")
+def admin_stats(
+    db: Session = Depends(get_db),
+    _: dict = Depends(require_admin_token),
+):
+    cases = db.query(Case).all()
+    total = len(cases)
+
+    status_order = ["intake", "analysis", "draft", "negotiation", "appealed", "closed"]
+    status_counts = {s: 0 for s in status_order}
+    for c in cases:
+        k = c.status or "intake"
+        status_counts[k] = status_counts.get(k, 0) + 1
+
+    category_counts: dict = {}
+    for c in cases:
+        k = c.damage_category or "other"
+        category_counts[k] = category_counts.get(k, 0) + 1
+
+    decision_counts: dict = {}
+    for c in cases:
+        k = c.insurer_decision or "pending"
+        decision_counts[k] = decision_counts.get(k, 0) + 1
+
+    priority_counts = {"high": 0, "medium": 0, "low": 0, "unscored": 0}
+    strengths = []
+    for c in cases:
+        if c.scorecard:
+            sc = _json.loads(c.scorecard)
+            s = sc.get("claim_strength")
+            if s is not None:
+                strengths.append(int(s))
+            p = sc.get("priority", "unscored")
+            if p in priority_counts:
+                priority_counts[p] += 1
+            else:
+                priority_counts["unscored"] += 1
+        else:
+            priority_counts["unscored"] += 1
+
+    avg_strength = round(sum(strengths) / len(strengths)) if strengths else None
+    total_claimed = sum(c.claim_amount for c in cases if c.claim_amount)
+    total_offered = sum(c.insurer_amount for c in cases if c.insurer_amount)
+    active_count = sum(1 for c in cases if (c.status or "intake") not in ("closed",))
+
+    recent = sorted([c for c in cases if c.created_at], key=lambda c: c.created_at, reverse=True)[:5]
+
+    calib_rows = []
+    for c in cases:
+        if c.scorecard:
+            sc = _json.loads(c.scorecard)
+            calib_rows.append((sc.get("win_probability"), c.actual_outcome))
+
+    return {
+        "calibration": calibration_buckets(calib_rows),
+        "total_cases": total,
+        "active_cases": active_count,
+        "avg_claim_strength": avg_strength,
+        "total_claimed_sek": total_claimed,
+        "total_offered_sek": total_offered,
+        "total_gap_sek": total_claimed - total_offered,
+        "status_counts": status_counts,
+        "category_counts": category_counts,
+        "decision_counts": decision_counts,
+        "priority_counts": priority_counts,
+        "recent_cases": [_case_to_admin_dict(c, _json.loads(c.scorecard) if c.scorecard else None) for c in recent],
+    }
+
+
+class _OutcomeRequest(_BaseModel):
+    actual_outcome: str
+    actual_amount_sek: Optional[int] = None
+    outcome_date: Optional[str] = None
+
+
+@app.post("/api/admin/cases/{case_id}/outcome")
+def admin_set_outcome(
+    case_id: str,
+    body: _OutcomeRequest,
+    db: Session = Depends(get_db),
+    _: dict = Depends(require_admin_token),
+):
+    if body.actual_outcome not in ("won", "partial", "lost", "withdrawn"):
+        raise HTTPException(422, "actual_outcome must be won|partial|lost|withdrawn")
+    case = db.query(Case).filter(Case.id == case_id).first()
+    if not case:
+        raise HTTPException(404, "Case not found")
+    case.actual_outcome = body.actual_outcome
+    case.actual_amount_sek = body.actual_amount_sek
+    case.outcome_date = body.outcome_date
+    db.commit()
+    sc = _json.loads(case.scorecard) if case.scorecard else None
+    return _case_to_admin_dict(case, sc)
+
+
+@app.get("/api/admin/cases/{case_id}")
+def admin_get_case(
+    case_id: str,
+    db: Session = Depends(get_db),
+    _: dict = Depends(require_admin_token),
+):
+    case = db.query(Case).filter(Case.id == case_id).first()
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    sc = _json.loads(case.scorecard) if case.scorecard else None
+    out = _case_to_admin_dict(case, sc)
+    latest = db.query(ResponseDraft).filter(ResponseDraft.case_id == case_id) \
+        .order_by(ResponseDraft.version.desc()).first()
+    out["latest_draft"] = {
+        "id": latest.id,
+        "status": latest.status,
+        "draft_text": latest.draft_text,
+        "citations_used": latest.citations_used or [],
+        "flagged_citations": latest.flagged_citations or [],
+        "created_at": latest.created_at.isoformat() if latest.created_at else None,
+    } if latest else None
+    pj = db.query(PipelineJob).filter(PipelineJob.case_id == case_id) \
+        .order_by(PipelineJob.created_at.desc()).first()
+    out["pipeline_job"] = {
+        "id": pj.id, "status": pj.status, "error": pj.error, "stages": pj.stages or {},
+    } if pj else None
+    return out
+
+
+class _ReviewRequest(_BaseModel):
+    action: str  # approve | reject
+
+
+@app.post("/api/admin/cases/{case_id}/review")
+def admin_review_case(
+    case_id: str,
+    body: _ReviewRequest,
+    db: Session = Depends(get_db),
+    _: dict = Depends(require_admin_token),
+):
+    if body.action not in ("approve", "reject"):
+        raise HTTPException(422, "action must be approve|reject")
+    case = db.query(Case).filter(Case.id == case_id).first()
+    if not case:
+        raise HTTPException(404, "Case not found")
+    latest = db.query(ResponseDraft).filter(ResponseDraft.case_id == case_id) \
+        .order_by(ResponseDraft.version.desc()).first()
+    if body.action == "approve":
+        case.status = "approved"
+        if latest:
+            latest.status = "reviewed"
+    else:
+        case.status = "analysis"
+        if latest:
+            latest.status = "archived"
+    db.commit()
+    return {"ok": True, "status": case.status}
+
+
+@app.post("/api/admin/cases/{case_id}/score")
+def admin_score_case(
+    case_id: str,
+    db: Session = Depends(get_db),
+    _: dict = Depends(require_admin_token),
+):
+    case = db.query(Case).filter(Case.id == case_id).first()
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    scorecard = build_scorecard(db, case_fields(case))
+    case.scorecard = _json.dumps(scorecard, ensure_ascii=False)
+    db.commit()
+    return scorecard
+
+
+_REINDEX: dict = {"status": "idle", "started_at": None, "finished_at": None,
+                  "total_notes": 0, "embedded": 0, "error": None}
+
+
+def _do_reindex():
+    from app.rag import reindex_vault
+    try:
+        stats = reindex_vault()
+        _REINDEX.update(status="done", finished_at=datetime.utcnow().isoformat(),
+                        error=None, **stats)
+    except Exception as e:
+        _REINDEX.update(status="failed", finished_at=datetime.utcnow().isoformat(),
+                        error=f"{type(e).__name__}: {e}")
+
+
+@app.post("/api/reindex", status_code=202)
+def start_reindex(background: BackgroundTasks, _: dict = Depends(require_admin_token)):
+    if _REINDEX["status"] == "running":
+        raise HTTPException(409, "Reindex already running")
+    _REINDEX.update(status="running", started_at=datetime.utcnow().isoformat(),
+                    finished_at=None, error=None)
+    background.add_task(_do_reindex)
+    return {"status": "running"}
+
+
+@app.get("/api/reindex/status")
+def reindex_status(_: dict = Depends(require_admin_token)):
+    return _REINDEX
+
+
 @app.get("/api/cases", response_model=List[CaseOut])
 def list_cases(status: Optional[str] = None, db: Session = Depends(get_db)):
     q = db.query(Case)
@@ -88,11 +378,22 @@ def get_case(case_id: str, db: Session = Depends(get_db)):
 
 
 @app.post("/api/cases", response_model=CaseOut, status_code=201)
-def create_case(data: CaseCreate, db: Session = Depends(get_db)):
-    case = Case(**data.model_dump())
-    db.add(case)
+def create_case(data: CaseCreate, background: BackgroundTasks, db: Session = Depends(get_db)):
+    case = db.query(Case).filter(Case.id == data.id).first()
+    is_new = case is None
+    if case:
+        for key, val in data.model_dump().items():
+            if key != "id":
+                setattr(case, key, val)
+        case.updated_at = datetime.utcnow()
+    else:
+        case = Case(**data.model_dump())
+        db.add(case)
     db.commit()
     db.refresh(case)
+    if is_new:
+        pj = create_pipeline_job(db, case.id)
+        background.add_task(run_pipeline, pj.id)
     return CaseOut.model_validate(case)
 
 
@@ -234,8 +535,11 @@ def get_law_riksdagen(sfs_id: str):
 
 
 @app.post("/api/intake/analyze", response_model=IntakeAnalysisOut)
-def analyze_intake(req: IntakeAnalyzeRequest, db: Session = Depends(get_db)):
-    return run_intake_analysis(req.model_dump(), db)
+def analyze_intake(req: IntakeAnalyzeRequest, background: BackgroundTasks, db: Session = Depends(get_db)):
+    result = run_intake_analysis(req.model_dump(), db)
+    pj = create_pipeline_job(db, result["case_id"])
+    background.add_task(run_pipeline, pj.id)
+    return result
 
 
 @app.post("/api/search/law")
@@ -255,155 +559,62 @@ def search_precedents_endpoint(case_id: str, query: RAGQuery, db: Session = Depe
     return {"case_id": case_id, "hits": hits}
 
 
-DRAFT_SYSTEM_PROMPT = u"""Du \u00e4r en erfaren svensk f\u00f6rs\u00e4kringsjurist som arbetar f\u00f6r Swiftclaim \u2014 en tj\u00e4nst som hj\u00e4lper konsumenter att f\u00e5 maximal ers\u00e4ttning fr\u00e5n sitt f\u00f6rs\u00e4kringsbolag.
-
-Din uppgift: Skriv ett professionellt, juridiskt v\u00e4lgrundat svar till f\u00f6rs\u00e4kringsbolaget som ifr\u00e5gas\u00e4tter deras beslut och kr\u00e4ver h\u00f6gre ers\u00e4ttning.
-
-STRATEGI:
-- Anv\u00e4nd alltid relevanta lagrum som st\u00f6d (FAL, Avtalslagen, etc.)
-- Citera relevanta ARN-beslut som prejudikat
-- Peka p\u00e5 brister i bolagets utredning eller motivering
-- Var specifik om belopp och ber\u00e4kningsgrunder
-- H\u00e5ll en professionell men best\u00e4md ton
-- Om bolaget har nekat ers\u00e4ttning: kr\u00e4v en konkret redovisning av vilka villkor de \u00e5beropar
-- Om bolaget har satt ned ers\u00e4ttning: ifr\u00e5gas\u00e4tt neds\u00e4ttningens storlek och be om specifik motivering
-- N\u00e4mn alltid konsumentens r\u00e4ttigheter enligt FAL:s tvingande regler
-
-FORMAT:
-Svara med ett komplett brevutkast p\u00e5 svenska. B\u00f6rja med \u00e4renderubrik och \"Till [f\u00f6rs\u00e4kringsbolag]\".
-Inkludera:
-1. En inledning som sammanfattar \u00e4rendet och bestrider beslutet
-2. Juridisk argumentation med lagrumsh\u00e4nvisningar
-3. Referens till relevant praxis (ARN-beslut)
-4. Konkreta yrkanden (vad konsumenten vill ha)
-5. Avslutning med tidsfrist f\u00f6r svar
-
-Anv\u00e4nd [[wiki-l\u00e4nkar]] f\u00f6r lagrum och ARN-fall i strateginoten, men skriv ut fullst\u00e4ndiga h\u00e4nvisningar i sj\u00e4lva brevtexten."""
-
-
-@app.post("/api/draft", response_model=ResponseDraftOut)
-def generate_draft(req: DraftRequest, db: Session = Depends(get_db)):
+@app.post("/api/draft", status_code=202)
+def start_draft(req: DraftRequest, background: BackgroundTasks, db: Session = Depends(get_db)):
     case = db.query(Case).filter(Case.id == req.case_id).first()
     if not case:
         raise HTTPException(404, "Case not found")
+    job = create_job(db, req.case_id, req.strategy, req.additional_context)
+    background.add_task(run_draft_job, job.id)
+    return {"job_id": job.id, "status": job.status}
 
-    llm_key = _get_llm_key()
 
-    search_query = f"{case.damage_category} {case.damage_description[:300]} {case.insurance_company}"
-    if case.insurer_reason:
-        search_query += f" {case.insurer_reason[:300]}"
+def _job_out(db: Session, job: DraftJob) -> DraftJobOut:
+    draft = db.query(ResponseDraft).filter(ResponseDraft.id == job.draft_id).first() if job.draft_id else None
+    out = DraftJobOut.model_validate(job)
+    out.draft = ResponseDraftOut.model_validate(draft) if draft else None
+    return out
 
-    law_hits = search_law(search_query, k=6)
-    arn_hits = search_precedents(case.damage_category, case.insurer_reason or case.damage_description, k=6)
 
-    context_parts = []
-    context_parts.append("### RELEVANTA LAGRUM ###\n")
-    for h in law_hits:
-        context_parts.append(f"**{h['title']}**\n{h['text'][:1500]}")
+@app.get("/api/draft-jobs/{job_id}", response_model=DraftJobOut)
+def get_draft_job(job_id: str, db: Session = Depends(get_db)):
+    job = db.query(DraftJob).filter(DraftJob.id == job_id).first()
+    if not job:
+        raise HTTPException(404, "Job not found")
+    return _job_out(db, fail_if_stale(db, job))
 
-    context_parts.append("\n### RELEVANTA ARN-BESLUT ###\n")
-    for h in arn_hits:
-        context_parts.append(f"**{h['title']}** (relevans: {h['score']})\n{h['text'][:1500]}")
 
-    context = "\n\n---\n\n".join(context_parts)
+@app.get("/api/draft-jobs", response_model=Optional[DraftJobOut])
+def get_latest_draft_job(case_id: str, db: Session = Depends(get_db)):
+    job = db.query(DraftJob).filter(DraftJob.case_id == case_id) \
+        .order_by(DraftJob.created_at.desc()).first()
+    return _job_out(db, fail_if_stale(db, job)) if job else None
 
-    user_msg = u"""\u00c4RENDE:
-Kund: {name}
-F\u00f6rs\u00e4kringsbolag: {company}
-F\u00f6rs\u00e4kringsnummer: {policy}
-Typ av skada: {damage_cat}
-Skadebeskrivning: {desc}
-Skadedatum: {damage_date}
-Yrkat belopp: {claim} kr
 
-F\u00f6rs\u00e4kringsbolagets beslut: {decision}
-Bolagets motivering: {reason}
-Erbjudet belopp: {amount} kr
+@app.get("/api/pipeline-jobs/{job_id}", response_model=PipelineJobOut)
+def get_pipeline_job(job_id: str, db: Session = Depends(get_db)):
+    job = db.query(PipelineJob).filter(PipelineJob.id == job_id).first()
+    if not job:
+        raise HTTPException(404, "Job not found")
+    return PipelineJobOut.model_validate(fail_if_stale(db, job))
 
-Strategi: {strategy}
-Ytterligare kontext: {context_add}
 
----
+@app.get("/api/pipeline-jobs", response_model=Optional[PipelineJobOut])
+def get_latest_pipeline_job(case_id: str, db: Session = Depends(get_db)):
+    job = db.query(PipelineJob).filter(PipelineJob.case_id == case_id) \
+        .order_by(PipelineJob.created_at.desc()).first()
+    return PipelineJobOut.model_validate(fail_if_stale(db, job)) if job else None
 
-JURIDISK KUNSKAPSBAS:
 
-{knowledge}
-
----
-
-Skriv ett brevutkast enligt instruktionerna i system-prompten. Var specifik, juridisk, och \u00f6vertygande. Anv\u00e4nd de lagrum och ARN-fall som \u00e4r relevanta f\u00f6r just detta \u00e4rende.""".format(
-        name=case.customer_name,
-        company=case.insurance_company,
-        policy=case.insurance_policy_number or "ok\u00e4nt",
-        damage_cat=case.damage_category,
-        desc=case.damage_description,
-        damage_date=case.damage_date or "ok\u00e4nt",
-        claim=case.claim_amount or "ej specificerat",
-        decision=case.insurer_decision or "ok\u00e4nt",
-        reason=case.insurer_reason or "ingen motivering angiven",
-        amount=case.insurer_amount or "ej specificerat",
-        strategy=req.strategy,
-        context_add=req.additional_context or "ingen",
-        knowledge=context,
-    )
-
+@app.post("/api/ask", response_model=AskOut)
+def ask_endpoint(req: AskRequest, db: Session = Depends(get_db)):
+    case = db.query(Case).filter(Case.id == req.case_id).first() if req.case_id else None
+    if req.case_id and not case:
+        raise HTTPException(404, "Case not found")
     try:
-        r = httpx.post(
-            LLM_URL,
-            json={
-                "model": CHAT_MODEL,
-                "messages": [
-                    {"role": "system", "content": DRAFT_SYSTEM_PROMPT},
-                    {"role": "user", "content": user_msg},
-                ],
-                "max_tokens": 4000,
-            },
-            headers={"Authorization": f"Bearer {llm_key}"},
-            timeout=180,
-        )
-        if r.status_code != 200:
-            raise HTTPException(500, f"LLM API error: {r.text[:500]}")
-        raw = r.json()["choices"][0]["message"]["content"]
-
-        strategy = ""
-        draft_text = raw
-        if "## Strategi" in raw:
-            parts = raw.split("## Brevutkast", 1)
-            if len(parts) == 2:
-                strategy = parts[0].replace("## Strategi", "").strip()
-                draft_text = parts[1].strip()
-        elif "## BREVUTKAST" in raw:
-            parts = raw.split("## BREVUTKAST", 1)
-            if len(parts) == 2:
-                strategy = parts[0].strip()
-                draft_text = parts[1].strip()
-
-        wiki_links = re.findall(r"\[\[([^\]]+)\]\]", raw)
-
-        existing = db.query(ResponseDraft).filter(
-            ResponseDraft.case_id == req.case_id
-        ).order_by(ResponseDraft.version.desc()).first()
-        version = (existing.version + 1) if existing else 1
-
-        draft = ResponseDraft(
-            case_id=req.case_id,
-            version=version,
-            strategy=strategy or req.strategy,
-            draft_text=draft_text,
-            citations_used=wiki_links,
-            status="draft",
-        )
-        db.add(draft)
-        case.status = "draft"
-        case.updated_at = datetime.utcnow()
-        db.commit()
-        db.refresh(draft)
-        return draft
-
-    except httpx.RequestError as e:
-        raise HTTPException(500, f"API request failed: {e}")
-    except Exception as e:
-        raise HTTPException(500, str(e))
+        return run_ask(db, req.question, case)
+    except LLMError as e:
+        raise HTTPException(503, f"AI-tj\u00e4nsten \u00e4r inte tillg\u00e4nglig just nu: {e}")
 
 
 @app.get("/api/draft/{case_id}", response_model=List[ResponseDraftOut])
