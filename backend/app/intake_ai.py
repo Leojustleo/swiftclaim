@@ -149,7 +149,7 @@ def analyze(payload: Dict[str, Any], db: Session) -> Dict[str, Any]:
         rag_query += f" {scrub_pii(payload['insurer_reason'], payload)[:200]}"
     try:
         law_hits = [h for h in search_law(rag_query, k=8) if h["path"].startswith("Lagstiftning/")][:5]
-        arn_hits = search_precedents(category, payload.get("insurer_reason") or description, k=5)
+        arn_hits = search_precedents(category, scrub_pii(payload.get("insurer_reason") or description, payload), k=5)
         rag_failed = False
     except Exception:
         law_hits, arn_hits, rag_failed = [], [], True

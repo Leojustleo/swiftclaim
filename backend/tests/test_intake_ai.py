@@ -44,3 +44,38 @@ def test_assess_scrubs_pii(monkeypatch):
     assert "[KUND]" in captured["user"]
     assert out["strength"] == "stark"
     assert out["degraded"] is False
+
+
+def test_precedent_query_scrubbed(monkeypatch):
+    captured = {}
+
+    def fake_precedents(category, text, k=5):
+        captured["text"] = text
+        return []
+
+    monkeypatch.setattr(intake_ai, "search_precedents", fake_precedents)
+    monkeypatch.setattr(intake_ai, "search_law", lambda q, k=8: [])
+    monkeypatch.setattr(intake_ai, "chat_json", lambda *a, **kw: (_ for _ in ()).throw(intake_ai.LLMError("off")))
+
+    class NoCaseDB:
+        def query(self, *a):
+            return self
+
+        def filter(self, *a):
+            return self
+
+        def first(self):
+            return None
+
+        def add(self, obj):
+            pass
+
+        def commit(self):
+            pass
+
+        def refresh(self, obj):
+            pass
+
+    payload = dict(FIELDS, damage_description="Läcka hos Anna Andersson", insurer_reason="Anna Andersson anmälde för sent")
+    intake_ai.analyze(payload, NoCaseDB())
+    assert "Anna" not in captured["text"]
