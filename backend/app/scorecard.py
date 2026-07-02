@@ -83,7 +83,8 @@ def _case_block(fields: Dict[str, Any]) -> str:
         f"Erbjudet belopp: {fields.get('insurer_amount') or 'ej angivet'}",
         f"Bolagets beslut: {fields.get('insurer_decision') or 'inget ännu'}",
         f"Bolagets motivering: {fields.get('insurer_reason') or 'ingen'}",
-        f"Beskrivning: {(fields.get('damage_description') or '')[:1500]}",
+        # scrub BEFORE truncating so a name straddling the cut can't leak
+        f"Beskrivning: {scrub_pii(fields.get('damage_description') or '', fields)[:1500]}",
     ])
 
 

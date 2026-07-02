@@ -1,3 +1,4 @@
+import json
 import random
 import uuid
 from datetime import datetime
@@ -8,18 +9,11 @@ from sqlalchemy.orm import Session
 
 from app.llm import LLMError, chat_json, scrub_pii
 from app.models import Case
-from app.rag import search_law, search_precedents
+from app.scorecard import build_scorecard, retrieve_evidence
 
 
 class CategorizeOut(BaseModel):
     category: str
-
-
-class AssessOut(BaseModel):
-    strength: str
-    summary: str = ""
-    key_arguments: List[str] = []
-    missing_info: List[str] = []
 
 CATEGORIES = [
     "Vattenskada",
@@ -40,19 +34,6 @@ CATEGORIZE_SYSTEM = (
     + "\n".join(f"- {c}" for c in CATEGORIES)
     + '\n\nSvara endast med JSON: {"category": "<kategori>"}'
 )
-
-ASSESS_SYSTEM = (
-    "Du är en svensk försäkringsjurist på Swiftclaim. Bedöm kundens ärende mot "
-    "lagrum och ARN-praxis nedan. Var saklig och lova aldrig ett utfall.\n\n"
-    "Svara endast med JSON:\n"
-    "{\n"
-    '  "strength": "stark" | "medel" | "svag",\n'
-    '  "summary": "<2-4 meningar på svenska, riktade till kunden: vad vi ser i ärendet och varför det är värt att driva>",\n'
-    '  "key_arguments": ["<juridiskt argument med lagrumshänvisning>", ...],\n'
-    '  "missing_info": ["<uppgift eller dokument som saknas>", ...]\n'
-    "}"
-)
-
 
 def keyword_category(text: str) -> str:
     t = (text or "").lower()
@@ -87,45 +68,14 @@ def categorize(description: str, hint: str = "",
 
 def assess(fields: Dict[str, Any], law_hits: List[Dict], arn_hits: List[Dict],
            db: Session = None) -> Dict[str, Any]:
-    parts = [
-        "ÄRENDE:",
-        f"Kategori: {fields.get('damage_category')}",
-        f"Beskrivning: {scrub_pii(fields.get('damage_description', ''), fields)[:1500]}",
-        f"Försäkringsbolag: {fields.get('insurance_company') or 'okänt'}",
-        f"Yrkat belopp: {fields.get('claim_amount') or 'ej angivet'}",
-        f"Bolagets beslut: {fields.get('insurer_decision') or 'inget ännu'}",
-        f"Erbjudet belopp: {fields.get('insurer_amount') or 'ej angivet'}",
-        f"Bolagets motivering: {fields.get('insurer_reason') or 'ingen'}",
-        "\nRELEVANTA LAGRUM:",
-    ]
-    for h in law_hits:
-        parts.append(f"** {h['title']} **\n{h['text'][:800]}")
-    parts.append("\nRELEVANTA ARN-BESLUT:")
-    for h in arn_hits:
-        parts.append(f"** {h['title']} **\n{h['text'][:800]}")
-
-    try:
-        out, _ = chat_json(ASSESS_SYSTEM, scrub_pii("\n\n".join(parts), fields), AssessOut,
-                           db=db, stage="intake.assess", max_tokens=1200)
-        if out.strength in ("stark", "medel", "svag"):
-            return {
-                "strength": out.strength,
-                "summary": out.summary[:1200],
-                "key_arguments": [str(a) for a in out.key_arguments][:6],
-                "missing_info": [str(m) for m in out.missing_info][:6],
-                "degraded": False,
-            }
-    except LLMError:
-        pass
+    sc = build_scorecard(db, fields, law_hits=law_hits, arn_hits=arn_hits)
     return {
-        "strength": "okänd",
-        "summary": (
-            "Vi har tagit emot ditt ärende och matchat det mot relevant lagstiftning "
-            "och ARN-praxis. En handläggare går igenom ärendet och återkommer."
-        ),
-        "key_arguments": [],
-        "missing_info": [],
-        "degraded": True,
+        "strength": sc["strength_band"],
+        "summary": sc["summary"],
+        "key_arguments": sc["key_factors"][:6],
+        "missing_info": sc["missing_info"][:6],
+        "degraded": sc["degraded"],
+        "scorecard": sc,
     }
 
 
@@ -140,20 +90,11 @@ def _new_case_id(db: Session) -> str:
 
 def analyze(payload: Dict[str, Any], db: Session) -> Dict[str, Any]:
     description = payload.get("damage_description", "")
-    safe_description = scrub_pii(description, payload)
     cat = categorize(description, hint=payload.get("damage_category") or "",
                      fields=payload, db=db)
     category = cat["category"]
 
-    rag_query = f"{category} {safe_description[:300]}"
-    if payload.get("insurer_reason"):
-        rag_query += f" {scrub_pii(payload['insurer_reason'], payload)[:200]}"
-    try:
-        law_hits = [h for h in search_law(rag_query, k=8) if h["path"].startswith("Lagstiftning/")][:5]
-        arn_hits = search_precedents(category, scrub_pii(payload.get("insurer_reason") or description, payload), k=5)
-        rag_failed = False
-    except Exception:
-        law_hits, arn_hits, rag_failed = [], [], True
+    law_hits, arn_hits, rag_failed = retrieve_evidence(dict(payload, damage_category=category))
 
     fields = dict(payload, damage_category=category)
     assessment = assess(fields, law_hits, arn_hits, db=db) if not rag_failed else {
@@ -182,8 +123,10 @@ def analyze(payload: Dict[str, Any], db: Session) -> Dict[str, Any]:
         "generated_at": datetime.utcnow().isoformat(),
     }
 
+    sc = assessment.get("scorecard")
     case = Case(
         id=_new_case_id(db),
+        scorecard=json.dumps(sc, ensure_ascii=False) if sc else None,
         customer_name=payload.get("customer_name", ""),
         customer_email=payload.get("customer_email", ""),
         customer_phone=payload.get("customer_phone", ""),

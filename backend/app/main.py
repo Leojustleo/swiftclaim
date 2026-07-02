@@ -22,7 +22,8 @@ from app.schemas import (
 from app.rag import search_law, search_precedents
 from app.law_importer import get_law_section, fetch_riksdagen_law, CORE_SECTIONS, SFS_MAP
 from app.intake_ai import analyze as run_intake_analysis
-from app.draft_ai import create_job, run_draft_job, fail_if_stale
+from app.draft_ai import create_job, run_draft_job, fail_if_stale, case_fields
+from app.scorecard import build_scorecard, calibration_buckets
 from app.qa_ai import ask as run_ask
 from app.llm import LLMError
 from app.auth import check_password, create_token, require_admin_token
@@ -235,21 +236,10 @@ def admin_score_case(
     db: Session = Depends(get_db),
     _: dict = Depends(require_admin_token),
 ):
-    from app.scoring import generate_scorecard as _score
     case = db.query(Case).filter(Case.id == case_id).first()
     if not case:
         raise HTTPException(status_code=404, detail="Case not found")
-
-    scorecard = _score({
-        "damage_category": case.damage_category,
-        "insurance_company": case.insurance_company,
-        "claim_amount": case.claim_amount,
-        "insurer_amount": case.insurer_amount,
-        "insurer_decision": case.insurer_decision,
-        "insurer_reason": case.insurer_reason,
-        "damage_description": case.damage_description,
-    })
-
+    scorecard = build_scorecard(db, case_fields(case))
     case.scorecard = _json.dumps(scorecard, ensure_ascii=False)
     db.commit()
     return scorecard

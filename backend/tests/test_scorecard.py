@@ -100,6 +100,34 @@ def test_build_scorecard_flags_all_refs_when_resolver_unavailable(monkeypatch):
     assert set(sc["flagged_references"]) == {"2020-08495", "FAL 4 kap 6 §"}
 
 
+def test_build_scorecard_scrubs_description_before_truncation(monkeypatch):
+    captured = {}
+
+    def fake_chat(system, user, schema, **kw):
+        captured["user"] = user
+        return schema(claim_strength=50, win_probability="50%"), {"model": "m"}
+
+    monkeypatch.setattr(scorecard, "chat_json", fake_chat)
+    monkeypatch.setattr(scorecard, "build_resolver", lambda db, ev: FakeResolver())
+    fields = dict(FIELDS, damage_description="x" * 1493 + "Anna Andersson orsakade läckan")
+    scorecard.build_scorecard(None, fields, law_hits=[], arn_hits=[])
+    assert "Anna" not in captured["user"]
+
+
+def test_retrieve_evidence_query_scrubbed(monkeypatch):
+    captured = {}
+
+    def fake_precedents(category, text, k=5):
+        captured["text"] = text
+        return []
+
+    monkeypatch.setattr(scorecard, "search_precedents", fake_precedents)
+    monkeypatch.setattr(scorecard, "search_law", lambda q, k=8: [])
+    fields = dict(FIELDS, insurer_reason="Anna Andersson anmälde för sent")
+    scorecard.retrieve_evidence(fields)
+    assert "Anna" not in captured["text"]
+
+
 def test_parse_probability():
     assert scorecard.parse_probability("65%") == 65
     assert scorecard.parse_probability("ca 70 procent") == 70
