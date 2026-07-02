@@ -143,6 +143,18 @@ class DraftJobOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class PipelineJobOut(BaseModel):
+    id: str
+    case_id: str
+    status: str
+    error: Optional[str] = None
+    stages: dict = {}
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class AskRequest(BaseModel):
     question: str
     case_id: Optional[str] = None

@@ -9,16 +9,17 @@ from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 
 from app.db import init_db, get_db
-from app.models import Case, ARNDecision, LawSection as LawSectionModel, ResponseDraft, KnowledgeNote, DraftJob
+from app.models import Case, ARNDecision, LawSection as LawSectionModel, ResponseDraft, KnowledgeNote, DraftJob, PipelineJob
 from app.schemas import (
     CaseCreate, CaseUpdate, CaseOut,
     ARNOut, LawSectionOut,
-    ResponseDraftOut, DraftJobOut,
+    ResponseDraftOut, DraftJobOut, PipelineJobOut,
     KnowledgeNoteCreate, KnowledgeNoteOut,
     DraftRequest, RAGQuery, BulkARNImport,
     IntakeAnalyzeRequest, IntakeAnalysisOut,
     AskRequest, AskOut,
 )
+from app.pipeline import create_pipeline_job, run_pipeline
 from app.rag import search_law, search_precedents
 from app.law_importer import get_law_section, fetch_riksdagen_law, CORE_SECTIONS, SFS_MAP
 from app.intake_ai import analyze as run_intake_analysis
@@ -53,6 +54,8 @@ def startup():
         _seed_laws(db)
         stuck = db.query(DraftJob).filter(DraftJob.status.notin_(["done", "failed"]))
         stuck.update({"status": "failed", "error": "server restarted"}, synchronize_session=False)
+        stuck_pl = db.query(PipelineJob).filter(PipelineJob.status.notin_(["done", "failed"]))
+        stuck_pl.update({"status": "failed", "error": "server restarted"}, synchronize_session=False)
         db.commit()
     finally:
         db.close()
@@ -263,8 +266,9 @@ def get_case(case_id: str, db: Session = Depends(get_db)):
 
 
 @app.post("/api/cases", response_model=CaseOut, status_code=201)
-def create_case(data: CaseCreate, db: Session = Depends(get_db)):
+def create_case(data: CaseCreate, background: BackgroundTasks, db: Session = Depends(get_db)):
     case = db.query(Case).filter(Case.id == data.id).first()
+    is_new = case is None
     if case:
         for key, val in data.model_dump().items():
             if key != "id":
@@ -275,6 +279,9 @@ def create_case(data: CaseCreate, db: Session = Depends(get_db)):
         db.add(case)
     db.commit()
     db.refresh(case)
+    if is_new:
+        pj = create_pipeline_job(db, case.id)
+        background.add_task(run_pipeline, pj.id)
     return CaseOut.model_validate(case)
 
 
@@ -416,8 +423,11 @@ def get_law_riksdagen(sfs_id: str):
 
 
 @app.post("/api/intake/analyze", response_model=IntakeAnalysisOut)
-def analyze_intake(req: IntakeAnalyzeRequest, db: Session = Depends(get_db)):
-    return run_intake_analysis(req.model_dump(), db)
+def analyze_intake(req: IntakeAnalyzeRequest, background: BackgroundTasks, db: Session = Depends(get_db)):
+    result = run_intake_analysis(req.model_dump(), db)
+    pj = create_pipeline_job(db, result["case_id"])
+    background.add_task(run_pipeline, pj.id)
+    return result
 
 
 @app.post("/api/search/law")
@@ -467,6 +477,21 @@ def get_latest_draft_job(case_id: str, db: Session = Depends(get_db)):
     job = db.query(DraftJob).filter(DraftJob.case_id == case_id) \
         .order_by(DraftJob.created_at.desc()).first()
     return _job_out(db, fail_if_stale(db, job)) if job else None
+
+
+@app.get("/api/pipeline-jobs/{job_id}", response_model=PipelineJobOut)
+def get_pipeline_job(job_id: str, db: Session = Depends(get_db)):
+    job = db.query(PipelineJob).filter(PipelineJob.id == job_id).first()
+    if not job:
+        raise HTTPException(404, "Job not found")
+    return PipelineJobOut.model_validate(fail_if_stale(db, job))
+
+
+@app.get("/api/pipeline-jobs", response_model=Optional[PipelineJobOut])
+def get_latest_pipeline_job(case_id: str, db: Session = Depends(get_db)):
+    job = db.query(PipelineJob).filter(PipelineJob.case_id == case_id) \
+        .order_by(PipelineJob.created_at.desc()).first()
+    return PipelineJobOut.model_validate(fail_if_stale(db, job)) if job else None
 
 
 @app.post("/api/ask", response_model=AskOut)
