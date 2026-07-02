@@ -34,6 +34,9 @@ class Case(Base):
     priority = Column(String, default="normal")
     assigned_to = Column(String, default="swiftclaim-bot")
     outcome = Column(String, nullable=True)
+    actual_outcome = Column(String, nullable=True)  # won, partial, lost, withdrawn
+    actual_amount_sek = Column(Integer, nullable=True)
+    outcome_date = Column(String, nullable=True)
 
     tags = Column(JSON, default=[])
     ai_analysis = Column(JSON, nullable=True)

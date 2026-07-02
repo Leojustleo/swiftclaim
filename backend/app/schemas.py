@@ -44,6 +44,9 @@ class CaseUpdate(BaseModel):
     priority: Optional[str] = None
     assigned_to: Optional[str] = None
     outcome: Optional[str] = None
+    actual_outcome: Optional[str] = None
+    actual_amount_sek: Optional[int] = None
+    outcome_date: Optional[str] = None
     tags: Optional[List[str]] = None
 
 
@@ -71,6 +74,9 @@ class CaseOut(BaseModel):
     priority: str
     assigned_to: str
     outcome: Optional[str]
+    actual_outcome: Optional[str] = None
+    actual_amount_sek: Optional[int] = None
+    outcome_date: Optional[str] = None
     tags: List
     ai_analysis: Optional[dict] = None
 

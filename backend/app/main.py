@@ -126,6 +126,9 @@ def _case_to_admin_dict(case: Case, scorecard: Optional[dict] = None) -> dict:
         "insurer_reason": case.insurer_reason,
         "status": case.status,
         "scorecard": scorecard,
+        "actual_outcome": case.actual_outcome,
+        "actual_amount_sek": case.actual_amount_sek,
+        "outcome_date": case.outcome_date,
     }
 
 
@@ -205,7 +208,14 @@ def admin_stats(
 
     recent = sorted([c for c in cases if c.created_at], key=lambda c: c.created_at, reverse=True)[:5]
 
+    calib_rows = []
+    for c in cases:
+        if c.scorecard:
+            sc = _json.loads(c.scorecard)
+            calib_rows.append((sc.get("win_probability"), c.actual_outcome))
+
     return {
+        "calibration": calibration_buckets(calib_rows),
         "total_cases": total,
         "active_cases": active_count,
         "avg_claim_strength": avg_strength,
@@ -218,6 +228,32 @@ def admin_stats(
         "priority_counts": priority_counts,
         "recent_cases": [_case_to_admin_dict(c, _json.loads(c.scorecard) if c.scorecard else None) for c in recent],
     }
+
+
+class _OutcomeRequest(_BaseModel):
+    actual_outcome: str
+    actual_amount_sek: Optional[int] = None
+    outcome_date: Optional[str] = None
+
+
+@app.post("/api/admin/cases/{case_id}/outcome")
+def admin_set_outcome(
+    case_id: str,
+    body: _OutcomeRequest,
+    db: Session = Depends(get_db),
+    _: dict = Depends(require_admin_token),
+):
+    if body.actual_outcome not in ("won", "partial", "lost", "withdrawn"):
+        raise HTTPException(422, "actual_outcome must be won|partial|lost|withdrawn")
+    case = db.query(Case).filter(Case.id == case_id).first()
+    if not case:
+        raise HTTPException(404, "Case not found")
+    case.actual_outcome = body.actual_outcome
+    case.actual_amount_sek = body.actual_amount_sek
+    case.outcome_date = body.outcome_date
+    db.commit()
+    sc = _json.loads(case.scorecard) if case.scorecard else None
+    return _case_to_admin_dict(case, sc)
 
 
 @app.get("/api/admin/cases/{case_id}")

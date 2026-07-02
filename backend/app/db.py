@@ -35,6 +35,12 @@ def _migrate(engine):
             conn.execute(text("ALTER TABLE cases ADD COLUMN ai_analysis JSON"))
         if "scorecard" not in cols:
             conn.execute(text("ALTER TABLE cases ADD COLUMN scorecard TEXT"))
+        if "actual_outcome" not in cols:
+            conn.execute(text("ALTER TABLE cases ADD COLUMN actual_outcome VARCHAR"))
+        if "actual_amount_sek" not in cols:
+            conn.execute(text("ALTER TABLE cases ADD COLUMN actual_amount_sek INTEGER"))
+        if "outcome_date" not in cols:
+            conn.execute(text("ALTER TABLE cases ADD COLUMN outcome_date VARCHAR"))
         conn.commit()
         draft_cols = [row[1] for row in conn.execute(text("PRAGMA table_info(response_drafts)"))]
         for col, ddl in [
