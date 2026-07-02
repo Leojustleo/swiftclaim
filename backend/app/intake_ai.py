@@ -90,7 +90,7 @@ def assess(fields: Dict[str, Any], law_hits: List[Dict], arn_hits: List[Dict],
     parts = [
         "ÄRENDE:",
         f"Kategori: {fields.get('damage_category')}",
-        f"Beskrivning: {fields.get('damage_description', '')[:1500]}",
+        f"Beskrivning: {scrub_pii(fields.get('damage_description', ''), fields)[:1500]}",
         f"Försäkringsbolag: {fields.get('insurance_company') or 'okänt'}",
         f"Yrkat belopp: {fields.get('claim_amount') or 'ej angivet'}",
         f"Bolagets beslut: {fields.get('insurer_decision') or 'inget ännu'}",

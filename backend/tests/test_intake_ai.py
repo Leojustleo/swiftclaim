@@ -41,9 +41,25 @@ def test_assess_scrubs_pii(monkeypatch):
     )
     out = intake_ai.assess(fields, law_hits=[], arn_hits=[])
     assert "Anna" not in captured["user"]
+    assert "Storgatan" not in captured["user"]
     assert "[KUND]" in captured["user"]
+    assert "[ADRESS]" in captured["user"]
     assert out["strength"] == "stark"
     assert out["degraded"] is False
+
+
+def test_assess_scrubs_name_split_by_truncation(monkeypatch):
+    captured = {}
+
+    def fake_chat(system, user, schema, **kw):
+        captured["user"] = user
+        return schema(strength="medel", summary="ok"), {"model": "m"}
+
+    monkeypatch.setattr(intake_ai, "chat_json", fake_chat)
+    fields = dict(FIELDS, damage_category="Vattenskada",
+                  damage_description="x" * 1493 + "Anna Andersson orsakade läckan")
+    intake_ai.assess(fields, law_hits=[], arn_hits=[])
+    assert "Anna" not in captured["user"]
 
 
 def test_precedent_query_scrubbed(monkeypatch):
@@ -55,7 +71,11 @@ def test_precedent_query_scrubbed(monkeypatch):
 
     monkeypatch.setattr(intake_ai, "search_precedents", fake_precedents)
     monkeypatch.setattr(intake_ai, "search_law", lambda q, k=8: [])
-    monkeypatch.setattr(intake_ai, "chat_json", lambda *a, **kw: (_ for _ in ()).throw(intake_ai.LLMError("off")))
+
+    def raise_llm(*a, **kw):
+        raise intake_ai.LLMError("off")
+
+    monkeypatch.setattr(intake_ai, "chat_json", raise_llm)
 
     class NoCaseDB:
         def query(self, *a):
