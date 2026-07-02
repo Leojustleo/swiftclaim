@@ -266,7 +266,53 @@ def admin_get_case(
     if not case:
         raise HTTPException(status_code=404, detail="Case not found")
     sc = _json.loads(case.scorecard) if case.scorecard else None
-    return _case_to_admin_dict(case, sc)
+    out = _case_to_admin_dict(case, sc)
+    latest = db.query(ResponseDraft).filter(ResponseDraft.case_id == case_id) \
+        .order_by(ResponseDraft.version.desc()).first()
+    out["latest_draft"] = {
+        "id": latest.id,
+        "status": latest.status,
+        "draft_text": latest.draft_text,
+        "citations_used": latest.citations_used or [],
+        "flagged_citations": latest.flagged_citations or [],
+        "created_at": latest.created_at.isoformat() if latest.created_at else None,
+    } if latest else None
+    pj = db.query(PipelineJob).filter(PipelineJob.case_id == case_id) \
+        .order_by(PipelineJob.created_at.desc()).first()
+    out["pipeline_job"] = {
+        "id": pj.id, "status": pj.status, "error": pj.error, "stages": pj.stages or {},
+    } if pj else None
+    return out
+
+
+class _ReviewRequest(_BaseModel):
+    action: str  # approve | reject
+
+
+@app.post("/api/admin/cases/{case_id}/review")
+def admin_review_case(
+    case_id: str,
+    body: _ReviewRequest,
+    db: Session = Depends(get_db),
+    _: dict = Depends(require_admin_token),
+):
+    if body.action not in ("approve", "reject"):
+        raise HTTPException(422, "action must be approve|reject")
+    case = db.query(Case).filter(Case.id == case_id).first()
+    if not case:
+        raise HTTPException(404, "Case not found")
+    latest = db.query(ResponseDraft).filter(ResponseDraft.case_id == case_id) \
+        .order_by(ResponseDraft.version.desc()).first()
+    if body.action == "approve":
+        case.status = "approved"
+        if latest:
+            latest.status = "reviewed"
+    else:
+        case.status = "analysis"
+        if latest:
+            latest.status = "archived"
+    db.commit()
+    return {"ok": True, "status": case.status}
 
 
 @app.post("/api/admin/cases/{case_id}/score")

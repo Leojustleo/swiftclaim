@@ -22,6 +22,10 @@
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       Ärenden
     </button>
+    <button class="nav-tab" data-view="review">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Granskning
+    </button>
   </nav>
   <div class="topbar-right">
     <button class="topbar-signout" id="signoutBtn">Logga ut</button>
@@ -113,6 +117,23 @@
       <div class="right-empty">
         <p>Välj ett ärende för att visa detaljer och AI-scorecard.</p>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── REVIEW VIEW ─────────────────────────────────── -->
+<div id="view-review" class="view" style="display:none">
+  <div class="layout">
+    <div class="left">
+      <div class="left-head">
+        <div class="left-title">Granskningskö <span>· <span id="reviewCount">…</span> st</span></div>
+      </div>
+      <div class="case-list" id="reviewList">
+        <div style="padding:24px;color:var(--muted)">Laddar…</div>
+      </div>
+    </div>
+    <div class="right" id="reviewRight">
+      <div class="right-empty"><p>Välj ett ärende för att granska scorecard och utkast.</p></div>
     </div>
   </div>
 </div>

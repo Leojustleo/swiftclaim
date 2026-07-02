@@ -154,6 +154,7 @@ function switchView(view) {
   document.getElementById(`view-${view}`).style.display = "";
   document.querySelectorAll(".nav-tab").forEach(t => t.classList.toggle("active", t.dataset.view === view));
   if (view === "cases" && allCases.length === 0) loadCases();
+  if (view === "review") loadReview();
 }
 
 document.querySelectorAll(".nav-tab").forEach(tab => {
@@ -201,6 +202,10 @@ function renderScorecard(sc, loading = false) {
     </div>`;
   }
   if (!sc) return "";
+  if (sc.claim_strength == null) {
+    return `<div class="scorecard"><div class="sc-title">AI Scorecard</div>
+      <div class="sc-error">Scorecard kunde inte genereras automatiskt (degraderat läge).</div></div>`;
+  }
   const refs = sc.arn_references && sc.arn_references.length
     ? `<div class="sc-refs">Källor: ${sc.arn_references.map(r => "ARN " + r).join(", ")}</div>`
     : "";
@@ -363,6 +368,72 @@ function setupFilters() {
       renderList();
     });
   });
+}
+
+// ── Review queue ─────────────────────────────────────
+const PRIO_ORDER = { high: 0, medium: 1, low: 2 };
+
+async function loadReview() {
+  const data = await apiFetch("/admin/cases?status=needs_review&limit=100");
+  const cases = data.cases.sort((a, b) => {
+    const pa = PRIO_ORDER[a.scorecard?.priority] ?? 3;
+    const pb = PRIO_ORDER[b.scorecard?.priority] ?? 3;
+    if (pa !== pb) return pa - pb;
+    return (b.scorecard?.claim_strength ?? 0) - (a.scorecard?.claim_strength ?? 0);
+  });
+  document.getElementById("reviewCount").textContent = cases.length;
+  const list = document.getElementById("reviewList");
+  list.innerHTML = cases.length
+    ? cases.map(renderCaseRow).join("")
+    : '<div style="padding:24px;color:var(--muted);text-align:center">Inget att granska</div>';
+  list.querySelectorAll(".case-row").forEach(row => {
+    row.addEventListener("click", () => openReviewCase(row.dataset.id));
+  });
+}
+
+function renderFlagged(refs) {
+  if (!refs || !refs.length) return "";
+  return `<div class="info-card full">
+    <div class="info-card-title">⚠️ Overifierade hänvisningar</div>
+    <p class="description-text">${refs.join(", ")} — kunde inte verifieras mot kunskapsbasen. Kontrollera manuellt.</p>
+  </div>`;
+}
+
+async function openReviewCase(id) {
+  const right = document.getElementById("reviewRight");
+  right.innerHTML = '<div style="padding:24px;color:var(--muted)">Laddar…</div>';
+  const c = await apiFetch(`/admin/cases/${id}`);
+  const draft = c.latest_draft;
+  const flaggedDraft = draft?.flagged_citations?.length
+    ? ` · ⚠️ ${draft.flagged_citations.length} overifierade citat` : "";
+  right.innerHTML = `
+    <div class="detail-header">
+      <div>
+        <div class="detail-id">${c.id}</div>
+        <div class="detail-name">${c.customer_name || "Okänd kund"}</div>
+        <div class="detail-sub">${c.insurance_company || "—"} · ${c.damage_category || "—"}</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-regen" id="approveBtn">✓ Godkänn</button>
+        <button class="btn-regen" id="rejectBtn">✕ Avvisa</button>
+      </div>
+    </div>
+    ${renderScorecard(c.scorecard)}
+    ${renderFlagged(c.scorecard?.flagged_references)}
+    ${draft ? `
+      <div class="info-card full">
+        <div class="info-card-title">Utkast (${draft.status})${flaggedDraft}</div>
+        <p class="description-text" style="white-space:pre-wrap">${draft.draft_text || "—"}</p>
+      </div>` : '<div class="info-card full"><div class="info-card-title">Utkast</div><p class="description-text">Inget utkast genererades — hantera manuellt.</p></div>'}
+  `;
+  document.getElementById("approveBtn").addEventListener("click", () => reviewAction(id, "approve"));
+  document.getElementById("rejectBtn").addEventListener("click", () => reviewAction(id, "reject"));
+}
+
+async function reviewAction(id, action) {
+  await apiFetch(`/admin/cases/${id}/review`, { method: "POST", body: JSON.stringify({ action }) });
+  document.getElementById("reviewRight").innerHTML = '<div class="right-empty"><p>Klart ✓</p></div>';
+  loadReview();
 }
 
 document.getElementById("signoutBtn")?.addEventListener("click", () => {
