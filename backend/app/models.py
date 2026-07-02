@@ -114,6 +114,18 @@ class DraftJob(Base):
     updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
 
 
+class PipelineJob(Base):
+    __tablename__ = "pipeline_jobs"
+
+    id = Column(String, primary_key=True)
+    case_id = Column(String, ForeignKey("cases.id"), index=True)
+    status = Column(String, default="queued")  # queued, research, scoring, drafting, done, failed
+    stages = Column(JSON, default={})
+    error = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+
+
 class LLMCall(Base):
     __tablename__ = "llm_calls"
 
