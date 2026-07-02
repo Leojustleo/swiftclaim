@@ -206,8 +206,23 @@ def note_source_url(text: str) -> Optional[str]:
     return m.group(1).strip() if m else None
 
 
+EXCLUDED_TOP_DIRS = {"Index"}
+
+
+def dir_prefixes(notes: List[NoteDict], dirs: Optional[List[str]] = None) -> Tuple[str, ...]:
+    """Alias (DIR_MAP key) or literal top-level vault dir → path prefix.
+    No dirs given → every discovered top-level dir except EXCLUDED_TOP_DIRS,
+    so new data sources become retrievable without code changes."""
+    if dirs:
+        return tuple(DIR_MAP.get(d, f"{d.rstrip('/')}/") for d in dirs)
+    tops = {n["path"].split("/", 1)[0] for n in notes if "/" in n["path"]}
+    return tuple(f"{t}/" for t in sorted(tops) if t not in EXCLUDED_TOP_DIRS)
+
+
 def eligible_notes(notes: List[NoteDict], dirs: Optional[List[str]] = None) -> List[NoteDict]:
-    prefixes = tuple(DIR_MAP[d] for d in dirs) if dirs else tuple(DIR_MAP.values())
+    prefixes = dir_prefixes(notes, dirs)
+    if not prefixes:
+        return []
     return [n for n in notes if n["path"].startswith(prefixes) and len(n["text"]) <= MAX_NOTE_CHARS]
 
 
@@ -222,6 +237,20 @@ def get_index() -> Tuple[List[NoteDict], Dict[str, Any]]:
         embeddings = build_or_load_index(notes)
         _INDEX.update(notes=notes, embeddings=embeddings, cache_mtime=_cache_mtime())
     return _INDEX["notes"], _INDEX["embeddings"]
+
+
+def reindex_vault(vault_path: Optional[Path] = None) -> Dict[str, Any]:
+    """Incremental reindex: embed only new/changed vault files, then force
+    the singleton index to reload. Safe to call any time new data lands."""
+    notes = load_vault_notes(vault_path)
+    cache: Dict[str, Any] = {}
+    if EMBED_CACHE.exists():
+        cache = json.loads(EMBED_CACHE.read_text())
+    stale = [n for n in notes
+             if (cache.get(n["path"]) or {}).get("hash") != _content_hash(n["text"])]
+    build_or_load_index(notes)
+    _INDEX["notes"] = None
+    return {"total_notes": len(notes), "embedded": len(stale)}
 
 
 def embed_queries(queries: List[str]) -> List[FloatList]:

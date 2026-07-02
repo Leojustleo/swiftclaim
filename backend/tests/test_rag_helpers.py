@@ -1,3 +1,4 @@
+from app import rag
 from app.rag import (
     DIR_MAP, LEXICAL_MAX_BOOST, MAX_NOTE_CHARS,
     eligible_notes, idf_weights, lexical_boost, note_source_url, query_terms,
@@ -16,9 +17,41 @@ def test_eligible_notes_filters_dirs_and_size():
         _note("Koncept/Nedsättning"),
     ]
     all_dirs = eligible_notes(notes)
-    assert len(all_dirs) == 2  # full law dropped, Koncept never searched
+    assert len(all_dirs) == 3  # full law dropped by size; all top-level dirs searchable
     only_arn = eligible_notes(notes, dirs=["arn"])
     assert [n["path"] for n in only_arn] == ["ARN/ARN 2023-001"]
+
+
+def test_eligible_notes_includes_new_top_level_dir():
+    notes = [
+        _note("Domar/NJA 2020 s 1.md"),
+        _note("Index/allt.md"),
+        _note("rot.md"),
+    ]
+    got = eligible_notes(notes)
+    assert [n["path"] for n in got] == ["Domar/NJA 2020 s 1.md"]
+
+
+def test_eligible_notes_alias_and_literal_dirs():
+    notes = [
+        _note("ARN/ARN 2020-1.md"),
+        _note("Domar/dom.md"),
+    ]
+    assert [n["path"] for n in eligible_notes(notes, dirs=["arn"])] == ["ARN/ARN 2020-1.md"]
+    assert [n["path"] for n in eligible_notes(notes, dirs=["Domar"])] == ["Domar/dom.md"]
+
+
+def test_reindex_vault_embeds_only_new_files(tmp_path, monkeypatch):
+    vault = tmp_path / "vault"
+    (vault / "Domar").mkdir(parents=True)
+    (vault / "Domar" / "a.md").write_text("innehåll om vattenskada och åldersavdrag " * 4)
+    monkeypatch.setattr(rag, "EMBED_CACHE", tmp_path / "emb.json")
+    monkeypatch.setattr(rag, "voyage_embed",
+                        lambda texts, key, input_type, **kw: [[0.1] * 4 for _ in texts])
+    monkeypatch.setattr(rag, "_get_voyage_key", lambda: "k")
+
+    assert rag.reindex_vault(vault) == {"total_notes": 1, "embedded": 1}
+    assert rag.reindex_vault(vault) == {"total_notes": 1, "embedded": 0}
 
 
 def test_note_source_url():
