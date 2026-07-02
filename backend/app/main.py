@@ -248,6 +248,36 @@ def admin_score_case(
     return scorecard
 
 
+_REINDEX: dict = {"status": "idle", "started_at": None, "finished_at": None,
+                  "total_notes": 0, "embedded": 0, "error": None}
+
+
+def _do_reindex():
+    from app.rag import reindex_vault
+    try:
+        stats = reindex_vault()
+        _REINDEX.update(status="done", finished_at=datetime.utcnow().isoformat(),
+                        error=None, **stats)
+    except Exception as e:
+        _REINDEX.update(status="failed", finished_at=datetime.utcnow().isoformat(),
+                        error=f"{type(e).__name__}: {e}")
+
+
+@app.post("/api/reindex", status_code=202)
+def start_reindex(background: BackgroundTasks, _: dict = Depends(require_admin_token)):
+    if _REINDEX["status"] == "running":
+        raise HTTPException(409, "Reindex already running")
+    _REINDEX.update(status="running", started_at=datetime.utcnow().isoformat(),
+                    finished_at=None, error=None)
+    background.add_task(_do_reindex)
+    return {"status": "running"}
+
+
+@app.get("/api/reindex/status")
+def reindex_status(_: dict = Depends(require_admin_token)):
+    return _REINDEX
+
+
 @app.get("/api/cases", response_model=List[CaseOut])
 def list_cases(status: Optional[str] = None, db: Session = Depends(get_db)):
     q = db.query(Case)
