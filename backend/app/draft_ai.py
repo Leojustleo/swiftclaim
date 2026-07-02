@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Tuple
 
 from pydantic import BaseModel, Field
@@ -17,6 +17,8 @@ MIN_SCORE = 0.35
 MAX_DOCS = 12
 MAX_DOC_CHARS = 2500
 MAX_QUERIES = 6
+
+STALE_JOB_MINUTES = 15
 
 
 class PlanArgument(BaseModel):
@@ -176,6 +178,16 @@ def _set_stage(db: Session, job: DraftJob, status: str, key: str, snapshot: Any)
     job.stages = {**(job.stages or {}), key: snapshot}
     job.updated_at = datetime.utcnow()
     db.commit()
+
+
+def fail_if_stale(db: Session, job: DraftJob) -> DraftJob:
+    if job.status in ("done", "failed"):
+        return job
+    ts = job.updated_at or job.created_at
+    if ts and datetime.utcnow() - ts > timedelta(minutes=STALE_JOB_MINUTES):
+        job.status, job.error = "failed", "job stalled — server likely restarted mid-run"
+        db.commit()
+    return job
 
 
 def run_draft_job(job_id: str) -> None:

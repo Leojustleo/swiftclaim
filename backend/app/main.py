@@ -22,7 +22,7 @@ from app.schemas import (
 from app.rag import search_law, search_precedents
 from app.law_importer import get_law_section, fetch_riksdagen_law, CORE_SECTIONS, SFS_MAP
 from app.intake_ai import analyze as run_intake_analysis
-from app.draft_ai import create_job, run_draft_job
+from app.draft_ai import create_job, run_draft_job, fail_if_stale
 from app.qa_ai import ask as run_ask
 from app.llm import LLMError
 from app.auth import check_password, create_token, require_admin_token
@@ -469,14 +469,14 @@ def get_draft_job(job_id: str, db: Session = Depends(get_db)):
     job = db.query(DraftJob).filter(DraftJob.id == job_id).first()
     if not job:
         raise HTTPException(404, "Job not found")
-    return _job_out(db, job)
+    return _job_out(db, fail_if_stale(db, job))
 
 
 @app.get("/api/draft-jobs", response_model=Optional[DraftJobOut])
 def get_latest_draft_job(case_id: str, db: Session = Depends(get_db)):
     job = db.query(DraftJob).filter(DraftJob.case_id == case_id) \
         .order_by(DraftJob.created_at.desc()).first()
-    return _job_out(db, job) if job else None
+    return _job_out(db, fail_if_stale(db, job)) if job else None
 
 
 @app.post("/api/ask", response_model=AskOut)
