@@ -1,11 +1,12 @@
 import random
+import uuid
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from app.llm import LLMError, chat_json
+from app.llm import LLMError, chat_json, scrub_pii
 from app.models import Case
 from app.rag import search_law, search_precedents
 
@@ -68,12 +69,15 @@ def keyword_category(text: str) -> str:
     return "Annan egendomsskada"
 
 
-def categorize(description: str, hint: str = "") -> Dict[str, Any]:
-    user = f"Skadebeskrivning:\n{description[:2000]}"
+def categorize(description: str, hint: str = "",
+               fields: Optional[Dict[str, Any]] = None, db: Session = None) -> Dict[str, Any]:
+    safe = scrub_pii(description, fields or {})
+    user = f"Skadebeskrivning:\n{safe[:2000]}"
     if hint:
         user += f"\n\nKundens egen kategorisering: {hint}"
     try:
-        out, _ = chat_json(CATEGORIZE_SYSTEM, user, CategorizeOut, stage="intake.categorize", max_tokens=100)
+        out, _ = chat_json(CATEGORIZE_SYSTEM, user, CategorizeOut,
+                           db=db, stage="intake.categorize", max_tokens=100)
         if out.category in CATEGORIES:
             return {"category": out.category, "degraded": False}
     except LLMError:
@@ -81,7 +85,8 @@ def categorize(description: str, hint: str = "") -> Dict[str, Any]:
     return {"category": hint if hint in CATEGORIES else keyword_category(description), "degraded": True}
 
 
-def assess(fields: Dict[str, Any], law_hits: List[Dict], arn_hits: List[Dict]) -> Dict[str, Any]:
+def assess(fields: Dict[str, Any], law_hits: List[Dict], arn_hits: List[Dict],
+           db: Session = None) -> Dict[str, Any]:
     parts = [
         "ÄRENDE:",
         f"Kategori: {fields.get('damage_category')}",
@@ -100,7 +105,8 @@ def assess(fields: Dict[str, Any], law_hits: List[Dict], arn_hits: List[Dict]) -
         parts.append(f"** {h['title']} **\n{h['text'][:800]}")
 
     try:
-        out, _ = chat_json(ASSESS_SYSTEM, "\n\n".join(parts), AssessOut, stage="intake.assess", max_tokens=1200)
+        out, _ = chat_json(ASSESS_SYSTEM, scrub_pii("\n\n".join(parts), fields), AssessOut,
+                           db=db, stage="intake.assess", max_tokens=1200)
         if out.strength in ("stark", "medel", "svag"):
             return {
                 "strength": out.strength,
@@ -133,12 +139,14 @@ def _new_case_id(db: Session) -> str:
 
 def analyze(payload: Dict[str, Any], db: Session) -> Dict[str, Any]:
     description = payload.get("damage_description", "")
-    cat = categorize(description, hint=payload.get("damage_category") or "")
+    safe_description = scrub_pii(description, payload)
+    cat = categorize(description, hint=payload.get("damage_category") or "",
+                     fields=payload, db=db)
     category = cat["category"]
 
-    rag_query = f"{category} {description[:300]}"
+    rag_query = f"{category} {safe_description[:300]}"
     if payload.get("insurer_reason"):
-        rag_query += f" {payload['insurer_reason'][:200]}"
+        rag_query += f" {scrub_pii(payload['insurer_reason'], payload)[:200]}"
     try:
         law_hits = [h for h in search_law(rag_query, k=8) if h["path"].startswith("Lagstiftning/")][:5]
         arn_hits = search_precedents(category, payload.get("insurer_reason") or description, k=5)
@@ -147,7 +155,7 @@ def analyze(payload: Dict[str, Any], db: Session) -> Dict[str, Any]:
         law_hits, arn_hits, rag_failed = [], [], True
 
     fields = dict(payload, damage_category=category)
-    assessment = assess(fields, law_hits, arn_hits) if not rag_failed else {
+    assessment = assess(fields, law_hits, arn_hits, db=db) if not rag_failed else {
         "strength": "okänd",
         "summary": "Vi har tagit emot ditt ärende. En handläggare går igenom det och återkommer.",
         "key_arguments": [],
